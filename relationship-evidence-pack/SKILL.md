@@ -5,7 +5,7 @@ description: Relationship evidence for partner, spousal and common-law visa appl
 
 # Goal
 
-Partner-visa applications ask couples to show the relationship is real and continuous. A common request is up to 20 photos of the couple together, taken at different times and places, each described, plus documents that show a shared life such as a lease or joint bills. Canada's spousal and common-law sponsorship is the worked example; its wording is quoted in [references/sources.md](references/sources.md).
+Partner-visa applications ask couples to show the relationship is real and continuous. A common request is up to 20 photos of the couple, taken at different times and places, with a brief description of each, plus documents that show a shared life such as a lease or joint bills. Canada's spousal and common-law sponsorship is the worked example; its wording is quoted in [references/sources.md](references/sources.md).
 
 From the photo library and scanned papers the couple already keeps on the NAS, this Skill produces:
 

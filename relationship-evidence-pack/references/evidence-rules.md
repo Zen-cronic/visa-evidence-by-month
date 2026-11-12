@@ -19,6 +19,8 @@ Read before Step 1. These rules decide which months are planned, which photos ar
 
 ## Labelling each line
 
+The official checklist asks for "a brief description of context of each photo". These four fields are this Skill's way of helping the couple write it; they are not an official format.
+
 | Field | Source | Label |
 |---|---|---|
 | Date | capture date in photo metadata | `from metadata` |
