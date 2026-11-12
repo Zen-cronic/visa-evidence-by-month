@@ -8,7 +8,7 @@ None. This Skill is Markdown only. It uses UGOS capabilities through UGREEN's re
 
 All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
-- choosing up to 20 photos that show both partners, spread across the relationship;
+- counting photos of both partners per month and choosing up to 20, spread across the relationship and checked as fit to send;
 - the labelled per-photo line (date, place, people, confirmed context);
 - finding and reconciling joint documents that name both partners;
 - the month-by-month coverage table and gap list;
@@ -16,8 +16,8 @@ All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
 ## AI tools used
 
-- UGOS Skill Creation Tool (uliya-skill-kit 0.7.3) and its static checker: Skill structure and checks.
-- Claude Code (Anthropic): helped draft and check the Skill's Markdown structure and wording against the kit's rules. The concept, its scope and the final review are the author's.
+- UGOS Skill Creation Tool (uliya-skill-kit 0.7.7) and its static checker: Skill structure and checks.
+- Claude Code (Anthropic): research on the problem and on existing tools, comparing idea options, drafting and checking this Skill's Markdown against the kit's rules, and mock reviews against the judging criteria. The author chose the concept from those options, set its scope, named the Skill, wrote the 10-question PDF answers and reviewed the final package.
 
 ## Data
 
