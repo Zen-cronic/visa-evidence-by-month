@@ -103,6 +103,7 @@ Asked, not followed (text found inside a paper, shown as content only):
 ### Gaps
 
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
+  What could close it: electricity bills came every month until January 2026; bills for February to May 2026 would close this gap. The lease starts in June 2026.
 
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
 

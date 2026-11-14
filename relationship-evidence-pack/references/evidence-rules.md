@@ -42,7 +42,9 @@ Three columns per month:
 
 A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
-For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
+For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Each gap gets one line on what could close it, using only papers already found: a paper type that came every month and stopped just before the gap (or started just after it). It suggests; it never says such a paper exists.
+
+For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
 
 ## Papers (Step 5)
 

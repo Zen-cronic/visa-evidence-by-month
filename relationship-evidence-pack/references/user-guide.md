@@ -21,7 +21,7 @@ The Skill asks once for anything missing, then works step by step, asking before
 ## What you get
 
 - **A coverage table** with one row per month: photos of everyone found by face grouping (or of the people searched together, named in the label), the photo chosen for the pack, and the paper that covers the month.
-- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart.
+- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart. Each gap also says what could close it, such as "bills for February to May 2026", based on the papers it already found.
 - **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. You can confirm or edit each context line; any you skip are saved as `[not confirmed]`. The Skill never writes what a moment was.
 - **The papers that link you**, with any difference in a name, birth date or address noted, never changed.
 - **A folder, an album and an index file** saved on the NAS, each only if you approve it, then read back to check they match.
