@@ -158,10 +158,26 @@ def name_matches(printed: str, given: str) -> bool:
     return _words(printed) == _words(given)
 
 
+def _edits(x: str, y: str) -> int:
+    """Levenshtein distance."""
+    prev = list(range(len(y) + 1))
+    for i, cx in enumerate(x, 1):
+        cur = [i]
+        for j, cy in enumerate(y, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (cx != cy)))
+        prev = cur
+    return prev[-1]
+
+
 def name_near(printed: str, given: str) -> bool:
-    """Same number of words and exactly one word spelled differently."""
+    """Same number of words and exactly one word spelled slightly differently ("Bau" for "Bao", "Lin" for "Linh").
+    A different name with the same family name ("Rizal Hakim" vs "Kirana Hakim") is not a spelling variant."""
     a, b = _words(printed), _words(given)
-    return len(a) == len(b) >= 2 and len(set(a) ^ set(b)) == 2
+    if not (len(a) == len(b) >= 2 and len(set(a) ^ set(b)) == 2):
+        return False
+    x, = set(a) - set(b)
+    y, = set(b) - set(a)
+    return _edits(x, y) <= max(1, min(len(x), len(y)) // 3)
 
 
 def name_contains(printed: str, photos_name: str) -> bool:

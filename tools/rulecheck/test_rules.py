@@ -340,6 +340,13 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertEqual(len(result["linked"]), 1)
         self.assertIn(birth, result["possible_matches"])
 
+    def test_a_relative_with_the_same_family_name_is_not_a_spelling_variant(self):
+        from rules import name_near
+        self.assertTrue(name_near("Tran Gia Bau", "Tran Gia Bao"))
+        self.assertTrue(name_near("Tran Thi Lin", "Tran Thi Linh"))
+        self.assertFalse(name_near("Rizal Hakim", "Kirana Hakim"))
+        self.assertFalse(name_near("Tran Thi An", "Tran Thi Linh"))
+
     def test_accented_printed_names_match(self):
         self.assertTrue(name_matches("TRẦN, Thị Linh", "Tran Thi Linh"))
         self.assertTrue(name_matches("Đặng Văn Minh", "Dang Van Minh"))

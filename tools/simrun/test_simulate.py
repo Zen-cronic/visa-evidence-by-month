@@ -271,6 +271,24 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["linked"], 1)
         self.assertEqual(log["gaps"], [])
 
+    def test_z2_married_family_couple_photos_with_same_address_pairs_matches_the_example(self):
+        people = ["Ayu Lestari", "Rizal Hakim", "Kirana Hakim"]
+        counts = {"2026-01": 3, "2026-02": 0, "2026-03": 2, "2026-04": 0, "2026-05": 0, "2026-06": 4}
+        addr = "41 Birchmount Road"
+        papers = [R.Paper("birth certificate", people, "scanned document", dated="2024-08-12")]
+        papers += [R.Paper("phone bill", ["Rizal Hakim"], "scanned document", dated=f"{m}-10", address=addr)
+                   for m in ("2026-01", "2026-02", "2026-03", "2026-06")]
+        papers += [R.Paper("bank letter", ["Ayu Lestari"], "scanned document", dated=f"{m}-20", address=addr)
+                   for m in ("2026-01", "2026-02", "2026-06")]
+        nas = MockNAS(people[:2], counts, samples(counts), papers)  # Kirana has no face group
+        log = run(people, people, "2026-01", "2026-06", nas,
+                  User(relationship="married", photo_scope="the couple", papers_only=[people[2]], children=[people[2]]))
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["photo_people"], people[:2])
+        self.assertEqual(log["gaps"], [R.GAP_LABEL.replace("of everyone", "of the couple") + ": 2026-04 to 2026-05"])
+        self.assertEqual(log["same_address_docs"], 6)  # Jan, Feb and Jun pairs; March's lone bill is not copied
+        self.assertEqual(log["writes_before_approval"], [])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
