@@ -299,21 +299,30 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
 
 
 def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]:
-    """Step 6: for each gap, a paper type that came every month and stopped just before the gap, or a
-    covering paper that starts just after it. Suggests only; never claims the paper exists."""
+    """Step 6: for each gap, from linking papers only: a series of at least 3 papers of the same type naming
+    the same people, one each month up to the month before the gap; and a covering paper that starts the
+    month after it. Suggests only; never claims the paper exists."""
     out = {}
     months = [r["month"] for r in rows]
+    series: dict[tuple[str, tuple[str, ...]], set[str]] = {}
+    for p in linked:
+        if p.dated:
+            series.setdefault((p.kind, tuple(sorted(p.names))), set()).add(p.dated[:7])
+
+    def prev(m: str) -> str:
+        y, mo = map(int, m.split("-"))
+        return f"{y - 1:04d}-12" if mo == 1 else f"{y:04d}-{mo - 1:02d}"
+
     for a, b in group_gaps(rows):
         ia, ib = months.index(a), months.index(b)
-        before = months[ia - 1] if ia > 0 else None
+        before = prev(a)
         after = months[ib + 1] if ib + 1 < len(months) else None
-        monthly = {}
-        for p in linked:
-            if p.dated:
-                monthly.setdefault(p.kind, set()).add(p.dated[:7])
         lines = []
-        for kind, ms in sorted(monthly.items()):
-            if before and before in ms and len(ms) >= 3:
+        for (kind, _), ms in sorted(series.items()):
+            run, m = 0, before
+            while m in ms:
+                run, m = run + 1, prev(m)
+            if run >= 3:
                 lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would close this gap")
         for p in linked:
             if p.start and after and p.start == after:

@@ -238,6 +238,19 @@ class NamesAndFailures(unittest.TestCase):
         rows = coverage("2025-01", "2025-03", {"2025-01": 2, "2025-02": 0, "2025-03": 2}, [], [])
         self.assertEqual(closers(rows, []), {("2025-02", "2025-02"): "no regular paper found near these months"})
 
+    def test_two_bills_are_not_a_series(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        bills = [Paper("electricity bill", couple, "scanned document", dated=d) for d in ("2025-01-01", "2025-02-01")]
+        rows = coverage("2025-01", "2025-04", {"2025-01": 1, "2025-02": 1, "2025-03": 0, "2025-04": 0}, [], bills)
+        self.assertEqual(closers(rows, bills)[("2025-03", "2025-04")], "no regular paper found near these months")
+
+    def test_series_must_name_the_same_people(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        mixed = [Paper("electricity bill", couple if i % 2 else couple[:1] + ["Tran Thi An"], "scanned document",
+                       dated=f"2025-0{i}-01") for i in range(1, 4)]
+        rows = coverage("2025-01", "2025-05", {"2025-01": 1, "2025-02": 1, "2025-03": 1, "2025-04": 0, "2025-05": 0}, [], mixed)
+        self.assertEqual(closers(rows, mixed)[("2025-04", "2025-05")], "no regular paper found near these months")
+
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 
@@ -331,7 +344,7 @@ class ExampleOutputIsConsistent(unittest.TestCase):
         hint = closers(rows, joined["linked"])[("2026-02", "2026-05")]
         self.assertIn("electricity bills came every month until 2026-01", hint)
         self.assertIn("the lease starts in 2026-06", hint)
-        self.assertIn("electricity bills came every month until January 2026; bills for February to May 2026 would close this gap", text)
+        self.assertIn("electricity bills came every month until January 2026; electricity bills for February to May 2026 would close this gap; the lease starts in June 2026", text)
 
 
 if __name__ == "__main__":
