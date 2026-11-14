@@ -232,8 +232,12 @@ def paper_covers(paper: Paper, month: str) -> bool:
     return bool(paper.dated) and paper.dated[:7] == month
 
 
+NOT_PLANNED_LABEL = "not checked (photo limit)"
+
+
 def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: list[Checked], linked: list[Paper],
-             common_law: bool = False, address_docs: list[Paper] | None = None, partners: list[str] | None = None) -> list[dict]:
+             common_law: bool = False, address_docs: list[Paper] | None = None, partners: list[str] | None = None,
+             planned: list[str] | None = None) -> list[dict]:
     """month_counts is None for one person or when the photo search failed: gaps then use papers only.
     For common-law couples a month counts only by a paper showing both at the same address; photos do not count."""
     if common_law:
@@ -257,7 +261,7 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
         rows.append({
             "month": month,
             "library": count,
-            "pack": numbers.get(month),
+            "pack": numbers.get(month) or (NOT_PLANNED_LABEL if planned is not None and count and month not in planned else None),
             "papers": papers,
             "gap": (count in (None, 0)) and not papers,
         })

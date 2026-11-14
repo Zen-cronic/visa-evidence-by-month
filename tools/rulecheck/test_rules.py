@@ -314,6 +314,14 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
                         address_docs=[benefit], partners=partners)
         self.assertTrue(rows[0]["gap"])
 
+    def test_months_beyond_the_photo_limit_are_labelled_not_checked(self):
+        counts = {m: 2 for m in month_range("2024-01", "2026-06")}  # 30 months with photos
+        plan = plan_months(counts, 20)
+        rows = coverage("2024-01", "2026-06", counts, [], [], planned=plan)
+        unplanned = [r for r in rows if r["pack"] == "not checked (photo limit)"]
+        self.assertEqual(len(unplanned), 10)
+        self.assertFalse(any(r["gap"] for r in rows))
+
     def test_single_name_papers_at_different_addresses_do_not_count(self):
         couple = ["Mei Tan", "Daniel Reyes"]
         a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
