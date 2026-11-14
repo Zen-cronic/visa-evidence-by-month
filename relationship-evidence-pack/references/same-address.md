@@ -8,9 +8,9 @@ Canada's spouse checklist (IMM 5533) accepts "documents issued to you or your sp
 
 ## Step 5c: single-name papers at an address
 
-Also keep, as `{ADDRESS_DOCS}`, every paper that names exactly one of `{PARTNERS}` (matched by their names in `{MATCH_NAMES}`; a child named on it does not matter) and shows an address. A joint paper naming both partners is never in this list.
+Also keep, as `{ADDRESS_DOCS}`, every paper that names exactly one of `{PARTNERS}` (matched by their names in `{MATCH_NAMES}`; a child named on it does not matter) and shows an address, and, unless `{RELATIONSHIP}` is common-law, is not already in `{LINKED_DOCS}`. A joint paper naming both partners is never in this list.
 
-Label and dedupe `{ADDRESS_DOCS}` with the same 5c rules as `{LINKED_DOCS}` (scan or photo, the same paper kept once), and include them in the 5c comparison of names, dates of birth and addresses, so the draft in Step 7 shows their mismatches.
+Label and dedupe `{ADDRESS_DOCS}` with the same 5c rules as `{LINKED_DOCS}` (scan or photo, the same paper kept once), After Step 6, include `{SAME_ADDRESS_DOCS}` (the ones that fill a month) in the comparison of names, dates of birth and addresses, so the draft in Step 7 shows their mismatches; papers listed only in the notes are not compared.
 
 ## Step 6: same-address pairs
 
@@ -20,7 +20,7 @@ When `{RELATIONSHIP}` is married or other, a month is covered by a photo of `{PH
 
 `{SAME_ADDRESS_DOCS}` is the papers from `{ADDRESS_DOCS}` that actually fill a month this way; from here on they are handled like `{LINKED_DOCS}` (the papers table, labelled "one name, same address"; the drop question; the comparison of names, dates of birth and addresses; and `{PAPER_COPIES}`). Papers from `{ADDRESS_DOCS}` that fill no month are listed only in the working notes and are not copied.
 
-What could cover each gap: use only papers in `{LINKED_DOCS}` or `{ADDRESS_DOCS}` (from `{ADDRESS_DOCS}`, a series in which each month's papers show both partners at the same address, as one paper per partner; each partner's papers are one type, and the line names both types, such as "phone bills (Mei) and bank letters (Daniel) came every month until …"). The rest of that rule (the series of at least 3 papers, the paper whose period starts the month after the gap, the wording, and "no regular paper found near these months") is in SKILL.md Step 6 and is unchanged.
+What could cover each gap: use only papers in `{LINKED_DOCS}` or `{ADDRESS_DOCS}` (from `{ADDRESS_DOCS}`, a series in which each month's papers show both partners at the same address, as one paper per partner; each partner's papers are one type, and the line names both types, such as "phone bills (Mei) and bank letters (Daniel) came every month until …"). When only one partner's papers form such a series, say so and name the missing half: "<type>s in <name>'s name came every month until <month>; a paper in <other>'s name at the same address for <gap months> would add evidence, if you have one". The rest of that rule (the series of at least 3 papers, the paper whose period starts the month after the gap, the wording, and "no regular paper found near these months") is in SKILL.md Step 6 and is unchanged.
 
 ## Step 7: drops, comparison and paper copies
 
