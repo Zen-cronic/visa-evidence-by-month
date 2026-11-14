@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 from rules import (
-    FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
+    FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, closers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of,
 )
 
@@ -234,6 +234,10 @@ class NamesAndFailures(unittest.TestCase):
         self.assertEqual(out["declined"], ["folder"])
         self.assertEqual(sorted(out["not applicable"]), ["index", "photo copies"])
 
+    def test_gap_without_a_regular_paper(self):
+        rows = coverage("2025-01", "2025-03", {"2025-01": 2, "2025-02": 0, "2025-03": 2}, [], [])
+        self.assertEqual(closers(rows, []), {("2025-02", "2025-02"): "no regular paper found near these months"})
+
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 
@@ -324,6 +328,10 @@ class ExampleOutputIsConsistent(unittest.TestCase):
                 self.assertEqual(paper, "—", r["month"])
         self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2026-02 to 2026-05"])
         self.assertIn("No photo of everyone found by face grouping and no linking paper: February to May 2026", text)
+        hint = closers(rows, joined["linked"])[("2026-02", "2026-05")]
+        self.assertIn("electricity bills came every month until 2026-01", hint)
+        self.assertIn("the lease starts in 2026-06", hint)
+        self.assertIn("electricity bills came every month until January 2026; bills for February to May 2026 would close this gap", text)
 
 
 if __name__ == "__main__":

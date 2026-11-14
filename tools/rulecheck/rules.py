@@ -296,3 +296,27 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
         else:
             out["failed"].append(item)
     return out
+
+
+def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]:
+    """Step 6: for each gap, a paper type that came every month and stopped just before the gap, or a
+    covering paper that starts just after it. Suggests only; never claims the paper exists."""
+    out = {}
+    months = [r["month"] for r in rows]
+    for a, b in group_gaps(rows):
+        ia, ib = months.index(a), months.index(b)
+        before = months[ia - 1] if ia > 0 else None
+        after = months[ib + 1] if ib + 1 < len(months) else None
+        monthly = {}
+        for p in linked:
+            if p.dated:
+                monthly.setdefault(p.kind, set()).add(p.dated[:7])
+        lines = []
+        for kind, ms in sorted(monthly.items()):
+            if before and before in ms and len(ms) >= 3:
+                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would close this gap")
+        for p in linked:
+            if p.start and after and p.start == after:
+                lines.append(f"the {p.kind} starts in {after}")
+        out[(a, b)] = "; ".join(lines) if lines else "no regular paper found near these months"
+    return out
