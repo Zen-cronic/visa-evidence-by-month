@@ -41,4 +41,5 @@ All data is synthetic: stand-in people (a couple, and a family of four), photos 
 
 - Whether the timeline summary returns sample photo paths that the vision check can read.
 - Whether the album accepts the exact chosen photos.
-- Whether the index read-back returns the full text.
+- Whether the index read-back returns the full text. The catalog's save-text action takes a path; whether it writes a plain file there is not verified, so Step 9 reads the path save-text returns.
+- Where Uliya's local-model setting is shown on the test NAS.

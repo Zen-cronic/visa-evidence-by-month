@@ -8,23 +8,23 @@ For the person running the Skill. What to have ready, what to ask, what comes ba
 2. **Know each person's name as printed on their papers**, such as "Tran Thi Linh". Papers are matched on these names, not on Photos nicknames.
 3. **Put scanned papers in one folder**, if you have any: leases, bills, bank statements, marriage and birth certificates, letters. Photos of papers taken with your phone are found in the photo library; you do not need to move them.
 4. **Pick where to save the pack.** Any folder outside the papers folder.
-5. **Set Uliya to use the model on this NAS**, so nothing you share leaves it. The Skill asks you to confirm this first.
+5. **Check Uliya's model setting** if you can, so nothing you share leaves the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
 
 ## What to ask
 
 - A couple: "Build our relationship evidence for the sponsorship application. Linh Tran and Minh Tran, since June 2025. Printed names Tran Thi Linh and Tran Van Minh. Papers are in /Family/Papers. Save in /Family/Visa."
-- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, since June 2025. Bao is a baby; use him for papers only."
+- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, since June 2025." If a child has no face group yet, such as a newborn, say "keep them for papers only".
 - One person: "Which months can I not prove with my papers? Siti Rahman, since December 2025. Papers in /Siti/Papers."
 
 The Skill asks once for anything missing, then works step by step, asking before it saves anything.
 
 ## What you get
 
-- **A coverage table** with one row per month: photos of everyone found by face grouping, the photo chosen for the pack, and the paper that covers the month.
-- **A gap list**: the months with no photo of everyone and no linking paper. A gap means the Skill found nothing, not that you were apart.
-- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. You confirm or edit every context line; the Skill never writes what a moment was.
+- **A coverage table** with one row per month: photos of everyone found by face grouping (or of the people searched together, named in the label), the photo chosen for the pack, and the paper that covers the month.
+- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart.
+- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. You can confirm or edit each context line; any you skip are saved as `[not confirmed]`. The Skill never writes what a moment was.
 - **The papers that link you**, with any difference in a name, birth date or address noted, never changed.
-- **A folder, an album and an index file** saved on the NAS after you approve, then read back to check they match.
+- **A folder, an album and an index file** saved on the NAS, each only if you approve it, then read back to check they match.
 
 A worked example with a made-up family is in [example-output.md](example-output.md).
 

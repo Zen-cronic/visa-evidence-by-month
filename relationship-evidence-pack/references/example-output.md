@@ -4,6 +4,9 @@
 
 ## The request
 
+This example is the all-four case: every family member has a face group, so photos of all four are searched together.
+
+
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
 - Period: June 2025 to November 2026 (18 months).
 - Scanned papers folder: `/Family/Papers`. Photos of papers: yes.
