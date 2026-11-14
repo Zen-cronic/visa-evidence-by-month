@@ -41,7 +41,7 @@ Papers matched on the names printed on them: Tran Thi Linh, Tran Van Minh, Tran 
 
 | Rule | Failed |
 |---|---|
-| 1 everyone named clearly visible | 6 |
+| 1 everyone searched together clearly visible | 6 |
 | 2 every face visible and not covered | 4 |
 | 3 a real photo, not a screenshot or a photo of a screen, print or paper | 2 |
 | 4 suitable to show a government officer | 0 |
