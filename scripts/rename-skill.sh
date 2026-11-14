@@ -11,6 +11,7 @@ old=$(for d in */; do if [ -f "$d/SKILL.md" ]; then echo "${d%/}"; fi; done)
 git mv "$old" "$new"
 sed -i "s/^name: $old\$/name: $new/" "$new/SKILL.md"
 grep -q "^name: $new\$" "$new/SKILL.md"
+[ -f README.md ] && sed -i "s#$old/#$new/#g" README.md
 grep -rn -- "$old" "$new" && { echo "the old name is still used inside the Skill; fix the lines above"; exit 1; } || true
 rm -f "dist/$old.zip"
 scripts/build-package.sh
