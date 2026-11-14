@@ -35,7 +35,7 @@ Some months had no photo of all four, so the Skill offered to count the two adul
 | 2 | `02 2025-07-05 IMG_2210.jpg` | 2025-07-05 `from metadata` | Lawrencetown Beach, NS `from metadata` | all four `from Photos people` | Four people on a beach with a picnic blanket. `[not confirmed]` |
 | 3 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 `from metadata` | unknown | all four `from Photos people` | An's first Halloween at her new school. *(edited)* |
 | 4 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 `from metadata` | Halifax, NS `from metadata` | all four `from Photos people` | Bao's birthday at home. *(confirmed)* |
-| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 `from metadata` | Moncton, NB `from metadata` | all four `from Photos people` | Christmas with Minh's parents. *(edited)* |
+| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 `from metadata` | Moncton, NB `from metadata` | all four `from Photos people`; Minh's parents `from you` | Christmas with Minh's parents. *(edited)* |
 | 6 | `06 2026-06-20 IMG_3102.jpg` | 2026-06-20 `from metadata` | Halifax, NS `from metadata` | all four `from Photos people` | Four people at a park with bicycles. `[not confirmed]` |
 | 7 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 `from metadata` | Montréal, QC `from metadata` | all four `from Photos people` | Family trip to Montréal. *(confirmed)* |
 | 8 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 `from metadata` | Halifax, NS `from metadata` | all four `from Photos people` | First day of school for both kids. *(confirmed)* |
@@ -69,7 +69,7 @@ Failed photos are never shown, copied or added to the album. Months where every 
 
 Mismatches, noted and not corrected:
 
-- **Date of birth, Tran Thi Linh:** 1986-04-02 on the marriage certificate, 1986-02-04 on Bao's birth certificate. This may be a day and month written in a different order; check the originals.
+- **Date of birth, Tran Thi Linh:** 1986-04-02 on the marriage certificate, 1986-02-04 on Bao's birth certificate. Check the originals.
 - **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill: format difference only, no action needed.
 
 From a photo of a document: Bao's birth certificate and the lease. Upload a clean scan or the original if the officer needs one.
