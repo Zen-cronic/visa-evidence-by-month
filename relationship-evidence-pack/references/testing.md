@@ -6,6 +6,10 @@ Each line says whether it is MEASURED, PLANNED or NOT VERIFIED. Nothing here has
 
 UGREEN's checker from uliya-skill-kit 0.7.7 (catalog 2.2.0): `static-pass`, 0 errors, 0 warnings.
 
+## Capability trace (MEASURED, 2026-11-13)
+
+Every action the Skill relies on was checked against the kit's capability catalog 2.2.0: 16 actions across photo-agent, document-agent, file-agent and knowledge-agent all exist with the parameters used. Steps 1 to 6 use only actions the catalog marks as read; the 4 writes (mkdir, copy, create album, save text) are all in Step 8 and each has an approval gate.
+
 ## Rule checks (MEASURED, 2026-11-13)
 
 The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program, kept outside this package, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): 15 checks, all passed. This confirms the written rules are complete and consistent and that the worked example follows them. It does not show how the Skill behaves on a NAS.
