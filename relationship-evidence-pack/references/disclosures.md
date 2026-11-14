@@ -22,4 +22,4 @@ All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
 ## Data
 
-The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It is designed to send nothing off the NAS: every reading step asks the experts to use only the local model, and the user confirms Uliya's model setting first. Test data and the worked example use made-up people; no real personal data is included in this package.
+The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It sends nothing off the NAS when Uliya is set to the local model: every reading and saving step asks the experts to use only the local model, the user is asked about Uliya's model setting first, and the index records that answer. The Skill cannot change Uliya's own model routing. Test data and the worked example use made-up people; no real personal data is included in this package.

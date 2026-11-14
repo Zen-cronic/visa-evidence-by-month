@@ -58,11 +58,11 @@ What counts as a linking paper depends on the scope:
 
 A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person. Without printed names, a paper name containing every word of a Photos name is a possible match only.
 
-Earlier packs (folders and albums named Visa evidence) are never read as evidence.
+Copies inside earlier packs (folders named Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
 
 Note differences in spelling, date of birth or address without changing anything; the people may need to explain them.
 
-For one person, or when the photo search failed, a gap is a month with no linking paper, labelled "no linking paper found".
+For one person, when the photo steps were skipped, or when the photo search failed, a gap is a month with no linking paper, labelled "no linking paper found".
 
 Many people photograph papers with their phone instead of scanning them. Step 5b finds those photos and reads their text:
 
