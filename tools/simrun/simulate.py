@@ -95,9 +95,10 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                                  people=printed, mismatches=mismatches)
 
     # Step 6 (redone after Step 7's answers, here folded in)
-    papers_only = scope == "one person" or timeline_failed
+    photo_steps_skipped = scope == "one person" or len(photo_people) < 2
+    papers_only = photo_steps_skipped or timeline_failed
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked)
-    gaps = R.gap_lines(rows, R.gap_label(papers_only=scope == "one person", search_failed=timeline_failed))
+    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed))
 
     # Step 7: read the save location, pick a free name
     nas.call("file-agent", "ls")

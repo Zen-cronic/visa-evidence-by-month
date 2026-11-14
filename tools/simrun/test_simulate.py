@@ -83,6 +83,13 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["summary"]["declined"], ["folder"])
         self.assertIn("index", log["summary"]["not applicable"])
 
+    def test_h_couple_with_one_partner_papers_only_gets_paper_gap_labels(self):
+        nas = MockNAS(["Mei Tan"], {}, [], [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-06")])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(papers_only=["Daniel Reyes"]))
+        self.assertNotIn(("photo-agent", "timeline-summary"), nas.calls)
+        self.assertTrue(log["gaps"])
+        self.assertTrue(all(g.startswith(R.PAPER_GAP_LABEL) for g in log["gaps"]))
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
