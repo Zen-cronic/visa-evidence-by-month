@@ -232,8 +232,13 @@ def paper_covers(paper: Paper, month: str) -> bool:
     return bool(paper.dated) and paper.dated[:7] == month
 
 
-def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: list[Checked], linked: list[Paper]) -> list[dict]:
-    """month_counts is None for one person or when the photo search failed: gaps then use papers only."""
+def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: list[Checked], linked: list[Paper],
+             common_law: bool = False) -> list[dict]:
+    """month_counts is None for one person or when the photo search failed: gaps then use papers only.
+    For common-law couples a month counts only by a paper showing both at the same address; photos do not count."""
+    if common_law:
+        linked = [p for p in linked if p.address]
+        month_counts = None
     rows = []
     numbers = {c.month: i + 1 for i, c in enumerate(chosen)}
     for month in month_range(start, end):

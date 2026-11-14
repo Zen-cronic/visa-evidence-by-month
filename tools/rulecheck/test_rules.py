@@ -274,6 +274,14 @@ class NamesAndFailures(unittest.TestCase):
         self.assertEqual([r["month"] for r in rows if r["papers"]], ["2025-03"])
         self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-02", f"{GAP_LABEL}: 2025-04 to 2025-05"])
 
+    def test_common_law_counts_only_shared_address_papers(self):
+        couple = ["Mei Tan", "Daniel Reyes"]
+        lease = Paper("lease", couple, "scanned document", "2025-01", "2025-03", address="88 Carlow Ave")
+        statement = Paper("bank statement", couple, "scanned document", dated="2025-04-30")  # names both, no shared address
+        counts = {m: 3 for m in month_range("2025-01", "2025-05")}  # photos every month
+        rows = coverage("2025-01", "2025-05", counts, [], [lease, statement], common_law=True)
+        self.assertEqual(gap_lines(rows, gap_label(papers_only=True)), [f"{PAPER_GAP_LABEL}: 2025-04 to 2025-05"])
+
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 
