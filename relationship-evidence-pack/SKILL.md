@@ -1,12 +1,12 @@
 ---
 name: relationship-evidence-pack
-description: Shows which months a couple or family can and cannot show evidence for, from the photos and papers already on the NAS, for a partner or spouse sponsorship or visa application (with their children), and what papers would cover each gap; then saves the photos, papers and a photo-description file organised for upload, plus working notes for the user, after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
+description: Shows which months a couple or family can and cannot show evidence for, from the photos and papers already on the NAS, for a partner or spouse sponsorship or visa application (with their children), and what papers would cover each gap; then saves the photos, papers and a photo-description file organised by upload order, plus working notes for the user, after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
 ---
 
 # At a glance
 
 - **For:** a couple or family preparing a partner or spouse sponsorship or visa application (with their children), asking "which months can we not prove yet?"
-- **Result:** a month-by-month coverage table and gap list for the user's own checking, and, after approval, an evidence folder with the photos, the papers and a Photo descriptions file organised for upload, a Photos album, and working notes the user keeps; all read back after saving.
+- **Result:** a month-by-month coverage table and gap list for the user's own checking, and, after approval, an evidence folder with the photos, the papers and a Photo descriptions file organised by upload order, a Photos album, and working notes the user keeps; all read back after saving.
 - **NAS capabilities, in order** (each catalog action is named under Generation-time capability evidence):
   1. face albums, to confirm the people;
   2. a timeline of photos with several people together, by month;
@@ -32,10 +32,10 @@ The scope follows the people named at the start:
 
 From the photo library and papers already on the NAS, this Skill produces:
 
-1. A month-by-month coverage table and a gap list: the months where Photos face grouping found no photo of the people and no linking paper was found (for common-law partners, the months with no paper showing both at the same address).
+1. A month-by-month coverage table and a gap list: the months where Photos face grouping found no photo of the people and no linking paper, and no papers in each partner's name showing the same address, were found (for common-law partners, the months with no paper showing both at the same address).
 2. For a couple or family, up to the photo limit of photos of the people together, one per month, spread across the period, each checked as fit to send, each with a line whose every field says where it came from.
 3. The papers that link the people, scanned or photographed, with every name, birth date or address mismatch noted, and papers whose spelling differs listed as possible matches.
-4. An evidence folder with copies in upload order and a Photo descriptions file (only lines the user wrote or confirmed, ready to upload), a Photos album of the chosen photos, and an Evidence index of working notes for the user (gaps, mismatches, counts; not for upload), all read back after saving.
+4. An evidence folder with copies in upload order and a Photo descriptions file (only lines the user wrote or confirmed, to include in the upload), a Photos album of the chosen photos, and an Evidence index of working notes for the user (gaps, mismatches, counts; not for upload), all read back after saving.
 
 The Skill prepares evidence only. It does not judge eligibility, does not give legal advice and does not submit anything. Rules for choosing, labelling and counting are in [references/evidence-rules.md](references/evidence-rules.md). Consent, privacy and misuse rules are in [references/safety-and-consent.md](references/safety-and-consent.md); read both before Step 1. A worked example of the saved index, with made-up people, is in [references/example-output.md](references/example-output.md). What the person should prepare, ask and check is in [references/user-guide.md](references/user-guide.md).
 
@@ -52,7 +52,7 @@ Ask once, in one short message, for: who is on the application (`{PEOPLE}`), sin
 - `{TODAY}`: today's date; ask for it in the up-front message only if Uliya does not already show it; used for the default end month and to name a second pack. Never guess it.
 - `{SAVE_LOCATION}`: where to create the evidence folder. Ask; you may suggest a folder for the user to accept or change, but never choose it without their yes. It must not be inside `{DOCS_FOLDER}`; if it is, ask for another, so a saved pack is never read back in as evidence.
 - `{PHOTO_LIMIT}`: default 20, a maximum. Not used for one person.
-- `{RELATIONSHIP}`: married, common-law, or other (for a couple or family). It decides what the coverage table counts (Step 6). For a common-law family, also ask which two people are the partners (`{PARTNERS}`); for a couple, `{PARTNERS}` is the two people.
+- `{RELATIONSHIP}`: married, common-law, or other (for a couple or family). It decides what the coverage table counts (Step 6). For a family, also ask which two people are the partners (`{PARTNERS}`); for a couple, `{PARTNERS}` is the two people.
 - `{PHOTOS_NEEDED}`: whether the application asks for photos. Asked in the up-front message for a couple or family. For example, Canada's spouse checklist asks four questions (living together, children together, first marriage for both, married at least two years); if the answer to all four is yes, it says no additional proof of relationship is needed at this time. In that case, say so plainly, explain that an officer can still ask later, and ask whether to build a pack anyway; stop if the user says no. If photos are not needed but the user continues, skip Steps 2 to 4 and build the papers only. Default yes.
 
 Never ask for passport, application, tax or bank numbers.
@@ -114,10 +114,10 @@ Using `{MONTH_COUNTS}` and the rules in [references/evidence-rules.md](reference
 `{CANDIDATES_FOR_PLAN_MONTHS}` is every candidate path from `{CANDIDATES}` in the months of `{PLAN_MONTHS}`. Send it in batches of at most 5 planned months (15 photos) per call; a path missing from a reply is "not checked", not failed.
 
 ```
-delegate --target photo-agent --instruction 'Use only the local model. For each photo path below, read the capture date and the place name from photo metadata, then look at the image and apply these rules in order, stopping at the first that fails: 1 the {PHOTO_COUNT_PEOPLE} people the photo is about are clearly visible in the foreground (other people may also appear); 2 the faces of those people are visible and not covered (ignore anyone else); 3 it is a real photo, not a screenshot or a photo of a screen, print or paper; 4 it is appropriate to send to a government officer, with no nudity, intimate or sexual content; 5 it is not blurry. Return for each path: its photo ID if known, pass or the number of the first failed rule, the capture date or "no capture date", the place name only if the metadata gives one, otherwise none, and whether anyone else besides those people appears in the photo. Only for photos that pass all five rules, add one short sentence describing what is visible (setting and activity), without naming people or guessing dates, cities, events or relationships. Photo paths: {CANDIDATES_FOR_PLAN_MONTHS}. Read only.'
+delegate --target photo-agent --instruction 'Use only the local model. For each photo path below, read the capture date and the place name from photo metadata, then look at the image and apply these rules in order, stopping at the first that fails: 1 the {PHOTO_COUNT_PEOPLE} people the photo is about are clearly visible in the foreground (other people may also appear); 2 the faces of those people are visible and not covered (ignore anyone else); 3 it is a real photo, not a screenshot or a photo of a screen or paper (a photographed print of a photo passes); 4 it is appropriate to send to a government officer, with no nudity, intimate or sexual content; 5 it is not blurry. Return for each path: its photo ID if known, pass or the number of the first failed rule, the capture date or "no capture date", the place name only if the metadata gives one, otherwise none, whether anyone else besides those people appears in the photo, and print if it is a photographed print of a photo. Only for photos that pass all five rules, add one short sentence describing what is visible (setting and activity), without naming people or guessing dates, cities, events or relationships. Photo paths: {CANDIDATES_FOR_PLAN_MONTHS}. Read only.'
 ```
 
-Who is in each photo comes from face grouping in Step 2; rule 1 only checks that everyone can be seen. Save the result as `{CHECKED}` and choose photos with the rules in [references/evidence-rules.md](references/evidence-rules.md): the first passing photo in each planned month, one photo per month. A short period gives fewer photos than the limit; the limit is a maximum, not a target. Save the choices as `{CHOSEN_PHOTOS}`. If every sample in a planned month failed, record that month as "3 samples checked, none fit to send" (or the number checked) and do not substitute another month. Months with photos that were not planned (because of the photo limit) show "not checked (photo limit)" in the coverage table. Never pad to reach the limit. Count failures by rule.
+Who is in each photo comes from face grouping in Step 2; rule 1 only checks that everyone can be seen. Label a passing photo that is a photographed print `print` in its photo line. Save the result as `{CHECKED}` and choose photos with the rules in [references/evidence-rules.md](references/evidence-rules.md): the first passing photo in each planned month, one photo per month. A short period gives fewer photos than the limit; the limit is a maximum, not a target. Save the choices as `{CHOSEN_PHOTOS}`. If every sample in a planned month failed, record that month as "3 samples checked, none fit to send" (or the number checked) and do not substitute another month. Months with photos that were not planned (because of the photo limit) show "not checked (photo limit)" in the coverage table. Never pad to reach the limit. Count failures by rule.
 
 ## Step 5. Find the papers
 
@@ -159,7 +159,7 @@ Save the result as `{DOC_PHOTOS}`, adding any lines listed as asked, not followe
 - A couple: every paper that names both people.
 - A family: every paper that names at least two of the people, such as a lease naming both adults, a marriage certificate, or a birth certificate naming a parent and a child.
 
-When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (5c): it keeps the single-name papers at an address as `{ADDRESS_DOCS}`.
+For a couple or a family, whatever `{RELATIONSHIP}` is, also apply [references/same-address.md](references/same-address.md) here (5c): it keeps the single-name papers at an address as `{ADDRESS_DOCS}`.
 
 Label each entry `scanned document` or `from a photo of a document`, with its file path and the people it names. Then:
 
@@ -167,9 +167,9 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 - Any name on a paper that differs from `{MATCH_NAMES}` only in spelling goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
 - Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
 - For a photo of a document, suggest uploading a clear scan of the original.
-- For a paper not in English or French, note that it needs a translation for the application (check the current rules for who may translate).
-- Most small differences need no letter; when unsure, ask a licensed consultant.
-- Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only, no action needed" rather than a mismatch.
+- For a paper not in English or French, note that it needs an English or French translation submitted with a copy of the original, not done by the applicant, sponsor or a family member (check current IRCC rules).
+- Ask a licensed consultant whether any difference needs an explanation.
+- Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only" rather than a mismatch.
 
 ## Step 6. Build coverage and gaps (no NAS call)
 
@@ -177,24 +177,26 @@ For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns:
 
 - photos of `{PHOTO_PEOPLE}` in the library (from `{MONTH_COUNTS}`; empty for one person or when photos are not needed, "search failed" if Step 2 failed);
 - a chosen photo in the pack (from `{CHOSEN_PHOTOS}`);
-- and a linking paper dated in or covering that month (from `{LINKED_DOCS}`).
+- and a linking paper dated in or covering that month (from `{LINKED_DOCS}`), or, for a couple or family, a same-address pair.
 
 A paper with a covered period (a lease, a bill period) covers each month of that period; a certificate or letter counts only for the month it is dated.
+
+For a couple or a family, also apply [references/same-address.md](references/same-address.md) here (Step 6): it sets when papers in each partner's name showing the same address fill a month (a same-address pair), and which of them are copied.
 
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 6): it sets what counts as covered, the "Same address shown (counts)" column, the gap rule and label, the papers for what could cover a gap, and the footer.
 
 These bullets apply when `{RELATIONSHIP}` is not common-law:
-- A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}` and no linking paper was found.
+- A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}`, no linking paper was found and no same-address pair fills it.
 - Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: <first gap month> to <last gap month>" (for example, "March to June 2025") (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`).
-- For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
+- For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper and no same-address pair, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
 For every gap label, common-law included: never write "no relationship", "not together" or "not in the country". Also, if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
 
-For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` (for common-law, the papers the common-law rules name):
+For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` and, for a couple or family, the single-name papers same-address.md names (for common-law, as the common-law rules say):
 
-- a series of at least 3 papers of the same extracted type, naming the same people, one in each of the consecutive months ending the month before the gap, written as "<type>s came every month until <month>; <type>s for <gap months> would cover these months, if you have them";
+- a series of at least 3 papers of the same extracted type, naming the same people, one in each of the consecutive months ending the month before the gap, written as "<type>s came every month until <month>; <type>s for <gap months> would add evidence for these months, if you have them";
 - and a paper covering a period that starts the month after the gap, written as "the <type> starts in <month>".
 
-For example, "electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026". If neither exists, say "no regular paper found near these months". It suggests only; never say such a paper exists.
+For example, "electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026". If neither exists, say "no regular paper found near these months". It suggests only; never say such a paper exists.
 
 Under the gap list, always add:
 
@@ -252,7 +254,7 @@ Then build the copy lists:
 - `{PAPER_COPIES}` has one line per distinct paper file in `{LINKED_DOCS}`, in the same form, with copy names made of P and a two-digit order number (P01, P02 and so on), the paper's date or period start written as YYYY-MM-DD, or YYYY-MM when only the month is printed (or "undated" if it cannot be read without doubt), and its original file name.
 - `{CHOSEN_PHOTO_IDS}` is the photo ID of each chosen photo, or its file path where no ID was returned.
 
-When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 7): it adds the same-address papers to the drops, the comparison, `{PAPER_COPIES}` and the working notes.
+For a couple or a family, also apply [references/same-address.md](references/same-address.md) here (Step 7): it adds the same-address papers to the drops, the comparison, `{PAPER_COPIES}` and the working notes.
 
 `{DESCRIPTIONS_TEXT}` is the Photo descriptions file, for upload: one entry per chosen photo with a (confirmed) or (edited) context, numbered with the order number in its copy name, with:
 
