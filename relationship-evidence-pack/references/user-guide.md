@@ -13,7 +13,7 @@ For the person running the Skill. What to have ready, what to ask, what comes ba
 ## What to ask
 
 - A couple: "Build our relationship evidence for the sponsorship application. Linh Tran and Minh Tran, since June 2025. Printed names Tran Thi Linh and Tran Van Minh. Papers are in /Family/Papers. Save in /Family/Visa."
-- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, since June 2025." If a child has no face group yet, such as a newborn, say "keep them for papers only".
+- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, since June 2025. An and Bao are our children." If a child has no face group yet, such as a newborn, say "keep them for papers only". If Uliya does not show today's date, say it too.
 - One person: "Which months can I not prove with my papers? Siti Rahman, since December 2025. Papers in /Siti/Papers."
 
 The Skill asks once for anything missing, then works step by step, asking before it saves anything.

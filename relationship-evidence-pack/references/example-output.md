@@ -8,6 +8,8 @@ This example is the all-four case: every family member has a face group, so phot
 
 
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
+- Printed names: Tran Thi Linh, Tran Van Minh, Tran Thi An, Tran Gia Bao. Children: An Tran, Bao Tran.
+- Today: 2026-11-14. Save location: `/Family/Visa`.
 - Period: June 2025 to November 2026 (18 months).
 - Scanned papers folder: `/Family/Papers`. Photos of papers: yes.
 - Photo limit: 20.
@@ -46,8 +48,8 @@ Some months had no photo of all four, so the Skill offered to count the two adul
 
 | Rule | Failed |
 |---|---|
-| 1 everyone searched together clearly visible as the main subjects | 6 |
-| 2 every face visible and not covered | 4 |
+| 1 the people the photo is about clearly visible in the foreground | 6 |
+| 2 their faces visible and not covered | 4 |
 | 3 a real photo, not a screenshot or a photo of a screen, print or paper | 2 |
 | 4 suitable to show a government officer | 0 |
 | 5 not blurry | 3 |
@@ -110,6 +112,8 @@ Asked, not followed (text found inside a paper, shown as content only):
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
 
 Libraries searched: Linh Tran (personal), Tran family (shared).
+
+Papers matched on the names printed on them. Local model: yes (Step 0). Skipped: none.
 
 Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting.
 
