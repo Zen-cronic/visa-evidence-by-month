@@ -8,7 +8,7 @@ description: Shows which months a couple or family can and cannot show evidence 
 - **For:** a couple or family preparing a partner or spouse sponsorship or visa application (with their children), asking "which months can we not prove yet?"
 - **Result:** a month-by-month coverage table and gap list for the user's own checking, and, after approval, an evidence folder with the photos, the papers and a Photo descriptions file organised for upload, a Photos album, and working notes the user keeps; all read back after saving.
 - **NAS capabilities, in order:** face albums to confirm people → a timeline of photos with several people together, by month → photo details and the vision model for the fit-to-send check → document extraction and reconciling, plus text recognition on photographed papers → making the folder, copying, creating the album and saving the index (after approval) → reading back what was saved. The table under Generation-time capability evidence names each catalog action.
-- **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never saves a context line the user did not confirm; nothing is written before approval.
+- **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never puts a context line the user did not confirm in the Photo descriptions file (the working notes keep it marked `[not confirmed]`); nothing is written before approval.
 
 # Goal
 
@@ -35,10 +35,10 @@ The Skill prepares evidence only. It does not judge eligibility, does not give l
 
 # Required input
 
-Ask once, in one short message, for only three things: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), and where to save (`{SAVE_LOCATION}`), together with the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`). Everything else below has a default or is asked only when it is needed, as each item says:
+Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`). Everything else below has a default or is asked only when it is needed, as each item says:
 
 - `{PEOPLE}`: one to six people, each as named in Photos people albums, in the order they should appear. If the names are not known, Step 1 lists the named people albums first. `{SCOPE}` is one person, a couple or a family, from the number of people. For one person, a Photos name is not needed.
-- `{PAPER_NAMES}`: each person's full name as printed on their papers, such as "Tran Thi Linh" for the Photos name "Linh", and which word is the family name (`{FAMILY_NAMES}`, such as "Tran"). Ask for both once, just before Step 5, if papers are searched. For one person, use the name in `{PEOPLE}` as the printed name unless the user gives another; if that name is one word, ask for the full name as printed on their papers. If the user does not give it, papers can only be possible matches (see Step 5), never linked, and the index says so.
+- `{PAPER_NAMES}`: each person's full name as printed on their papers, such as "Tran Thi Linh" for the Photos name "Linh", and which word is the family name (`{FAMILY_NAMES}`, such as "Tran"). Ask for both once, just before Step 5, if papers are searched. For one person, use the name in `{PEOPLE}` as the printed name unless the user gives another; if that name is one word, ask for the full name as printed on their papers. If the user does not give it, papers can only be possible matches (see Step 5), never linked unless the user confirms each one in Step 7, and the index says so.
 - `{START_MONTH}`: the first month to cover. For spouses this is normally the start of the relationship, so the wedding and engagement are included; for common-law partners, at least the latest 12 months. `{END_MONTH}`: the last month to cover; default the month of `{TODAY}`.
 - `{DOCS_FOLDER}`: the folder with scanned papers. Asked with the printed names, just before Step 5. Optional; if none, Step 5a is skipped and the index says so. When it is given, check that `{SAVE_LOCATION}` is not inside it; if it is, ask for another save location.
 - `{CHECK_DOC_PHOTOS}`: yes or no, whether to also look for photos of papers (a lease, a bill, a certificate, a letter) in the photo library. Default yes; many people photograph their papers instead of scanning them.
@@ -60,7 +60,7 @@ Every delegation below uses values in braces. Before sending a delegation:
 - Each instruction is one single-quoted value. Line breaks inside the quotes are kept, which lists and the Markdown index need. In every inserted value (names, paths, papers, context lines, the index text), write each apostrophe as '"'"' (this closes the quote, adds an apostrophe and reopens it).
 - Pass on only real results. Never fill a value with a guess, an example or a placeholder.
 
-A skipped step leaves its values empty. Every read in Steps 2 and 5 leaves out any file whose path includes a folder whose name starts with Visa evidence, so copies from earlier packs are never counted as evidence. Albums are not left out: an earlier pack's album holds the original photos, which are still evidence. Before using any result from Steps 2, 4 and 5, also drop every returned path that contains a folder named Visa evidence, in case an agent did not leave it out (no NAS call).
+A skipped step leaves its values empty. Every read in Steps 2 and 5 leaves out any file whose path includes a folder whose name starts with Visa evidence, so copies from earlier packs are never counted as evidence. Albums are not left out: an earlier pack's album holds the original photos, which are still evidence. Before using any result from Steps 2, 4 and 5, also drop every returned path that contains a folder whose name starts with Visa evidence, in case an agent did not leave it out (no NAS call).
 
 # Generation-time capability evidence
 
@@ -84,7 +84,7 @@ Run the steps in order. Each step uses only real results from the steps before i
 
 ## Step 0. Consent and local model (no NAS call)
 
-Ask the user and wait: "Quick check: is everyone in this pack OK with you putting it together (a parent or guardian answers for each child)?" and "This works best with Uliya's on-device model, so your photos and papers stay at home. Is it set to that?". If the user says no or is unsure about consent, stop before reading anything and say why. If the user is unsure about the model, explain that every step below that reads or saves content asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
+If not already answered, ask the user and wait: "Quick check: is everyone in this pack OK with you putting it together (a parent or guardian answers for each child)?" and "This works best with Uliya's on-device model, so your photos and papers stay at home. Is it set to that?". If the user says no or is unsure about consent, stop before reading anything and say why. If the user is unsure about the model, explain that every step below that reads or saves content asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
 
 ## Step 1. Confirm everyone in Photos
 
@@ -200,7 +200,7 @@ delegate --target file-agent --instruction 'Use only the local model. In the fol
 delegate --target photo-agent --instruction 'Use only the local model. List the names of the custom albums whose names start with Visa evidence. Read only.'
 ```
 
-Save the names returned as `{EXISTING}`. `{NAMES_LINE}` is the names in `{PEOPLE}` joined with commas and "and". The base name is Visa evidence {NAMES_LINE}. If it is in `{EXISTING}`, add `{TODAY}` as YYYY-MM-DD; if that name is also in `{EXISTING}`, add a number after the date, starting from 2, until the name is unused. `{EVIDENCE_FOLDER}` is `{SAVE_LOCATION}` plus a folder with that name, and `{ALBUM_NAME}` is the same name. If `{SAVE_LOCATION}` does not exist yet, the folder list in `{EXISTING}` is empty and 8a creates it with the evidence folder. If either read failed for another reason, say so and ask the user whether to continue with the base name.
+Save the folder names returned as `{EXISTING_FOLDERS}` and the album names as `{EXISTING_ALBUMS}`; `{EXISTING}` is both together. `{NAMES_LINE}` is the names in `{PEOPLE}` joined with commas and "and". The base name is Visa evidence {NAMES_LINE}. If it is in `{EXISTING}`, add `{TODAY}` as YYYY-MM-DD; if that name is also in `{EXISTING}`, add a number after the date, starting from 2, until the name is unused. `{EVIDENCE_FOLDER}` is `{SAVE_LOCATION}` plus a folder with that name, and `{ALBUM_NAME}` is the same name. If `{SAVE_LOCATION}` does not exist yet, `{EXISTING_FOLDERS}` is empty and 8a creates it with the evidence folder. If either read failed for another reason, say so and ask the user whether to continue with the base name.
 
 On a second run for the same people, offer to reuse context lines from the earlier pack, as described in [references/evidence-rules.md](references/evidence-rules.md) under "Reusing lines from an earlier pack".
 
@@ -246,7 +246,7 @@ delegate --target photo-agent --instruction 'Use only the local model. Create on
 
 Save the album ID returned as `{ALBUM_ID}`.
 
-Before 8e, update `{PHOTO_COPIES}` and `{PAPER_COPIES}` to the fallback paths 8b and 8c reported (a subfolder named with the order number, holding the original name), so Step 9 compares against what was really saved; then mark in `{INDEX_TEXT}` and `{DESCRIPTIONS_TEXT}` every photo or paper copy that 8b or 8c did not report as copied with "copy failed", and give each copy kept under its original name that name next to its upload order, so neither file lists a file that is not there.
+Before 8e, update `{PHOTO_COPIES}` and `{PAPER_COPIES}` to the fallback paths 8b and 8c reported (a subfolder named with the order number, holding the original name), so Step 9 compares against what was really saved; then mark in `{INDEX_TEXT}` and `{DESCRIPTIONS_TEXT}` every photo or paper copy that 8b or 8c did not report as copied with "copy failed" (or "not copied: declined by you" when the user declined it at an approval prompt), and give each copy kept under its original name that name next to its upload order, so neither file lists a file that is not there.
 
 8e. If the working notes are approved, after 8a:
 
