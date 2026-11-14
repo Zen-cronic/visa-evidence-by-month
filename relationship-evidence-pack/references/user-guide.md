@@ -18,7 +18,7 @@ It answers one question: **which months can we not prove yet?** For each month i
 - A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, covering June 2025 to now. An and Bao are our children." If a child has no face group yet, such as a newborn, say "keep them for papers only". If Uliya does not show today's date, say it too.
 - One person: "Which months can I not prove with my papers? Siti Rahman, covering December 2025 to now."
 
-It asks only for what it needs, when it needs it, and asks once before saving anything.
+It asks only for what it needs, when it needs it, and asks once which items to save; UGOS may then ask you to approve each write.
 
 Words you will see: **face grouping** is how Photos recognises the same person across photos; a **linking paper** is a paper that names the people on your application (a lease naming you both, a birth certificate naming a parent and child); a **possible match** is a paper where a name is spelled slightly differently, which you confirm or reject.
 
@@ -26,7 +26,7 @@ Words you will see: **face grouping** is how Photos recognises the same person a
 
 - **A coverage table** with one row per month: photos of everyone found by face grouping (or of the people searched together, named in the label), the photo chosen for the pack, and the paper that covers the month.
 - **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart. Each gap also says what could close it, such as "bills for February to May 2026", based on the linking papers it already found.
-- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. You can confirm or edit each context line; any you skip are saved as `[not confirmed]`. The Skill never writes what a moment was.
+- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. Reply "all ok" to confirm every context line, or give the numbers to confirm, edit or drop; any line you leave out is saved as `[not confirmed]`. The Skill never writes what a moment was.
 - **The papers that link you**, with any difference in a name, birth date or address noted, never changed.
 - **A folder, an album and an index file** saved on the NAS, each only if you approve it, then read back to check they match.
 
