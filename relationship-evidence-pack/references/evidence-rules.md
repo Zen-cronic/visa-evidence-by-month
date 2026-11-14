@@ -17,7 +17,7 @@ Planning applies to a couple or a family. For one person no photo is chosen.
 - Count every failed photo by the first rule it failed, and show the counts.
 - Choose the first passing photo in each planned month: one photo per month, so the pack is spread over time rather than filled with shots from one busy month.
 - The limit is a maximum, not a target. A short period, or months where nothing passes, gives fewer photos; keep the smaller number and say so. Never pad.
-- Only the sample photos from the timeline summary are checked (up to 3 a month). A month where every sample fails is labelled "3 samples checked, none fit to send" (or the number checked), because other photos from that month were not checked.
+- Only the sample photos from the timeline summary are checked (up to 3 in each planned month; months with photos beyond the 20-photo limit show "not checked (photo limit)"). A month where every sample fails is labelled "3 samples checked, none fit to send" (or the number checked), because other photos from that month were not checked.
 
 ## Labelling each line
 

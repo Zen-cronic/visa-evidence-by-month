@@ -46,6 +46,6 @@ A worked example with a made-up family is in [example-output.md](example-output.
 ## Limits
 
 - Only people named in Photos can be found in photos; only papers on this NAS can be found.
-- Up to 3 sample photos a month are checked; a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
+- Up to 3 sample photos in each planned month are checked (months beyond the 20-photo limit show "not checked (photo limit)"); a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
 - Photo descriptions come from the vision model and can be wrong, which is why you confirm each one.
 - A second run offers to reuse the context lines you confirmed in your latest earlier pack, for the same photos (same date and file name), marked "from your earlier pack" and shown for you to confirm again; everything else is found again from your library and papers.
