@@ -147,7 +147,7 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 
 ## A second, shorter example: a common-law couple
 
-Mei Tan and Daniel Reyes, common-law, January to June 2026. They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March. In April, Mei's phone bill and Daniel's bank letter each show 88 Carlow Avenue. In May and June they have only a joint bank statement (both names, no address).
+Mei Tan and Daniel Reyes, common-law, January to June 2026 (shortened to six months to keep it short; a real common-law pack would cover at least the latest 12 months). They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March. In April, Mei's phone bill and Daniel's bank letter each show 88 Carlow Avenue; both are copied into the pack as "one name, same address". In May they have only a joint bank statement (both names, no address); June has no paper.
 
 | Month | Photos of both in the library | In the pack | Linking paper | Same address shown (counts) |
 |---|---|---|---|---|

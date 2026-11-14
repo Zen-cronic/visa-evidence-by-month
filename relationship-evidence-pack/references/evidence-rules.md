@@ -46,7 +46,7 @@ For a family, a child born during the period, or too young for face grouping, ca
 
 Each gap gets one line on what could cover it, using only linking papers: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
 
-For common-law couples, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or papers in each partner's name showing the same address for that month (the checklist accepts these "whether the accounts are held jointly or not"). It does not show whether the couple meets the 12-month rule, and says so; it never says whether an officer will accept the evidence.
+For common-law couples, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or papers in each partner's name showing the same address for that month (Canada's spouse checklist accepts these "whether the accounts are held jointly or not"; the common-law checklist was not read). Papers that fill a month this way are copied into the pack and listed as "one name, same address". It does not show whether the couple meets the 12-month rule, and says so; it never says whether an officer will accept the evidence.
 
 ## Papers (Step 5)
 
