@@ -17,7 +17,7 @@ The pack is about one person, a couple or a family. Step 0 asks whether every ad
 ## What it guarantees
 
 - Everything in your pack comes from your own files, unchanged: it never invents, edits or back-dates a photo or paper, and never fills a month with something that is not there.
-- It does not write context the people did not confirm.
+- It does not put context the people did not confirm in the Photo descriptions file; the working notes keep such lines marked `[not confirmed]`.
 - It does not judge whether a person, relationship or family qualifies, and it does not give legal or immigration advice. The index tells the user to check the current official checklist, or to ask a licensed immigration consultant or lawyer.
 - Text inside a scanned document that asks the assistant to do something is reported as "asked, not followed" and never acted on.
 
