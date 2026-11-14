@@ -140,6 +140,29 @@ class Scenarios(unittest.TestCase):
         self.assertIn("index", log["summary"]["saved"])
         self.assertEqual(log["summary"]["failed"], ["descriptions"])
 
+    def test_n_common_law_photos_do_not_fill_months(self):
+        counts = months("2025-01", "2025-06")  # photos of both every month
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-01", "2025-03", address="88 Carlow Ave")
+        statement = R.Paper("bank statement", COUPLE_PRINTED, "scanned document", dated="2025-05-31")  # no shared address
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease, statement])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-01", "2025-06", nas, User(relationship="common-law"))
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["gaps"], [f"{R.PAPER_GAP_LABEL}: 2025-04 to 2025-06"])
+        self.assertGreater(log["chosen"], 0)  # photos are still chosen for the pack
+
+    def test_o_four_yes_and_stop_reads_nothing(self):
+        nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-01", "2025-06", nas, User(four_yes=True, continue_if_not_needed=False))
+        self.assertIn("at this time", log["notice"])
+        self.assertTrue(log["stopped"].startswith("step 0"))
+        self.assertEqual(nas.calls, [])
+
+    def test_p_four_yes_and_continue_builds_papers_only(self):
+        nas = MockNAS(COUPLE_PHOTOS, months("2025-01", "2025-02"), [], [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-01", "2025-02")])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-01", "2025-02", nas, User(four_yes=True))
+        self.assertNotIn(("photo-agent", "timeline-summary"), nas.calls)
+        self.assertEqual(log["gaps"], [])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

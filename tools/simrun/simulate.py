@@ -50,6 +50,9 @@ class User:
     approve: dict[str, bool] = field(default_factory=lambda: {"folder": True, "album": True, "index": True, "descriptions": True})
     reuse_lines: bool = True
     photos_needed: bool = True
+    relationship: str = "married"  # married / common-law / other
+    four_yes: bool = False  # answered yes to all four spouse-checklist questions
+    continue_if_not_needed: bool = True
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -65,6 +68,12 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         return log
 
     scope = R.scope_of(people)
+    if scope != "one person" and user.relationship == "married" and user.four_yes:
+        log["notice"] = "no additional proof of relationship is needed at this time; an officer can still ask later"
+        if not user.continue_if_not_needed:
+            log["stopped"] = "step 0: no additional proof needed; user chose to stop"
+            return log
+        user.photos_needed = False
     photo_people = [p for p in people if p not in user.papers_only]
 
     # Step 1 (skipped for one person)
@@ -101,8 +110,11 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     # Step 6 (redone after Step 7's answers, here folded in)
     photo_steps_skipped = scope == "one person" or not user.photos_needed or len(photo_people) < 2
     papers_only = photo_steps_skipped or timeline_failed
-    rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked)
-    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed))
+    common_law = user.relationship == "common-law"
+    rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law)
+    if common_law:
+        papers_only = True
+    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped or common_law, search_failed=timeline_failed))
 
     # Step 7: read the save location, pick a free name
     nas.call("file-agent", "ls")
