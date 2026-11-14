@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 from rules import (
-    FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, gap_label, name_matches, Paper, choose_photos, confirm_people,
+    FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, gap_label, name_matches, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of,
 )
 
@@ -203,6 +203,16 @@ class NamesAndFailures(unittest.TestCase):
         out = join_papers(shots, couple)
         self.assertEqual(len(out["linked"]), 1)
         self.assertEqual(len(out["noted_photos"]), 2)
+
+    def test_step7_answers_change_the_saved_coverage(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        bill = Paper("bill", couple, "scanned document", dated="2025-02-01")
+        variant = Paper("lease", ["Tran Thi Lin", "Tran Van Minh"], "scanned document", "2025-03", "2025-04")
+        out = join_papers([bill, variant], couple)
+        self.assertEqual(out["possible_matches"], [variant])
+        kept = apply_answers(out["linked"], out["possible_matches"], confirmed=[variant], dropped=[bill])
+        rows = coverage("2025-02", "2025-04", {"2025-02": 0, "2025-03": 0, "2025-04": 0}, [], kept)
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-02"])
 
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))

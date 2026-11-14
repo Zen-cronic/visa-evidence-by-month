@@ -16,7 +16,7 @@ PAPER_GAP_LABEL = "no linking paper found"
 FORBIDDEN_GAP_WORDS = ("no relationship", "not together", "not in the country", "apart")
 
 RULES = {
-    1: "everyone named clearly visible",
+    1: "everyone searched together clearly visible",
     2: "every face visible and not covered",
     3: "a real photo, not a screenshot or a photo of a screen, print or paper",
     4: "suitable to show a government officer",
@@ -259,3 +259,11 @@ def gap_label(papers_only: bool = False, search_failed: bool = False, who: str |
 
 def gap_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
     return [f"{label}: {a} to {b}" if a != b else f"{label}: {a}" for a, b in group_gaps(rows)]
+
+
+# Step 7
+
+def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Paper], dropped: list[Paper]) -> list[Paper]:
+    """Add the possible matches the user confirmed, remove dropped papers; Step 6 is then redone."""
+    kept = [p for p in linked + [c for c in confirmed if c in possible] if not any(p is d for d in dropped)]
+    return kept
