@@ -15,7 +15,7 @@ from rules import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-EXAMPLE = ROOT / "relationship-evidence-pack" / "references" / "example-output.md"
+EXAMPLE = next(ROOT.glob("*/SKILL.md")).parent / "references" / "example-output.md"
 
 COUPLE = ["Ana Lima", "Ben Cole"]
 FAMILY = ["Linh Tran", "Minh Tran", "An Tran", "Bao Tran"]

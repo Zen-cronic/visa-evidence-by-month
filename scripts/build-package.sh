@@ -3,7 +3,11 @@
 # Usage: KIT=/path/to/uliya-skill-kit scripts/build-package.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
-SKILL=relationship-evidence-pack
+mapfile -t found < <(ls -d */ 2>/dev/null | while read -r d; do [ -f "$d/SKILL.md" ] && echo "${d%/}"; done)
+[ "${#found[@]}" -eq 1 ] || { echo "expected exactly one Skill folder with SKILL.md, found: ${found[*]:-none}"; exit 1; }
+SKILL="${found[0]}"
+name=$(sed -n 's/^name: *//p' "$SKILL/SKILL.md" | head -1)
+[ "$name" = "$SKILL" ] || { echo "folder $SKILL does not match frontmatter name $name"; exit 1; }
 : "${KIT:?set KIT to the unpacked uliya-skill-kit folder}"
 
 echo "1. Rule checks"

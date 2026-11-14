@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[2]
 kit = Path(sys.argv[1])
 catalog = json.loads((kit / "data" / "capability-catalog.json").read_text())
 trace = json.loads((ROOT / "tools" / "capcheck" / "trace.json").read_text())
-skill = (ROOT / "relationship-evidence-pack" / "SKILL.md").read_text()
+SKILL_DIR = next(p.parent for p in ROOT.glob("*/SKILL.md"))
+skill = (SKILL_DIR / "SKILL.md").read_text()
 
 clis = {c["name"]: c for c in catalog["clis"]}
 errors = []
