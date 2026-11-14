@@ -17,7 +17,7 @@ Planning applies to a couple or a family. For one person no photo is chosen.
 - Count every failed photo by the first rule it failed, and show the counts.
 - Choose the first passing photo in each planned month: one photo per month, so the pack is spread over time rather than filled with shots from one busy month.
 - The limit is a maximum, not a target. A short period, or months where nothing passes, gives fewer photos; keep the smaller number and say so. Never pad.
-- Only the sample photos from the timeline summary are checked (up to 3 in each planned month; months with photos beyond the 20-photo limit show "not checked (photo limit)"). A month where every sample fails is labelled "3 samples checked, none fit to send" (or the number checked), because other photos from that month were not checked.
+- Only the sample photos from the timeline summary are checked (up to 3 in each planned month; months with photos beyond the photo limit (20 unless you set another) show "not checked (photo limit)"). A month where every sample fails is labelled "3 samples checked, none fit to send" (or the number checked), because other photos from that month were not checked.
 
 ## Labelling each line
 
@@ -46,7 +46,7 @@ For a family, a child born during the period, or too young for face grouping, ca
 
 Each gap gets one line on what could cover it, using only linking papers and single-name papers at the same address: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
 
-For every couple or family, married, common-law or other, papers in each partner's name showing the same address for a month (a same-address pair) also fill that month (Canada's spouse checklist accepts these "whether the accounts are held jointly or not"; the common-law checklist was not read). Papers that fill a month this way are copied into the pack and listed as "one name, same address"; the rules are in [same-address.md](same-address.md). For married couples and others, photos still count too. For common-law couples and families, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or a same-address pair; photos do not count ([common-law.md](common-law.md)). For common-law, the table does not show whether the couple meets the 12-month rule, and says so. The Skill never says whether an officer will accept the evidence.
+For every couple or family, married, common-law or other, papers in each partner's name showing the same address for a month (a same-address pair) also fill that month (Canada's spouse checklist, in its list of proof of living together, accepts these "whether the accounts are held jointly or not"; the common-law checklist was not read). Papers that fill a month this way are copied into the pack and listed as "one name, same address"; the rules are in [same-address.md](same-address.md). For married couples and others, photos still count too. For common-law couples and families, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or a same-address pair; photos do not count ([common-law.md](common-law.md)). For common-law, the table does not show whether the couple meets the 12-month rule, and says so. The Skill never says whether an officer will accept the evidence.
 
 ## Papers (Step 5)
 

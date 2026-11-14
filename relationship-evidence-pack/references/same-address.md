@@ -4,13 +4,13 @@ Apply these rules to a couple or a family, whatever `{RELATIONSHIP}` is: married
 
 `{PARTNERS}` is asked in Required input: for a family, the two people the user names as the partners; for a couple, `{PARTNERS}` is the two people. After Step 1, each checked name in `{PARTNERS}` is the exact Photos name returned or picked.
 
-Canada's spouse checklist (IMM 5533) accepts "documents issued to you or your sponsor showing the same address, whether the accounts are held jointly or not". The common-law checklist was not read for this Skill (see [sources.md](sources.md)).
+Canada's spouse checklist (IMM 5533), in its list of proof that a couple lives together, accepts "other documents issued to you or your sponsor showing the same address, whether the accounts are held jointly or not". The Skill uses this to show months a couple lived at the same address; it is a planning aid, not a ruling on what an officer will accept. The common-law checklist was not read for this Skill (see [sources.md](sources.md)).
 
 ## Step 5c: single-name papers at an address
 
 Also keep, as `{ADDRESS_DOCS}`, every paper that names exactly one of `{PARTNERS}` (matched by their names in `{MATCH_NAMES}`; a child named on it does not matter) and shows an address, and, unless `{RELATIONSHIP}` is common-law, is not already in `{LINKED_DOCS}`. A joint paper naming both partners is never in this list.
 
-Label and dedupe `{ADDRESS_DOCS}` with the same 5c rules as `{LINKED_DOCS}` (scan or photo, the same paper kept once), After Step 6, include `{SAME_ADDRESS_DOCS}` (the ones that fill a month) in the comparison of names, dates of birth and addresses, so the draft in Step 7 shows their mismatches; papers listed only in the notes are not compared.
+Label and dedupe `{ADDRESS_DOCS}` with the same 5c rules as `{LINKED_DOCS}` (scan or photo, the same paper kept once). After Step 6, include `{SAME_ADDRESS_DOCS}` (the ones that fill a month) in the comparison of names, dates of birth and addresses, so the draft in Step 7 shows their mismatches; papers listed only in the notes are not compared.
 
 ## Step 6: same-address pairs
 
