@@ -90,6 +90,30 @@ class Scenarios(unittest.TestCase):
         self.assertTrue(log["gaps"])
         self.assertTrue(all(g.startswith(R.PAPER_GAP_LABEL) for g in log["gaps"]))
 
+    def _second_run(self, earlier, read="completed"):
+        counts = months("2025-12", "2026-02")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts),
+                      [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-02")],
+                      existing=["Visa evidence Mei Tan and Daniel Reyes"], earlier_index=earlier, earlier_read=read)
+        return nas, run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User())
+
+    def test_i_second_run_reuses_confirmed_lines_for_the_same_photo_only(self):
+        earlier = {("2025-12-10", "2025-12.jpg"): ("Our first winter.", "confirmed"),
+                   ("2024-12-10", "2025-12.jpg"): ("Other phone, same name.", "confirmed"),
+                   ("2026-01-10", "2026-01.jpg"): ("Skating.", "not confirmed")}
+        nas, log = self._second_run(earlier)
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["reused"], {("2025-12-10", "2025-12.jpg"): "Our first winter. (from your earlier pack) [confirm]"})
+        self.assertEqual(log["folder_name"], "Visa evidence Mei Tan and Daniel Reyes 2026-11-14")
+
+    def test_j_failed_or_cancelled_earlier_read_continues(self):
+        for state in ("failed", "cancelled"):
+            nas, log = self._second_run({("2025-12-10", "2025-12.jpg"): ("x", "confirmed")}, read=state)
+            self.assertIsNone(log["stopped"])
+            self.assertEqual(log["reused"], {})
+            self.assertIn(state, log["reuse_note"])
+            self.assertIn("index", log["summary"]["saved"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

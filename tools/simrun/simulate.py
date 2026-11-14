@@ -25,6 +25,8 @@ class MockNAS:
     papers: list[R.Paper]
     existing: list[str] = field(default_factory=list)
     write_results: dict[str, str] = field(default_factory=dict)  # item -> completed / failed
+    earlier_index: dict | None = None  # (date, file name) -> (line, status); None = no earlier pack
+    earlier_read: str = "completed"  # completed / failed / cancelled
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
     written: list[str] = field(default_factory=list)
 
@@ -46,6 +48,7 @@ class User:
     papers_only: list[str] = field(default_factory=list)
     confirm_matches: bool = True
     approve: dict[str, bool] = field(default_factory=lambda: {"folder": True, "album": True, "index": True})
+    reuse_lines: bool = True
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -111,6 +114,14 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         while name in nas.existing:
             name, n = f"{base} 2026-11-14 {n}", n + 1
 
+    reused, reuse_note = {}, None
+    if nas.earlier_index is not None and user.reuse_lines:
+        nas.call("file-agent", "cat")  # read the earlier pack's index (Step 7)
+        if nas.earlier_read == "completed":
+            reused = R.carry_over(nas.earlier_index, [(c.date, c.path) for c in chosen])
+        else:
+            reuse_note = f"earlier index read {nas.earlier_read}; continued without it"
+
     writes_before_approval = [c for c in nas.calls if c[1] in ("mkdir", "cpmv", "create-album", "save-text")]
 
     # Step 8: approval per item, then independent writes
@@ -146,5 +157,5 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
-               written=list(nas.written))
+               written=list(nas.written), reused=reused, reuse_note=reuse_note)
     return log
