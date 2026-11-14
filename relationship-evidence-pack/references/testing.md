@@ -39,6 +39,7 @@ All data is synthetic: stand-in people (a couple, and a family of four), photos 
 4. **Edge: face-grouping miss.** One month where one partner faces away. Expected: that month appears as a gap with the face-grouping label, never as "not together".
 5. **Edge: person not named in Photos.** Expected: the Skill asks the user to name them, keep them for papers only (a baby with no face group), or remove them, and waits.
 6. **Core: a family of four.** Two parents and two children, about 12 months, with a marriage certificate and two birth certificates (one photographed) and one date-of-birth mismatch. Expected: photos of all four by month, the three certificates listed with the people each names, the mismatch noted, nothing corrected.
+8. **Core: a common-law couple.** Photos every month; a lease naming both for three months; then one month covered only by two single-name papers at the same address; then a joint statement with no address. Expected: the same-address column fills the lease months and the paired month, the rest is a gap labelled "no paper showing you both at the same address found", the two single-name papers are copied, and the footer says the table does not decide the 12-month rule.
 7. **Edge: one person, run twice.** Expected: no Photos name needed, no photos chosen and no album; papers naming the person listed by month with "no linking paper found" gaps; the second run on the same day saves to a new folder name and never reads the first pack as evidence.
 
 ## Behaviour on the NAS (NOT VERIFIED)

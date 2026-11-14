@@ -34,17 +34,17 @@ A visual description can say "four people at a restaurant table" but cannot know
 
 ## Coverage and gaps (Step 6)
 
-Three columns per month:
+Three columns per month (a fourth, "Same address shown (counts)", for common-law):
 
 - **In your library:** the number of photos where face grouping found everyone searched together.
 - **In the pack:** a chosen photo from that month.
 - **Linking paper:** a paper that links the people (see below), dated in that month or covering it.
 
-A gap is a month with no photo of everyone found by face grouping and no linking paper. For common-law couples and families, a gap is instead a month with no paper showing both at the same address, whatever the photos, labelled "no paper showing you both at the same address found". Always label gaps this way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
+A gap is a month with no photo of everyone found by face grouping and no linking paper; when fewer people were searched together, that label names them ("of the two adults"). For common-law couples and families, a gap is instead a month with no paper showing both at the same address, whatever the photos, labelled "no paper showing you both at the same address found". Always label gaps this way. A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
 For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show both at the same address speak to living together; photos do not show living together, though they can show a couple presenting themselves as a couple.
 
-Each gap gets one line on what could cover it, using only linking papers: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
+Each gap gets one line on what could cover it, using only linking papers (and, for common-law, single-name papers at the same address): a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
 
 For common-law couples and families, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or papers in each partner's name showing the same address for that month (Canada's spouse checklist accepts these "whether the accounts are held jointly or not"; the common-law checklist was not read). Papers that fill a month this way are copied into the pack and listed as "one name, same address". It does not show whether the couple meets the 12-month rule, and says so; it never says whether an officer will accept the evidence.
 
