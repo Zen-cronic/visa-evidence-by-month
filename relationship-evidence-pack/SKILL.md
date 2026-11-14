@@ -178,7 +178,7 @@ For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns:
 
 - photos of `{PHOTO_PEOPLE}` in the library (from `{MONTH_COUNTS}`; empty for one person or when photos are not needed, "search failed" if Step 2 failed);
 - a chosen photo in the pack (from `{CHOSEN_PHOTOS}`);
-- and a linking paper dated in or covering that month (from `{LINKED_DOCS}`), or, for a couple or family, a same-address pair.
+- and a linking paper dated in or covering that month (from `{LINKED_DOCS}`), or, for a married or other couple or family, a same-address pair (common-law shows pairs in its own column).
 
 A paper with a covered period (a lease, a bill period) covers each month of that period; a certificate or letter counts only for the month it is dated.
 
@@ -244,7 +244,7 @@ Then wait. Also:
 
 After the answers, in this order:
 
-1. Add to `{LINKED_DOCS}` each possible match the user says is the same person, marked "linked, confirmed by you", remove it from `{POSSIBLE_MATCHES}`, and add its spelling difference to the mismatches.
+1. Add to `{LINKED_DOCS}` (or, for a paper naming only one partner, to `{ADDRESS_DOCS}`; see [references/same-address.md](references/same-address.md)) each possible match the user says is the same person, marked "linked, confirmed by you", remove it from `{POSSIBLE_MATCHES}`, and add its spelling difference to the mismatches.
 2. Remove every dropped photo and paper from `{CHOSEN_PHOTOS}` and `{LINKED_DOCS}`.
 3. Redo Step 6 with these values.
 4. Then redo the 5c comparison of names, dates of birth and addresses across the updated `{LINKED_DOCS}` (mismatches from dropped papers go), so the papers table, coverage table and gap list match what will be saved.
