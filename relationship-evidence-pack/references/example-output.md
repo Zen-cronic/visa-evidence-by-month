@@ -10,6 +10,7 @@ This example is the all-four case: every family member has a face group, so phot
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
 - Printed names: Tran Thi Linh, Tran Van Minh, Tran Thi An, Tran Gia Bao. Children: An Tran, Bao Tran.
 - Today: 2026-11-14. Save location: `/Family/Visa`. Relationship: married. Photos needed: yes.
+- Photos of: everyone (the family chose everyone over the couple).
 - Period: June 2025 to November 2026 (18 months).
 - Scanned papers folder: `/Family/Papers`. Photos of papers: yes.
 - Photo limit: 20.
