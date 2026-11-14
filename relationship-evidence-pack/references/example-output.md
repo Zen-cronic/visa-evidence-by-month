@@ -164,6 +164,29 @@ Mei Tan and Daniel Reyes, common-law, January to June 2026 (shortened to six mon
 
 This table shows which months have papers showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant. Photos and other papers stay in the pack; they just do not fill a month for this check.
 
+## A third, shorter example: a married family that chose the couple
+
+Ayu Lestari and Rizal Hakim, married, with their daughter Kirana Hakim, January to June 2026 (shortened to six months to keep it short). Kirana has no face group, so she is kept for papers only; her birth certificate (August 2024) names all three and links her. Rizal's phone bills came every month from January to March and in June, and Ayu's bank letters in January, February and June, all at 41 Birchmount Road.
+
+- People, as named in Photos: Ayu Lestari, Rizal Hakim; Kirana Hakim (papers only). Scope: a family. Relationship: married. Photos needed: yes.
+- Photos of: the couple (the family chose the couple over everyone).
+
+| Month | Photos of the couple in the library | In the pack | Linking paper |
+|---|---|---|---|
+| 2026-01 | 3 | #1 | phone bill (Rizal) + bank letter (Ayu), one name, same address |
+| 2026-02 | 0 | — | phone bill (Rizal) + bank letter (Ayu), one name, same address |
+| 2026-03 | 2 | #2 | — |
+| **2026-04** | **0** | — | **—** |
+| **2026-05** | **0** | — | **—** |
+| 2026-06 | 4 | #3 | phone bill (Rizal) + bank letter (Ayu), one name, same address |
+
+- **No photo of the couple found by face grouping and no linking paper: April to May 2026.**
+  What could cover it: phone bills in Rizal's name came every month until March 2026; a paper in Ayu's name at the same address for April to May 2026 would add evidence, if you have one.
+
+Gaps are for your own checking. Spouses have no monthly requirement.
+
+Single-name papers that filled no month (listed, not copied): phone bill (Rizal), March 2026.
+
 ## What this example shows
 
 - **The gap list names only what is missing**, as "no photo of everyone found by face grouping and no linking paper". It never says the family was apart.
