@@ -51,4 +51,6 @@ All data is synthetic: stand-in people (a couple, and a family of four), photos 
 - Whether the file agent can rename a file while copying it (the Skill falls back to the original name and records the upload order in the index).
 - How many photos the vision check handles in one call (the Skill sends at most 15 per call).
 - Whether a delegate instruction is read like a shell argument, so the apostrophe escape '"'"' becomes a plain apostrophe in the saved index (check one context line with an apostrophe after saving).
+- Whether Uliya reads the reference files SKILL.md links to (the common-law rules, the saving rules and the evidence rules) when a step points to them.
+- Whether the document agent matches printed names written with accents ("TRẦN Thị Linh") to names given without them.
 - Whether the agents honour "leave out paths in a Visa evidence folder" (the Skill also drops such paths itself before using any result).
