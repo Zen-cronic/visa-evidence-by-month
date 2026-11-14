@@ -260,7 +260,7 @@ Report a result only after a delegated expert returns `completed`, and only what
 
 - `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album and the index, its read-back result or "declined by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the photos chosen against the limit, failures by rule, the papers, mismatches and possible matches, and the gap list.
 - `failed`: say which step failed and why. A failed search is reported as failed, never as "nothing found". Skip only the steps that need its result, as each step says. If a write failed after others succeeded, list what exists and delete nothing.
-- `cancelled`: for a write in Step 8, skip that write and continue with the others and Step 9. For any other step, stop and list which steps finished.
+- `cancelled`: for a write in Step 8, skip that write and continue with the others and Step 9. For the optional earlier-index read in Step 7, continue without it. For any other step, stop and list which steps finished.
 - `waiting_user`: pass the expert's question on, wait, then send that step again with the answer.
 - `waiting_approval`: show what will be written and wait; the expert continues on approval. If declined, skip that write, keep everything else, and list it as declined.
 
