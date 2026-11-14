@@ -1,0 +1,21 @@
+name: check
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download UGREEN uliya-skill-kit 0.7.7
+        run: |
+          curl -sSL -o kit.zip "https://cdn.shopify.com/s/files/1/0630/9416/1602/files/uliya-skill-kit-0.7.7-en.zip?v=1794462613"
+          echo "e3a9c6a7b80b5790865aa1eea310a942904993693a021888b5f9d580f35d8a67  kit.zip" | sha256sum -c -
+          mkdir kit && unzip -q kit.zip -d kit
+      - name: Check and build
+        run: KIT="$(dirname "$(find kit -name check-skill.mjs -path '*scripts*' | head -1)")/.." scripts/build-package.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skill-zip
+          path: dist/relationship-evidence-pack.zip
