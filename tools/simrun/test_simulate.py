@@ -147,7 +147,7 @@ class Scenarios(unittest.TestCase):
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease, statement])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-01", "2025-06", nas, User(relationship="common-law"))
         self.assertIsNone(log["stopped"])
-        self.assertEqual(log["gaps"], [f"{R.PAPER_GAP_LABEL}: 2025-04 to 2025-06"])
+        self.assertEqual(log["gaps"], [f"{R.COMMON_LAW_GAP_LABEL}: 2025-04 to 2025-06"])
         self.assertGreater(log["chosen"], 0)  # photos are still chosen for the pack
 
     def test_o_four_yes_and_stop_reads_nothing(self):

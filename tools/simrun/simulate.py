@@ -114,7 +114,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law)
     if common_law:
         papers_only = True
-    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped or common_law, search_failed=timeline_failed))
+    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law))
 
     # Step 7: read the save location, pick a free name
     nas.call("file-agent", "ls")

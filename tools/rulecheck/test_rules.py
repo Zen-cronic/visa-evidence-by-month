@@ -280,7 +280,7 @@ class NamesAndFailures(unittest.TestCase):
         statement = Paper("bank statement", couple, "scanned document", dated="2025-04-30")  # names both, no shared address
         counts = {m: 3 for m in month_range("2025-01", "2025-05")}  # photos every month
         rows = coverage("2025-01", "2025-05", counts, [], [lease, statement], common_law=True)
-        self.assertEqual(gap_lines(rows, gap_label(papers_only=True)), [f"{PAPER_GAP_LABEL}: 2025-04 to 2025-05"])
+        self.assertEqual(gap_lines(rows, gap_label(common_law=True)), ["no paper showing you both at the same address found: 2025-04 to 2025-05"])
 
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))

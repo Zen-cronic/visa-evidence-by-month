@@ -267,7 +267,12 @@ def group_gaps(rows: list[dict]) -> list[tuple[str, str]]:
     return runs
 
 
-def gap_label(papers_only: bool = False, search_failed: bool = False, who: str | None = None) -> str:
+COMMON_LAW_GAP_LABEL = "no paper showing you both at the same address found"
+
+
+def gap_label(papers_only: bool = False, search_failed: bool = False, who: str | None = None, common_law: bool = False) -> str:
+    if common_law:
+        return COMMON_LAW_GAP_LABEL
     if papers_only or search_failed:
         return PAPER_GAP_LABEL + ("; the photo search failed" if search_failed else "")
     return GAP_LABEL if who is None else GAP_LABEL.replace("of everyone", f"of {who}")
