@@ -200,7 +200,7 @@ delegate --target file-agent --instruction 'Use only the local model. In the fol
 delegate --target photo-agent --instruction 'Use only the local model. List the names of the custom albums whose names start with Visa evidence. Read only.'
 ```
 
-Save the names returned as `{EXISTING}`. `{NAMES_LINE}` is the names in `{PEOPLE}` joined with commas and "and". The base name is Visa evidence {NAMES_LINE}. If it is in `{EXISTING}`, add `{TODAY}` as YYYY-MM-DD; if that name is also in `{EXISTING}`, add a number after the date, starting from 2, until the name is unused. `{EVIDENCE_FOLDER}` is `{SAVE_LOCATION}` plus a folder with that name, and `{ALBUM_NAME}` is the same name. If `{SAVE_LOCATION}` does not exist yet, `{EXISTING}` is empty and 8a creates it with the evidence folder. If either read failed for another reason, say so and ask the user whether to continue with the base name.
+Save the names returned as `{EXISTING}`. `{NAMES_LINE}` is the names in `{PEOPLE}` joined with commas and "and". The base name is Visa evidence {NAMES_LINE}. If it is in `{EXISTING}`, add `{TODAY}` as YYYY-MM-DD; if that name is also in `{EXISTING}`, add a number after the date, starting from 2, until the name is unused. `{EVIDENCE_FOLDER}` is `{SAVE_LOCATION}` plus a folder with that name, and `{ALBUM_NAME}` is the same name. If `{SAVE_LOCATION}` does not exist yet, the folder list in `{EXISTING}` is empty and 8a creates it with the evidence folder. If either read failed for another reason, say so and ask the user whether to continue with the base name.
 
 On a second run for the same people, offer to reuse context lines from the earlier pack, as described in [references/evidence-rules.md](references/evidence-rules.md) under "Reusing lines from an earlier pack".
 
@@ -221,7 +221,7 @@ Show what will be saved and ask one question: "Save the folder with its copies, 
 8a. If the folder is approved, send:
 
 ```
-delegate --target file-agent --instruction 'Create the folder {EVIDENCE_FOLDER}, and any missing folders above it, with two subfolders, 01 Photos and 02 Papers. Do not change anything that already exists. Return the created paths.'
+delegate --target file-agent --instruction 'Create the folder {EVIDENCE_FOLDER}, and any missing folders above it, with two subfolders, 01 Photos and 02 Papers. Do not change anything that already exists. If {EVIDENCE_FOLDER} already exists, create nothing and report failed: the folder already exists. Return the created paths.'
 ```
 
 8b, 8c, 8e and 8f need the folder: send them only if 8a completed. 8d does not; it depends only on its own approval.
@@ -269,7 +269,7 @@ When an expert returns `waiting_approval`, show what it will write and wait for 
 ## Step 9. Read back what was saved
 
 ```
-delegate --target file-agent --instruction 'Use only the local model. List the files in {EVIDENCE_FOLDER}, including both subfolders, and read the full content of the files at {INDEX_PATH} and {DESCRIPTIONS_PATH}. Return the file names, the number of files in each subfolder, and the text of each file. Read only.'
+delegate --target file-agent --instruction 'Use only the local model. List the files in {EVIDENCE_FOLDER}, including both subfolders and every folder inside them, and read the full content of the files at {INDEX_PATH} and {DESCRIPTIONS_PATH}. Return the file names, the number of files in each subfolder, and the text of each file. Read only.'
 ```
 
 ```
@@ -282,7 +282,7 @@ Leave out of the read any path that is empty (declined, failed, unclear or not a
 
 Report a result only after a delegated expert returns `completed`, and only what it returned.
 
-- `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album, the working notes and the Photo descriptions file, its read-back result or "declined by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the photos chosen against the limit, failures by rule, the papers, mismatches and possible matches, and the gap list.
+- `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album, the working notes and the Photo descriptions file, its read-back result or "declined by you", "cancelled by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the folder path and album name, the photos chosen against the limit, the chosen photos with no description yet, failures by rule, the papers, mismatches and possible matches, and the gap list.
 - `failed`: say which step failed and why. A failed search is reported as failed, never as "nothing found". Skip only the steps that need its result, as each step says. If a write failed after others succeeded, list what exists and delete nothing.
 - `cancelled`: for a write in Step 8, skip that write and continue with the others and Step 9. For the optional earlier-index read in Step 7, continue without it. For any other step, stop and list which steps finished.
 - `waiting_user`: pass the expert's question on, wait, then send that step again with the answer.
