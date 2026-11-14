@@ -114,6 +114,14 @@ class Scenarios(unittest.TestCase):
             self.assertIn(state, log["reuse_note"])
             self.assertIn("index", log["summary"]["saved"])
 
+    def test_k_unanswered_possible_match_is_never_linked(self):
+        counts = months("2025-12", "2026-02")
+        variant = R.Paper("lease", ["Mei Tann", "Daniel Reyes"], "scanned document", "2025-12", "2026-02")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [variant])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User(confirm_matches=False))
+        self.assertEqual(log["linked"], 0)
+        self.assertNotIn("paper copies", log["summary"]["saved"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
