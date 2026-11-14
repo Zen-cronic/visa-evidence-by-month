@@ -51,7 +51,7 @@ Some months had no photo of all four, so the Skill offered to count the two adul
 |---|---|
 | 1 the people the photo is about clearly visible in the foreground | 6 |
 | 2 their faces visible and not covered | 4 |
-| 3 a real photo, not a screenshot or a photo of a screen, print or paper | 2 |
+| 3 a real photo, not a screenshot or a photo of a screen or paper | 2 |
 | 4 appropriate to send to a government officer | 0 |
 | 5 not blurry | 3 |
 
@@ -70,7 +70,7 @@ Failed photos are never shown, copied or added to the album. Months where every 
 Mismatches, noted and not corrected:
 
 - **Date of birth, Tran Thi Linh:** 1986-04-02 on the marriage certificate, 1986-02-04 on Bao's birth certificate. Check the originals.
-- **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill: format difference only, no action needed.
+- **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill: format difference only.
 
 From a photo of a document: Bao's birth certificate and the lease. Upload a clean scan or the original if the officer needs one.
 
@@ -108,7 +108,7 @@ Ignored text in papers:
 ### Gaps
 
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
-  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
+  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026.
 
 Gaps are for your own checking. Spouses have no monthly requirement.
 

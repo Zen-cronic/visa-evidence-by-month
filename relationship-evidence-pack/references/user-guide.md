@@ -1,6 +1,6 @@
 # User guide
 
-See which months your photos and papers show evidence of your life together, find out what would fill each gap, and get a folder organised for upload, and, with Uliya set to its on-device model, without your family's photos and papers leaving your NAS.
+See which months your photos and papers show evidence of your life together, find out what would fill each gap, and get a folder organised by upload order, and, with Uliya set to its on-device model, without your family's photos and papers leaving your NAS.
 
 It answers one question: **which months can we not prove yet?** For each month it shows the photos of everyone together, the paper that covers that month (a lease, a bill, a certificate), and, for any month with neither, what could close the gap. See [example-output.md](example-output.md).
 
@@ -26,10 +26,10 @@ Words you will see: **face grouping** is how Photos recognises the same person a
 ## What you get
 
 - **A coverage table** with one row per month: photos of everyone found by face grouping (or of the people searched together, named in the label), the photo chosen for the pack, and the paper that covers the month.
-- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. For common-law couples and families, a month counts only when a paper shows you both at the same address; photos do not fill it. A gap means the Skill found nothing, not that you were apart. Gaps are for your own checking: not every application needs every month covered, and spouses have no monthly requirement. Each gap also says which papers would cover it, such as "bills for February to May 2026, if you have them", based on the linking papers it already found.
+- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. Papers in each partner's own name showing the same address in the same month (your phone bill and your partner's bank letter, say) also fill a month, for any couple or family, married or not. For common-law couples and families, a month counts only when papers show you both at the same address; photos do not fill it. A gap means the Skill found nothing, not that you were apart. Gaps are for your own checking: not every application needs every month covered, and spouses have no monthly requirement. Each gap also says which papers would add evidence for it, such as "bills for February to May 2026, if you have them", based on the linking papers it already found.
 - **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. Reply "all ok" to confirm every date, place and name (photos with no date, or with someone else in them, are listed separately and need their own answer; unanswered ones are held out of the pack), and write in your own words what was happening in each photo you want described; the Skill's own description is only a prompt. A photo with no description from you stays out of the Photo descriptions file until you add one. The Skill never writes what a moment was.
 - **The papers that link you**, with any difference in a name, birth date or address noted, never changed.
-- **A folder organised for upload**: the photos, the papers and a **Photo descriptions** file with only the descriptions you wrote or confirmed. Upload these.
+- **A folder organised by upload order**: the photos, the papers and a **Photo descriptions** file with only the descriptions you wrote or confirmed. Build your upload from these, and check the portal's file types and size limits.
 - **An Evidence index** of working notes for you: the coverage table, gaps, mismatches and counts. **Do not upload it.**
 - **A Photos album** of the chosen photos. Each item is saved only if you approve it, then read back to check it matches.
 
@@ -49,5 +49,5 @@ A worked example with a made-up family is in [example-output.md](example-output.
 - Up to 3 sample photos in each planned month are checked (months beyond the 20-photo limit show "not checked (photo limit)"); a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
 - The vision model only suggests what a photo shows; each description in the upload file is in your own words, and a line you do not confirm stays out of it.
 - Up to six people are searched in photos together; with more, you choose which six, and the rest count for papers only.
-- Descriptions you write in a language other than English or French are flagged in the working notes as needing a translation before upload.
+- Write photo descriptions in English or French.
 - A second run offers to reuse the context lines you confirmed in your latest earlier pack, for the same photos (same date and file name), marked "from your earlier pack" and shown for you to confirm again; everything else is found again from your library and papers.

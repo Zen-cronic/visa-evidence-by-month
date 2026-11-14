@@ -2,14 +2,14 @@
 
 A Skill for UGREEN AI NAS that answers one question for a couple or family preparing a partner or spouse visa application, including their children: **"Which months can we not prove yet?"**
 
-Before: scrolling years of photos and papers month by month, by hand. After: "February to May 2026: no photo of everyone and no linking paper found; electricity bills for those months would cover it", plus a folder ready to upload, saved only after you approve it.
+Before: scrolling years of photos and papers month by month, by hand. After: "February to May 2026: no photo of everyone and no linking paper found; electricity bills for those months would add evidence", plus a folder to build your upload from (check the portal's file types and size limits), saved only after you approve it.
 
 It works from the photos and papers already on the NAS:
 
 - finds photos where everyone on the application appears together, month by month, and checks each one is fit to send;
 - finds the papers that link the people (leases, bills, marriage and birth certificates, scanned or photographed) and notes every name, birth date and address mismatch without changing it;
 - lists the months with no evidence yet, and which of your regular papers could cover each one;
-- saves an evidence folder ready to upload, only after you approve it.
+- saves an evidence folder to build your upload from, only after you approve it.
 
 It also prepares one person's own papers. Every step asks Uliya to use only the on-device model; nothing is saved until you approve it, and each save is read back.
 
@@ -30,7 +30,7 @@ An excerpt from the worked example (a synthetic family of four; the full run is 
 | 2026-06 | 5 | #6 | lease |
 
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
-  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
+  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026.
 
 A gap means nothing was found, never that the family was apart. With your approval, the Skill saves the chosen photos, the papers, a Photo descriptions file to upload and working notes for you, then reads each one back.
 
@@ -58,7 +58,7 @@ The Skill passes the static checker and the rule and capability checks. It has n
 
 | Path | What it is |
 |---|---|
-| `relationship-evidence-pack/` | The Skill: `SKILL.md` plus `references/` (rules, common-law rules, saving, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
+| `relationship-evidence-pack/` | The Skill: `SKILL.md` plus `references/` (rules, same-address rules, common-law rules, saving, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
 | `tools/rulecheck/` | A small reference program that restates the Skill's steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) and checks them on synthetic cases, including the worked example. |
 | `tools/capcheck/` | Checks every action the Skill relies on against the UGREEN capability catalog: it exists, takes the inputs used, Steps 1 to 7 only read, and every write is behind approval. |
 | `scripts/build-package.sh` | Runs the checks and builds the upload ZIP. |

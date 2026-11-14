@@ -33,6 +33,11 @@ The form asks only for a brief description of context. The Skill's date, place a
 
 This list is from the spouse checklist. Common-law partners use IMM 5589 (https://www.canada.ca/content/dam/ircc/documents/pdf/english/kits/forms/imm5589/01-09-2022/imm5589e.pdf), whose text could not be read for this file.
 
+## Not read, to check
+
+- **IMM 5589, Document Checklist: Common-law Partner.** Not read for this file; check what it accepts as proof of living together.
+- **IMM 5409, Statutory Declaration of Common-law Union.** Not read for this file; check whether your application needs it.
+
 ## Common-law partner
 
 - **"Who you can sponsor"** (https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/family-sponsorship/spouse-partner-children/who-you-can-sponsor.html): "has lived with you for at least 12 consecutive months, meaning" / "you've lived together continuously for 1 year in a conjugal relationship, without any long periods apart" / "any time spent away from each other during the 12-month period should have been short and temporary".
@@ -47,6 +52,5 @@ This list is from the spouse checklist. Common-law partners use IMM 5589 (https:
 | Photos spread across months and places | "taken at different times and places" |
 | A line for each photo, confirmed by the couple | "a brief description of context of each photo provided, label your photos accordingly" |
 | Joint documents naming both partners | IMM 5533 cohabitation list ("at least two (2)") |
-| Common-law: separate papers, one per partner, at the same address count | IMM 5533 (spouse checklist): "whether the accounts are held jointly or not"; the common-law checklist (IMM 5589) could not be read |
-| Married couples: joint papers only | Spouses have no continuity requirement, so the Skill does not pair single-name papers for them; a couple may add such papers to the folder by hand |
+| Married couples and common-law partners: joint papers, and papers in each partner's name showing the same address | IMM 5533: "whether the accounts are held jointly or not"; the common-law checklist (IMM 5589) was not read |
 | Month-by-month coverage (a planning aid) | 12 consecutive months for common-law partners; for spouses there is no monthly requirement, only photos "taken at different times and places" |
