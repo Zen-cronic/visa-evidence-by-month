@@ -39,9 +39,21 @@ def month_range(start: str, end: str) -> list[str]:
 
 
 def scope_of(people: list[str]) -> str:
-    if not 1 <= len(people) <= 6:
-        raise ValueError("one to six people")
+    if not people:
+        raise ValueError("at least one person")
     return {1: "one person", 2: "a couple"}.get(len(people), "a family")
+
+
+PHOTO_SEARCH_MAX = 6  # more people than this: the user picks who is searched in photos together
+
+
+def photo_people_for(people: list[str], picked: list[str] | None = None) -> list[str]:
+    """Over six people, only the ones the user picked are searched in photos; the rest are papers-only."""
+    if len(people) <= PHOTO_SEARCH_MAX:
+        return list(people)
+    if not picked or len(picked) > PHOTO_SEARCH_MAX:
+        raise ValueError("ask which six at most to search in photos")
+    return [p for p in people if p in picked]
 
 
 def confirm_people(named_albums: list[str], people: list[str]) -> dict:

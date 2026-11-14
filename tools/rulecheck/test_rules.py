@@ -11,7 +11,7 @@ from pathlib import Path
 
 from rules import (
     FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, carry_over, closers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
-    coverage, gap_lines, join_papers, month_range, plan_months, scope_of,
+    coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -173,8 +173,11 @@ class EdgeOnePerson(unittest.TestCase):
     def test_scope_bounds(self):
         with self.assertRaises(ValueError):
             scope_of([])
+        seven = [str(i) for i in range(7)]
+        self.assertEqual(scope_of(seven), "a family")
         with self.assertRaises(ValueError):
-            scope_of([str(i) for i in range(7)])
+            photo_people_for(seven)  # must ask which six at most
+        self.assertEqual(photo_people_for(seven, seven[:4]), seven[:4])
 
 
 class NamesAndFailures(unittest.TestCase):
