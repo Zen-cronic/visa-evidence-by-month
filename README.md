@@ -13,6 +13,24 @@ It also prepares one person's own papers. Every step asks Uliya to use only the 
 
 It prepares evidence only. It does not judge eligibility, give legal advice or submit anything.
 
+## What you get
+
+An excerpt from the worked example (a synthetic family of four; the full run is in [`references/example-output.md`](relationship-evidence-pack/references/example-output.md)):
+
+| Month | Photos of all four in the library | In the pack | Linking paper |
+|---|---|---|---|
+| 2026-01 | 1 | 1 sample checked, none fit to send | electricity bill |
+| **2026-02** | **0** | — | **—** |
+| **2026-03** | **0** | — | **—** |
+| **2026-04** | **0** | — | **—** |
+| **2026-05** | **0** | — | **—** |
+| 2026-06 | 5 | #6 | lease |
+
+- **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
+  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
+
+A gap means nothing was found, never that the family was apart. With your approval, the Skill saves the chosen photos, the papers, a Photo descriptions file to upload and working notes for you, then reads each one back.
+
 ## What's here
 
 | Path | What it is |
