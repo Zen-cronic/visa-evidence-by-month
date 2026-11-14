@@ -8,9 +8,10 @@ None. This Skill is Markdown only. It uses UGOS capabilities through UGREEN's re
 
 All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
-- counting photos of both partners per month and choosing up to 20, spread across the relationship and checked as fit to send;
+- a scope that follows the people named: one person, a couple or a family;
+- counting photos of everyone named per month and choosing up to 20, spread across the period and checked as fit to send;
 - the labelled per-photo line (date, place, people, confirmed context);
-- finding and reconciling joint documents that name both partners;
+- finding and reconciling the papers that link the people, scanned or photographed;
 - the month-by-month coverage table and gap list;
 - writing the evidence folder, album and index back to the NAS.
 
@@ -21,4 +22,4 @@ All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
 ## Data
 
-The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It sends nothing off the NAS. Test data used during development is synthetic; no real personal data is included in this package.
+The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It sends nothing off the NAS. Test data and the worked example use made-up people; no real personal data is included in this package.

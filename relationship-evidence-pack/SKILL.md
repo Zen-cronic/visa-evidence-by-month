@@ -22,7 +22,7 @@ From the photo library and papers already on the NAS, this Skill produces:
 3. The papers that name the people, scanned or photographed, with every name or address mismatch noted.
 4. An evidence folder with copies in upload order, a Photos album of the chosen photos, and an evidence index file, all read back after saving.
 
-The Skill prepares evidence only. It does not judge eligibility, does not give legal advice and does not submit anything. Rules for choosing, labelling and counting are in [references/evidence-rules.md](references/evidence-rules.md). Consent, privacy and misuse rules are in [references/safety-and-consent.md](references/safety-and-consent.md); read both before Step 1.
+The Skill prepares evidence only. It does not judge eligibility, does not give legal advice and does not submit anything. Rules for choosing, labelling and counting are in [references/evidence-rules.md](references/evidence-rules.md). Consent, privacy and misuse rules are in [references/safety-and-consent.md](references/safety-and-consent.md); read both before Step 1. A worked example of the saved index, with made-up people, is in [references/example-output.md](references/example-output.md).
 
 # Required input
 
