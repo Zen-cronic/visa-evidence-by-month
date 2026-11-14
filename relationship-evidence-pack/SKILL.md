@@ -1,13 +1,20 @@
 ---
 name: relationship-evidence-pack
-description: Shows which months a couple or family can and cannot prove together for a partner or family visa, from the photos and papers already on the NAS, and what could close each gap. It picks up to 20 photos of everyone together that are fit to send, finds the papers that link them, notes every mismatch without changing it, and saves a folder, an album and an index after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
+description: Shows which months a couple or family can and cannot prove together for a partner or family visa, from the photos and papers already on the NAS, and what could close each gap, then saves an upload-ready folder, album and index after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
 ---
+
+# At a glance
+
+- **For:** a couple or family preparing a partner or family visa application, asking "which months can we not prove yet?"
+- **Result:** a month-by-month coverage table, a gap list with what could close each gap, and an evidence folder, a Photos album and an index saved on the NAS after approval, then read back.
+- **NAS capabilities, in order:** face albums to confirm people → a timeline of photos with several people together, by month → photo details and the vision model for the fit-to-send check → document extraction and reconciling, plus text recognition on photographed papers → making the folder, copying, creating the album and saving the index (after approval) → reading back what was saved. The table under Generation-time capability evidence names each catalog action.
+- **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never saves a context line the user did not confirm; nothing is written before approval.
 
 # Goal
 
 Partner visa applications, and family applications where a couple brings their children, ask people to show that their relationship is real and continuing; children are linked by their birth certificates. They ask for papers of a shared life, such as a lease, joint bills, a marriage certificate or a birth certificate. Some also take photos: Canada's spousal sponsorship checklist (IMM 5533) asks for up to 20 photos taken at different times and places, each with a brief description, when the couple does not answer yes to all four of its questions. Canada is the worked example; its wording is quoted in [references/sources.md](references/sources.md). Rules differ by country and by application type, so the person should check what their own application asks for.
 
-The evidence is the most private data a household has: couple and family photos, children's birth certificates, bank statements and leases. That is why this runs on the NAS, where the photos and papers already are, and asks for the local model before reading anything.
+The evidence is the most private data a household has: couple and family photos, children's birth certificates, bank statements and leases. That is why this runs on the NAS, where the photos and papers already are, and asks for the local model before reading anything. Uliya's photo search and AI albums can already find photos of two people; they cannot say which months lack proof, link the papers that name the people, or build an upload-ready pack. This Skill adds those.
 
 The scope follows the people named at the start:
 
@@ -55,12 +62,19 @@ A skipped step leaves its values empty. Every read in Steps 2 and 5 leaves out a
 
 # Generation-time capability evidence
 
-The expert agents this Skill delegates to, by UGOS capability:
+The expert agents this Skill delegates to, by UGOS capability, and the catalog actions each one is asked to use (checked against capability catalog 2.2.0; see [references/testing.md](references/testing.md)):
 
 - `ug-photo` → `photo-agent`
 - `ug-document` → `document-agent`
 - `ug-filesystem` → `file-agent`
 - `ug-knowledge` → `knowledge-agent`
+
+| Agent | Catalog actions | Steps |
+|---|---|---|
+| photo-agent | figure-albums, timeline-summary, search-picture, meta, vision-vlm, search-screen, vision-ocr, albums, create-album, album-detail | 1, 2, 4, 5b, 7, 8, 9 |
+| document-agent | extract, reconcile | 5a |
+| file-agent | ls, cat, mkdir, cpmv | 7, 8, 9 |
+| knowledge-agent | save-text | 8 |
 
 # Orchestration
 
