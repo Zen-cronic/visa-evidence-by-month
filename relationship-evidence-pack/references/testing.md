@@ -25,6 +25,10 @@ The Skill sends plain-language instructions; each one maps to actions in the kit
 
 The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program, kept in the project's source repository outside this package, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): all checks passed. This shows the written rules give the expected result on these cases and that the worked example follows them; it does not prove the rules cover every case. It does not show how the Skill behaves on a NAS.
 
+## Simulated runs (MEASURED, 2026-11-14)
+
+The Skill's control flow from Step 0 to Step 9 was also restated as a small simulation, kept in the project's source repository, and run against a mock NAS whose agents return made-up results. Eight scenarios pass: a couple where everything works; a family with a baby kept for papers only; the same family without marking the baby (the run waits at Step 1); one person running twice on the same day (new folder name, no photo steps); a couple whose photo search fails and who declines the album; a declined folder with the album still saved; and "unsure" answers at Step 0 (nothing is read). In every scenario nothing is written before its approval. This checks the written control flow, not how Uliya or the agents behave on a NAS.
+
 ## Test cases (rules MEASURED as above; NAS run PLANNED for the finalist day, also the demo script)
 
 All data is synthetic: stand-in people (a couple, and a family of four), photos with set capture dates, and made-up scanned and photographed papers.
