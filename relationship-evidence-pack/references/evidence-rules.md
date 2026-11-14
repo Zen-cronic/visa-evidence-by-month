@@ -25,7 +25,7 @@ The official checklist asks for "a brief description of context of each photo". 
 
 | Field | Source | Label |
 |---|---|---|
-| Date | capture date in photo metadata | `from metadata` |
+| Date | capture date in photo metadata, or one the user gives | `from metadata` or `from you` (`undated` when neither) |
 | Place | place name in photo metadata, or one the user gives | `from metadata`, `from you`, or `unknown` (left blank in the Photo descriptions file) |
 | People | the confirmed Photos people names | `from Photos people` |
 | Context | the user's own words; the visual description is only a prompt, and a line the user wrote in an earlier pack for the same photo (same capture date and original file name) may be reused | (confirmed) or (edited) only if it is the user's words, written, edited or re-confirmed in this run; a vision description the user did not replace stays `[not confirmed]` and the photo is left out of the Photo descriptions file; a reused line is marked `from your earlier pack` |
@@ -60,7 +60,7 @@ What counts as a linking paper depends on the scope:
 
 A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person. Without printed names, a paper name containing every word of a Photos name is a possible match only.
 
-Copies inside earlier packs (folders named Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
+Copies inside earlier packs (folders whose name starts with Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
 
 Note differences in spelling, date of birth or address without changing anything; most small differences need no letter; never alter a document, and ask a licensed consultant when unsure. Differences only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4") are noted as "format difference only, no action needed".
 
