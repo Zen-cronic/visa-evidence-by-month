@@ -166,9 +166,9 @@ This table shows which months have papers showing you both at the same address. 
 
 ## A third, shorter example: a married family that chose the couple
 
-Ayu Lestari and Rizal Hakim, married, with their daughter Kirana Hakim, January to June 2026 (shortened to six months to keep it short). Kirana has no face group, so she is kept for papers only; her birth certificate (August 2024) names all three and links her. Rizal's phone bills came every month from January to March and in June, and Ayu's bank letters in January, February and June, all at 41 Birchmount Road.
+Ayu Lestari and Rizal Hakim, married, with their daughter Kirana Hakim, January to June 2026 (shortened to six months to keep it short). Kirana is not searched in photos because the family chose the couple; her birth certificate (August 2024) names all three and links her. Rizal's phone bills came every month from January to March and in June, and Ayu's bank letters in January, February and June, all at 41 Birchmount Road.
 
-- People, as named in Photos: Ayu Lestari, Rizal Hakim; Kirana Hakim (papers only). Scope: a family. Relationship: married. Photos needed: yes.
+- People, as named in Photos: Ayu Lestari, Rizal Hakim; Kirana Hakim (not searched in photos). Printed names: Ayu Lestari, Rizal Hakim, Kirana Hakim; family names: Lestari, Hakim. Scope: a family. Relationship: married. Photos needed: yes.
 - Photos of: the couple (the family chose the couple over everyone).
 
 | Month | Photos of the couple in the library | In the pack | Linking paper |
