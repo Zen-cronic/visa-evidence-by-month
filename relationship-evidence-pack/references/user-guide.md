@@ -10,8 +10,8 @@ It answers one question: **which months can we not prove yet?** For each month i
 2. **Know each person's name as printed on their papers**, such as "Tran Thi Linh". Papers are matched on these names, not on Photos nicknames.
 3. **Put scanned papers in one folder**, if you have any: leases, bills, bank statements, marriage and birth certificates, letters. Photos of papers taken with your phone are found in the photo library; you do not need to move them.
 4. **Pick where to save the pack.** Any folder outside the papers folder.
-5. **Check Uliya's model setting** if you can, so nothing you share leaves the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
-6. **Know your relationship type and whether photos are needed.** The Skill asks whether you are married, common-law or other, and whether your application asks for photos. On Canada's spouse checklist, if you answer yes to all four of its questions, no additional proof of relationship is needed at this time; the Skill tells you so and asks whether to build a pack anyway.
+5. **Check Uliya's model setting** if you can, so your photos and papers stay on the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
+6. **Know your relationship type and whether photos are needed.** The Skill asks whether you are married, common-law or other, and whether your application asks for photos. Some checklists need no extra proof in some cases: on Canada's spouse checklist, for one, if you answer yes to all four of its questions, no additional proof of relationship is needed at this time; the Skill tells you so and asks whether to build a pack anyway.
 
 ## What to ask
 

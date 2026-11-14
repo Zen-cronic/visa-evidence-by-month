@@ -1,11 +1,11 @@
 ---
 name: relationship-evidence-pack
-description: Shows which months a couple or family can and cannot show evidence for, from the photos and papers already on the NAS, for a partner or family sponsorship or visa application, and what papers would cover each gap; then saves the photos, papers and a photo-description file organised for upload, plus working notes for the user, after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
+description: Shows which months a couple or family can and cannot show evidence for, from the photos and papers already on the NAS, for a partner or spouse sponsorship or visa application (with their children), and what papers would cover each gap; then saves the photos, papers and a photo-description file organised for upload, plus working notes for the user, after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
 ---
 
 # At a glance
 
-- **For:** a couple or family preparing a partner or family sponsorship or visa application, asking "which months can we not prove yet?"
+- **For:** a couple or family preparing a partner or spouse sponsorship or visa application (with their children), asking "which months can we not prove yet?"
 - **Result:** a month-by-month coverage table and gap list for the user's own checking, and, after approval, an evidence folder with the photos, the papers and a Photo descriptions file organised for upload, a Photos album, and working notes the user keeps; all read back after saving.
 - **NAS capabilities, in order:** face albums to confirm people → a timeline of photos with several people together, by month → photo details and the vision model for the fit-to-send check → document extraction and reconciling, plus text recognition on photographed papers → making the folder, copying, creating the album and saving the index (after approval) → reading back what was saved. The table under Generation-time capability evidence names each catalog action.
 - **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never saves a context line the user did not confirm; nothing is written before approval.
