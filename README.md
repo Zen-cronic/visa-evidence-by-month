@@ -46,6 +46,14 @@ Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran/
 
 Canada's spouse checklist is the worked example. Other countries' partner visas also ask for proof of a shared life over time; check your own country's checklist for what it accepts.
 
+## Using it on the NAS
+
+See `relationship-evidence-pack/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned papers in one folder, pick a save location outside it, then ask Uliya in plain words.
+
+## Status
+
+The Skill passes the static checker and the rule and capability checks. It has not yet run on a UGREEN AI NAS; `relationship-evidence-pack/references/testing.md` lists what is measured and what is not.
+
 ## What's here
 
 | Path | What it is |
@@ -72,14 +80,6 @@ To rename the Skill:
 ```
 KIT=/path/to/uliya-skill-kit scripts/rename-skill.sh new-skill-name
 ```
-
-## Using it on the NAS
-
-See `relationship-evidence-pack/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned papers in one folder, pick a save location outside it, then ask Uliya in plain words.
-
-## Status
-
-The Skill passes the static checker and the rule and capability checks. It has not yet run on a UGREEN AI NAS; `relationship-evidence-pack/references/testing.md` lists what is measured and what is not.
 
 ## License
 
