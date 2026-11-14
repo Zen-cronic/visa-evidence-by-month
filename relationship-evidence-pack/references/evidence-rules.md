@@ -28,7 +28,7 @@ The official checklist asks for "a brief description of context of each photo". 
 | Date | capture date in photo metadata | `from metadata` |
 | Place | place name in photo metadata; coordinates if that is all it holds | `from metadata`, or `unknown` |
 | People | the confirmed Photos people names | `from Photos people` |
-| Context | the visual description, or a line the user confirmed in an earlier pack for the same photo | `[confirm]`; saved as `[not confirmed]` unless the user confirms or edits it; a reused line is marked `from your earlier pack` |
+| Context | the visual description, or a line the user confirmed in an earlier pack for the same photo (same capture date and original file name) | `[confirm]` in every case; saved with (confirmed) or (edited) only if the user confirms or edits it in this run, otherwise `[not confirmed]`; a reused line is marked `from your earlier pack` |
 
 A visual description can say "four people at a restaurant table" but cannot know it was a birthday dinner. Only the people in it can add that.
 

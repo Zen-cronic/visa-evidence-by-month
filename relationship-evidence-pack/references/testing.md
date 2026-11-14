@@ -17,7 +17,7 @@ The Skill sends plain-language instructions; each one maps to actions in the kit
 | 4 | photo-agent | meta, vision-vlm |
 | 5a | document-agent | extract, reconcile |
 | 5b | photo-agent | search-picture, search-screen, vision-ocr |
-| 7 | file-agent, photo-agent | ls, albums |
+| 7 | file-agent, photo-agent | ls, cat, albums |
 | 8 | file-agent, photo-agent, knowledge-agent | mkdir, cpmv (copy), create-album (with add-item), save-text |
 | 9 | file-agent, photo-agent | ls, cat, album-detail |
 
@@ -27,7 +27,7 @@ The steps that need no NAS call (planning months, choosing photos, joining paper
 
 ## Simulated runs (MEASURED, 2026-11-13)
 
-The Skill's control flow from Step 0 to Step 9 was also restated as a small simulation, kept in the project's source repository, and run against a mock NAS whose agents return made-up results. Nine scenarios pass: a couple where everything works; a family with a baby kept for papers only; the same family without marking the baby (the run waits at Step 1); one person running twice on the same day (new folder name, no photo steps); a couple whose photo search fails and who declines the album; a declined folder with the album still saved; "unsure" answers at Step 0 (nothing is read); and a couple with one partner kept for papers only (paper-only gap labels). In every scenario nothing is written before its approval. This checks the written control flow, not how Uliya or the agents behave on a NAS.
+The Skill's control flow from Step 0 to Step 9 was also restated as a small simulation, kept in the project's source repository, and run against a mock NAS whose agents return made-up results. These scenarios pass: a couple where everything works; a family with a baby kept for papers only; the same family without marking the baby (the run waits at Step 1); one person running twice on the same day (new folder name, no photo steps); a couple whose photo search fails and who declines the album; a declined folder with the album still saved; "unsure" answers at Step 0 (nothing is read); and a couple with one partner kept for papers only (paper-only gap labels). In every scenario nothing is written before its approval. This checks the written control flow, not how Uliya or the agents behave on a NAS.
 
 ## Test cases (rules MEASURED as above; NAS run PLANNED for the finalist day, also the demo script)
 
@@ -49,4 +49,5 @@ All data is synthetic: stand-in people (a couple, and a family of four), photos 
 - Where Uliya's local-model setting is shown on the test NAS.
 - Whether the file agent can rename a file while copying it (the Skill falls back to the original name and records the upload order in the index).
 - How many photos the vision check handles in one call (the Skill sends at most 15 per call).
+- Reusing context lines from an earlier pack (Step 7) is checked by a rule check for matching, not by a simulated run.
 - Whether the agents honour "leave out paths in a Visa evidence folder" (the Skill also drops such paths itself before using any result).
