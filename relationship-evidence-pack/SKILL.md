@@ -65,7 +65,7 @@ Run the steps in order. Each step uses only real results from the steps before i
 
 ## Step 0. Consent and local model (no NAS call)
 
-If not already answered, ask the user and wait: "Quick check: is everyone in this pack OK with you putting it together (a parent or guardian answers for each child)?" and "This works best with Uliya's on-device model, so your photos and papers stay at home. Is it set to that?". If the user says no or is unsure about consent, stop before reading anything and say why. If the user is unsure about the model, explain that every step below that reads or saves content asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
+If not already answered, ask the user and wait: "Quick check: is everyone in this pack OK with you putting it together (a parent or guardian answers for each child)?" and "This works best with Uliya's on-device model, so your photos and papers stay at home. Is it set to that?". If the user says no or is unsure about consent, stop before reading anything and say why. If the user says the model is not set to on-device, stop before reading anything, say why, and suggest checking Uliya's model settings. If the user is unsure about the model, explain that every step below that reads or saves content asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
 
 ## Step 1. Confirm everyone in Photos
 
@@ -302,7 +302,7 @@ Send only the items the user approves. Also:
 8a. If the folder is approved, send:
 
 ```
-delegate --target file-agent --instruction 'Create the folder {EVIDENCE_FOLDER}, and any missing folders above it, with two subfolders, 01 Photos and 02 Papers. Do not change anything that already exists. If {EVIDENCE_FOLDER} already exists, create nothing and report failed: the folder already exists. Return the created paths.'
+delegate --target file-agent --instruction 'Use only the local model. Create the folder {EVIDENCE_FOLDER}, and any missing folders above it, with two subfolders, 01 Photos and 02 Papers. Do not change anything that already exists. If {EVIDENCE_FOLDER} already exists, create nothing and report failed: the folder already exists. Return the created paths.'
 ```
 
 8b, 8c, 8e and 8f need the folder: send them only if 8a completed. 8d does not; it depends only on its own approval.
@@ -310,13 +310,13 @@ delegate --target file-agent --instruction 'Create the folder {EVIDENCE_FOLDER},
 8b. If approved and `{PHOTO_COPIES}` is not empty:
 
 ```
-delegate --target file-agent --instruction 'Copy, never move, each file below into {EVIDENCE_FOLDER}/01 Photos. Each line is the source path, then -> , then the name to give the copy: {PHOTO_COPIES}. If a copy cannot be renamed, copy it under its original name into a subfolder named with its two-digit order number, and say so. Do not overwrite existing files. Return every copied path and every copy that failed.'
+delegate --target file-agent --instruction 'Use only the local model. Copy, never move, each file below into {EVIDENCE_FOLDER}/01 Photos. Each line is the source path, then -> , then the name to give the copy: {PHOTO_COPIES}. If a copy cannot be renamed, copy it under its original name into a subfolder named with its two-digit order number, and say so. Do not overwrite existing files. Return every copied path and every copy that failed.'
 ```
 
 8c. If approved and `{PAPER_COPIES}` is not empty:
 
 ```
-delegate --target file-agent --instruction 'Copy, never move, each file below into {EVIDENCE_FOLDER}/02 Papers. Each line is the source path, then -> , then the name to give the copy: {PAPER_COPIES}. If a copy cannot be renamed, copy it under its original name into a subfolder named with its two-digit order number, and say so. Do not overwrite existing files. Return every copied path and every copy that failed.'
+delegate --target file-agent --instruction 'Use only the local model. Copy, never move, each file below into {EVIDENCE_FOLDER}/02 Papers. Each line is the source path, then -> , then the name to give the copy: {PAPER_COPIES}. If a copy cannot be renamed, copy it under its original name into a subfolder named with its two-digit order number, and say so. Do not overwrite existing files. Return every copied path and every copy that failed.'
 ```
 
 8d. If the album is approved and `{CHOSEN_PHOTOS}` is not empty:
