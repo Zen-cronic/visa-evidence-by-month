@@ -160,7 +160,7 @@ Mei Tan and Daniel Reyes, common-law, January to June 2026. They have photos tog
 | **2026-06** | 2 | — | **—** |
 
 - **No paper showing you both at the same address found: April to June 2026.**
-  What could cover it: the lease starts no later than January 2026; a lease, bill or letter showing you both at 88 Carlow Avenue for April to June 2026 would cover these months, if you have them.
+  What could cover it: no regular paper found near these months. A lease, bill or letter showing you both at the same address for these months would count, if you have one.
 
 This table shows which months have a paper showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant.
 
