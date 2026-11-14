@@ -1,0 +1,18 @@
+{
+  "catalogVersion": "2.2.0",
+  "steps": [
+    {"step": "1", "agent": "photo-agent", "cli": "ug-photo", "actions": ["figure-albums"]},
+    {"step": "2", "agent": "photo-agent", "cli": "ug-photo", "actions": ["timeline-summary"],
+     "params": {"timeline-summary": ["figure-name", "figure-pet-method", "group-by", "sample-size", "start-time", "end-time", "file-type"]}},
+    {"step": "4", "agent": "photo-agent", "cli": "ug-photo", "actions": ["meta", "vision-vlm"]},
+    {"step": "5a", "agent": "document-agent", "cli": "ug-document", "actions": ["extract", "reconcile"]},
+    {"step": "5b", "agent": "photo-agent", "cli": "ug-photo", "actions": ["search-picture", "search-screen", "vision-ocr"],
+     "params": {"search-picture": ["ocr-contains", "start-time", "end-time"], "search-screen": ["keyword", "start-time", "end-time", "limit"]}},
+    {"step": "8", "agent": "file-agent", "cli": "ug-filesystem", "actions": ["mkdir", "cpmv"], "writes": true},
+    {"step": "8", "agent": "photo-agent", "cli": "ug-photo", "actions": ["create-album"], "writes": true,
+     "params": {"create-album": ["album-name", "add-item"]}},
+    {"step": "8", "agent": "knowledge-agent", "cli": "ug-knowledge", "actions": ["save-text"], "writes": true},
+    {"step": "9", "agent": "file-agent", "cli": "ug-filesystem", "actions": ["ls", "cat"]},
+    {"step": "9", "agent": "photo-agent", "cli": "ug-photo", "actions": ["album-detail"]}
+  ]
+}

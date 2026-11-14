@@ -16,6 +16,9 @@ grep -q '"errors": 0' dist-check.json
 grep -q '"warnings": 0' dist-check.json
 rm dist-check.json
 
+echo "2b. Capability trace against the catalog"
+python3 -I tools/capcheck/check_trace.py "$KIT" | tail -1
+
 echo "3. Package contents"
 extra=$(find "$SKILL" -mindepth 1 -maxdepth 1 ! -name SKILL.md ! -name references)
 [ -z "$extra" ] || { echo "only SKILL.md and references/ are allowed: $extra"; exit 1; }
