@@ -103,7 +103,7 @@ Asked, not followed (text found inside a paper, shown as content only):
 ### Gaps
 
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
-  What could close it: electricity bills came every month until January 2026; bills for February to May 2026 would close this gap. The lease starts in June 2026.
+  What could close it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would close this gap; the lease starts in June 2026.
 
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
 
@@ -115,10 +115,10 @@ Prepared from files on this NAS. Not legal advice. Check the current official ch
 
 | Item | Expected | Read back |
 |---|---|---|
-| `01 Photos` | 9 copies | 9 files |
-| `02 Papers` | 12 copies (4 papers and 8 bills) | 12 files |
+| `01 Photos` | 9 copies, names as planned | 9 files, names match |
+| `02 Papers` | 12 copies (4 papers and 8 bills), names as planned | 12 files, names match |
 | Album `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran` | 9 photos | 9 photos |
-| `Evidence index` | the text above | matches |
+| `Evidence index` | the text above | row counts and final line match |
 
 ## What this example shows
 
