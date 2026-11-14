@@ -22,7 +22,6 @@ Working notes for you. Do not upload this file; upload the photos, the papers an
 
 **Linh Tran, Minh Tran, An Tran and Bao Tran, a family, June 2025 to November 2026**
 
-Papers matched on the names printed on them: Tran Thi Linh, Tran Van Minh, Tran Thi An, Tran Gia Bao.
 
 ### Photos (upload order)
 
@@ -148,23 +147,21 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 
 ## A second, shorter example: a common-law couple
 
-Mei Tan and Daniel Reyes, common-law, January to June 2026. They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March; their April to June papers are a joint bank statement (both names, no address) and phone bills in Mei's name only.
+Mei Tan and Daniel Reyes, common-law, January to June 2026. They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March. In April, Mei's phone bill and Daniel's bank letter each show 88 Carlow Avenue. In May and June they have only a joint bank statement (both names, no address).
 
-| Month | Photos of both in the library | Linking paper | Same-address paper (counts) |
-|---|---|---|---|
-| 2026-01 | 4 | lease | lease |
-| 2026-02 | 3 | lease | lease |
-| 2026-03 | 5 | lease | lease |
-| **2026-04** | 2 | bank statement | **—** |
-| **2026-05** | 3 | bank statement | **—** |
-| **2026-06** | 2 | — | **—** |
+| Month | Photos of both in the library | In the pack | Linking paper | Same address shown (counts) |
+|---|---|---|---|---|
+| 2026-01 | 4 | #1 | lease | lease |
+| 2026-02 | 3 | #2 | lease | lease |
+| 2026-03 | 5 | #3 | lease | lease |
+| 2026-04 | 2 | #4 | — | phone bill (Mei) + bank letter (Daniel) |
+| **2026-05** | 3 | #5 | bank statement | **—** |
+| **2026-06** | 2 | #6 | — | **—** |
 
-- **No paper showing you both at the same address found: April to June 2026.**
-  What could cover it: no regular paper found near these months. A lease, bill or letter showing you both at the same address for these months would count, if you have one.
+- **No paper showing you both at the same address found: May to June 2026.**
+  What could cover it: no regular paper found near these months.
 
-This table shows which months have a paper showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant.
-
-Photos and the bank statement are still in the pack; they just do not fill a month for this check.
+This table shows which months have papers showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant. Photos and other papers stay in the pack; they just do not fill a month for this check.
 
 ## What this example shows
 
