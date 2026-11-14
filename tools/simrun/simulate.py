@@ -54,6 +54,8 @@ class User:
     four_yes: bool = False  # answered yes to all four spouse-checklist questions
     continue_if_not_needed: bool = True
     drop_papers: list = field(default_factory=list)  # papers the user drops in Step 7
+    children: list = field(default_factory=list)  # Photos names of children, if given
+    accept_adults: bool = True  # agrees to count the adults' photos when offered
     unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
 
 
@@ -95,6 +97,15 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             timeline_failed = True
         else:
             month_counts = nas.month_counts
+            # Step 2 offer: count the adults only, never the same people again, never fewer than two
+            adults = [p for p in photo_people if p not in user.children]
+            log["adults_offered"] = 0
+            if (scope == "a family" and any(n == 0 for n in month_counts.values())
+                    and len(adults) >= 2 and adults != photo_people):
+                log["adults_offered"] += 1
+                if user.accept_adults:
+                    photo_people = adults
+                    nas.call("photo-agent", "timeline-summary")
             plan = R.plan_months(month_counts, limit)
             nas.call("photo-agent", "vision-vlm")
             chosen = R.choose_photos(nas.samples, plan, limit).chosen

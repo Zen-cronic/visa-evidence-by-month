@@ -210,6 +210,23 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["waiting_for_answer"], ["2026-02.jpg"])
         self.assertEqual(log["gaps"], [])  # the lease still covers February
 
+    def test_v_adults_offer_is_not_repeated_when_the_baby_is_papers_only(self):
+        counts = months("2026-01", "2026-03", skip={"2026-02"})
+        family3 = FAMILY[:2] + [FAMILY[3]]
+        nas = MockNAS(family3, counts, samples(counts),
+                      [R.Paper("birth certificate", [FAMILY_PRINTED[0], FAMILY_PRINTED[3]], "scanned document", dated="2026-01-05")])
+        log = run(family3, FAMILY_PRINTED[:2] + [FAMILY_PRINTED[3]], "2026-01", "2026-03", nas,
+                  User(papers_only=[FAMILY[3]], children=[FAMILY[3]]))
+        self.assertEqual(log["adults_offered"], 0)
+        self.assertEqual(sum(1 for c in nas.calls if c[1] == "timeline-summary"), 1)
+
+    def test_w_adults_offer_made_once_for_a_family_of_four(self):
+        counts = months("2026-01", "2026-03", skip={"2026-02"})
+        nas = MockNAS(FAMILY, counts, samples(counts), [])
+        log = run(FAMILY, FAMILY_PRINTED, "2026-01", "2026-03", nas, User(children=FAMILY[2:]))
+        self.assertEqual(log["adults_offered"], 1)
+        self.assertEqual(sum(1 for c in nas.calls if c[1] == "timeline-summary"), 2)
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
