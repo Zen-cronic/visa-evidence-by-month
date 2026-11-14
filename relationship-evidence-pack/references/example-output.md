@@ -118,7 +118,7 @@ A gap can be a face-grouping miss: someone turned away, a child's face changing 
 
 Libraries searched: Linh Tran (personal), Tran family (shared).
 
-Papers matched on the names printed on them. On-device model confirmed by you: yes. Skipped: none.
+Papers matched on the names printed on them. On-device model confirmed by you: yes. Skipped: none. Declined: counting only the two adults.
 
 Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer.
 
