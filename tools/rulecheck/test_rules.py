@@ -347,6 +347,17 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertFalse(name_near("Rizal Hakim", "Kirana Hakim"))
         self.assertFalse(name_near("Tran Thi An", "Tran Thi Linh"))
 
+    def test_a_paper_starting_after_a_gap_is_suggested_only_when_new(self):
+        people = ["Mei Tan", "Daniel Reyes"]
+        counts = {m: 0 for m in month_range("2026-01", "2026-06")}
+        old = Paper("utility bill", people, "scanned document", "2026-01", "2026-02")
+        resumed = Paper("utility bill", people, "scanned document", "2026-05", "2026-06")
+        rows = coverage("2026-01", "2026-06", counts, [], [old, resumed])
+        self.assertNotIn("starts in", closers(rows, [old, resumed])[("2026-03", "2026-04")])
+        lease = Paper("lease", people, "scanned document", "2026-05", "2026-06")
+        rows = coverage("2026-01", "2026-06", counts, [], [old, lease])
+        self.assertIn("the lease starts in 2026-05", closers(rows, [old, lease])[("2026-03", "2026-04")])
+
     def test_accented_printed_names_match(self):
         self.assertTrue(name_matches("TRẦN, Thị Linh", "Tran Thi Linh"))
         self.assertTrue(name_matches("Đặng Văn Minh", "Dang Van Minh"))

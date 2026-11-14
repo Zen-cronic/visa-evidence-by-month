@@ -410,7 +410,11 @@ def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | N
             lines.extend(_address_series(address_docs, partners, labels or {}, before, a, b, prev))
         for p in linked:
             if p.start and after and p.start == after:
-                lines.append(f"the {p.kind} starts in {after}")
+                # only a paper that is new after the gap, not a regular one of the same kind resuming
+                seen_before = any(q is not p and q.kind == p.kind and sorted(q.names) == sorted(p.names)
+                                  and ((q.dated and q.dated[:7] < a) or (q.end and q.end < a)) for q in linked)
+                if not seen_before:
+                    lines.append(f"the {p.kind} starts in {after}")
         out[(a, b)] = "; ".join(lines) if lines else "no regular paper found near these months"
     return out
 
