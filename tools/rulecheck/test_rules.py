@@ -300,6 +300,9 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
                          ["no paper showing you both at the same address found: 2026-04 to 2026-06"])
         self.assertIn("No paper showing you both at the same address found: April to June 2026", text)
         self.assertIn("It does not show whether you meet the 12-month rule", text)
+        same_address = [lease]  # closers for common-law use same-address papers only
+        self.assertEqual(closers(rows, same_address)[("2026-04", "2026-06")], "no regular paper found near these months")
+        self.assertIn("What could cover it: no regular paper found near these months.", text)
 
 
 class ExampleOutputIsConsistent(unittest.TestCase):
