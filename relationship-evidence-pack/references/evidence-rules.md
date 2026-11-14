@@ -9,15 +9,15 @@ Planning applies to a couple or a family. For one person no photo is chosen.
 1. Start from the month counts returned by the timeline summary. Never plan a month with zero photos of everyone named.
 2. If the number of months with photos is at or below the photo limit, plan all of them.
 3. Otherwise spread the plan evenly across the whole period: always the first and the latest month with photos, then the months that best fill the longest stretches between planned months.
-4. Prefer months that also have no linking paper, so photos cover what papers do not.
 
 ## Choosing photos (Step 4)
 
 - Check only the sample photos returned for planned months.
-- A photo is fit to send only if it passes every rule, in order: everyone named is visible; every face visible and not covered; a real photo, not a screenshot or a photo of a screen, print or paper; suitable to show a government officer (no nudity, intimate or sexual content); not blurry.
+- A photo is fit to send only if it passes every rule, in order: at least as many people clearly visible as are named (who they are comes from face grouping); every face visible and not covered; a real photo, not a screenshot or a photo of a screen, print or paper; suitable to show a government officer (no nudity, intimate or sexual content); not blurry.
 - Count every failed photo by the first rule it failed, and show the counts.
-- Choose the first passing photo in each planned month. At most one photo per calendar day across the whole pack, so the pack is not filled with near-identical shots.
-- Never pad. If fewer photos pass than the limit, keep the smaller number and say so.
+- Choose the first passing photo in each planned month: one photo per month, so the pack is spread over time rather than filled with shots from one busy month.
+- The limit is a maximum, not a target. A short period, or months where nothing passes, gives fewer photos; keep the smaller number and say so. Never pad.
+- Only the sample photos from the timeline summary are checked (up to 3 a month). A month where every sample fails is labelled "3 samples checked, none fit to send" (or the number checked), because other photos from that month were not checked.
 
 ## Labelling each line
 
@@ -26,7 +26,7 @@ The official checklist asks for "a brief description of context of each photo". 
 | Field | Source | Label |
 |---|---|---|
 | Date | capture date in photo metadata | `from metadata` |
-| Place | location in photo metadata | `from metadata`, or `unknown` |
+| Place | place name in photo metadata; coordinates if that is all it holds | `from metadata`, or `unknown` |
 | People | the confirmed Photos people names | `from Photos people` |
 | Context | the visual description | `[confirm]`; saved as `[not confirmed]` unless the user confirms or edits it |
 
@@ -50,7 +50,7 @@ What counts as a linking paper depends on the scope:
 
 | Scope | Linking paper | Examples |
 |---|---|---|
-| One person | names you | a lease, a bill, a bank statement, an enrolment or employment letter |
+| One person | names the person | a lease, a bill, a bank statement, an enrolment or employment letter |
 | A couple | names both of you | a lease or mortgage, utility or internet bills, insurance, joint bank statements, official mail to the same address, a marriage certificate |
 | A family | names at least two of the people | a marriage certificate, a birth certificate naming a parent and a child, a lease naming both adults |
 

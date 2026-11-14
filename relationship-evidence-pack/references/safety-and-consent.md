@@ -8,9 +8,10 @@ The pack is about one person, a couple or a family. Step 0 asks whether every ad
 
 ## Privacy
 
+- Papers are matched on the names printed on them, which the user gives; the Skill never asks for passport, application, tax or bank numbers.
 - Immigration evidence mixes family and intimate photos, children's photos and birth certificates with leases, bills and bank statements. Step 0 asks the user to confirm Uliya is set to the local model, and every reading step tells the expert to use only the local model.
 - The Skill has no sharing, sync or upload step. It writes only copies, only to the location the user names, and only after approval.
-- Photos that fail the "suitable to show a government officer" rule are never shown in the draft, never copied and never added to the album. Only their count is reported.
+- Photos that fail the "suitable to show a government officer" rule are never described, shown in the draft, copied or added to the album. Only their count is reported; the vision check describes only photos that pass every rule.
 
 ## Misuse it will not help with
 
