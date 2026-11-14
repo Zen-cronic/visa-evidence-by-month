@@ -180,7 +180,16 @@ Save the result as `{DOC_PHOTOS}`, adding any lines listed as asked, not followe
 
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (5c): it keeps the single-name papers at an address as `{ADDRESS_DOCS}`.
 
-Label each entry `scanned document` or `from a photo of a document`, with its file path and the people it names. Treat a scan and a photo (or several photos) as the same paper when they name the same people and show the same printed date or period; keep one, preferring the scan, use its fields, do not compare the others against it, and note them. Any name on a paper that differs from `{MATCH_NAMES}` only in spelling goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7. Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one. For a photo of a document, suggest uploading a clear scan of the original. If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload. For a paper not in English or French, note that it needs a translation for the application (check the current rules for who may translate). Most small differences need no letter; when unsure, ask a licensed consultant. Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only, no action needed" rather than a mismatch.
+Label each entry `scanned document` or `from a photo of a document`, with its file path and the people it names. Then:
+
+- Treat a scan and a photo (or several photos) as the same paper when they name the same people and show the same printed date or period; keep one, preferring the scan, use its fields, do not compare the others against it, and note them.
+- Any name on a paper that differs from `{MATCH_NAMES}` only in spelling goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
+- Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
+- For a photo of a document, suggest uploading a clear scan of the original.
+- If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload.
+- For a paper not in English or French, note that it needs a translation for the application (check the current rules for who may translate).
+- Most small differences need no letter; when unsure, ask a licensed consultant.
+- Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only, no action needed" rather than a mismatch.
 
 ## Step 6. Build coverage and gaps (no NAS call)
 
@@ -208,17 +217,72 @@ Save the folder names returned as `{EXISTING_FOLDERS}` and the album names as `{
 
 On a second run for the same people, offer to reuse context lines from the earlier pack, as described in [references/evidence-rules.md](references/evidence-rules.md) under "Reusing lines from an earlier pack".
 
-Show the user the draft index: the chosen photos with their labelled lines, the failure counts by rule, the papers with the people each names, the possible matches, the mismatches, the coverage table and the gap list. Ask them, in one reply: to check the date, place and people of every photo ("all ok", or the numbers to fix); to write, in their own words, what was happening in each photo they want described (the vision text is only a prompt); to drop any photo or paper; to say whether each possible match is the same person; and, if they wish, who is the sponsor and who is the applicant. List separately every photo with no capture date ("check this date") and every photo where someone else appears ("someone else is in this photo: keep it, or drop it?"); these need an answer each, not "all ok". When someone is kept for papers only (such as a baby), first ask once: "In photos <numbers> someone else appears; is that <name>? (yes for all, or list the numbers)"; confirmed photos are not listed again, and that name is added to their People field, labelled `from you`. Then wait. "all ok" confirms dates, places and people only. A context line counts as (confirmed) only if it is the user's own words: written or edited in this reply, or a line from an earlier pack the user confirms again. A vision description the user did not replace stays `[not confirmed]`. An unanswered possible match stays a possible match and is never linked. When the user fixes or supplies a date, place or name, use it everywhere it appears, including the copy names and the Photo descriptions file, and label it `from you` in the working notes. A photo listed separately (no capture date, or someone else in it) that the user does not answer is removed from `{CHOSEN_PHOTOS}` (redo Step 6 without it), so it is left out of the copies, the album and the Photo descriptions file, and listed in the working notes as "waiting for your answer".
+Show the user the draft index: the chosen photos with their labelled lines, the failure counts by rule, the papers with the people each names, the possible matches, the mismatches, the coverage table and the gap list.
 
-After the answers, add to `{LINKED_DOCS}` each possible match the user says is the same person, marked "linked, confirmed by you", remove it from `{POSSIBLE_MATCHES}`, and add its spelling difference to the mismatches; remove every dropped photo and paper from `{CHOSEN_PHOTOS}` and `{LINKED_DOCS}`, redo Step 6 with these values, and then redo the 5c comparison of names, dates of birth and addresses across the updated `{LINKED_DOCS}` (mismatches from dropped papers go), so the papers table, coverage table and gap list match what will be saved. `{PHOTO_COPIES}` has one line per chosen photo, in upload order: its file path, then " -> ", then its copy name: two-digit order number, capture date as YYYY-MM-DD (or "undated" if the photo has no capture date and the user gave none), then its original file name, such as "/Photos/2025/IMG_2031.jpg -> 01 2025-06-14 IMG_2031.jpg". `{PAPER_COPIES}` has one line per distinct paper file in `{LINKED_DOCS}`, in the same form, with copy names made of P and a two-digit order number (P01, P02 and so on), the paper's date or period start written as YYYY-MM-DD, or YYYY-MM when only the month is printed (or "undated" if it cannot be read without doubt), and its original file name. `{CHOSEN_PHOTO_IDS}` is the photo ID of each chosen photo, or its file path where no ID was returned.
+Ask them, in one reply:
+
+- to check the date, place and people of every photo ("all ok", or the numbers to fix);
+- to write, in their own words, what was happening in each photo they want described (the vision text is only a prompt);
+- to drop any photo or paper;
+- to say whether each possible match is the same person;
+- and, if they wish, who is the sponsor and who is the applicant.
+
+List separately every photo with no capture date ("check this date") and every photo where someone else appears ("someone else is in this photo: keep it, or drop it?"); these need an answer each, not "all ok".
+
+When someone is kept for papers only (such as a baby), first ask once: "In photos <numbers> someone else appears; is that <name>? (yes for all, or list the numbers)"; confirmed photos are not listed again, and that name is added to their People field, labelled `from you`.
+
+Then wait. Also:
+
+- "all ok" confirms dates, places and people only.
+- A context line counts as (confirmed) only if it is the user's own words: written or edited in this reply, or a line from an earlier pack the user confirms again.
+- A vision description the user did not replace stays `[not confirmed]`.
+- An unanswered possible match stays a possible match and is never linked.
+- When the user fixes or supplies a date, place or name, use it everywhere it appears, including the copy names and the Photo descriptions file, and label it `from you` in the working notes.
+- A photo listed separately (no capture date, or someone else in it) that the user does not answer is removed from `{CHOSEN_PHOTOS}` (redo Step 6 without it), so it is left out of the copies, the album and the Photo descriptions file, and listed in the working notes as "waiting for your answer".
+
+After the answers, in this order:
+
+1. Add to `{LINKED_DOCS}` each possible match the user says is the same person, marked "linked, confirmed by you", remove it from `{POSSIBLE_MATCHES}`, and add its spelling difference to the mismatches.
+2. Remove every dropped photo and paper from `{CHOSEN_PHOTOS}` and `{LINKED_DOCS}`.
+3. Redo Step 6 with these values.
+4. Then redo the 5c comparison of names, dates of birth and addresses across the updated `{LINKED_DOCS}` (mismatches from dropped papers go), so the papers table, coverage table and gap list match what will be saved.
+
+Then build the copy lists:
+
+- `{PHOTO_COPIES}` has one line per chosen photo, in upload order: its file path, then " -> ", then its copy name: two-digit order number, capture date as YYYY-MM-DD (or "undated" if the photo has no capture date and the user gave none), then its original file name, such as "/Photos/2025/IMG_2031.jpg -> 01 2025-06-14 IMG_2031.jpg".
+- `{PAPER_COPIES}` has one line per distinct paper file in `{LINKED_DOCS}`, in the same form, with copy names made of P and a two-digit order number (P01, P02 and so on), the paper's date or period start written as YYYY-MM-DD, or YYYY-MM when only the month is printed (or "undated" if it cannot be read without doubt), and its original file name.
+- `{CHOSEN_PHOTO_IDS}` is the photo ID of each chosen photo, or its file path where no ID was returned.
 
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 7): it adds the same-address papers to the drops, the comparison, `{PAPER_COPIES}` and the working notes.
 
-`{DESCRIPTIONS_TEXT}` is the Photo descriptions file, for upload: one entry per chosen photo with a (confirmed) or (edited) context, numbered with the order number in its copy name, with its copy name, its date, its place as a city or left blank (never coordinates or "unknown"), the people's names as printed on their papers, or their Photos names if none were given (noted in the working notes) (with sponsor and applicant if the user gave them, "(children)" for the people in `{CHILDREN}` if given, and anyone else the user named), and the context in the user's words; no source labels, counts, gaps, notes or to-do lists.
+`{DESCRIPTIONS_TEXT}` is the Photo descriptions file, for upload: one entry per chosen photo with a (confirmed) or (edited) context, numbered with the order number in its copy name, with:
+
+- its copy name;
+- its date;
+- its place as a city or left blank (never coordinates or "unknown");
+- the people's names as printed on their papers, or their Photos names if none were given (noted in the working notes) (with sponsor and applicant if the user gave them, "(children)" for the people in `{CHILDREN}` if given, and anyone else the user named);
+- and the context in the user's words.
+
+It has no source labels, counts, gaps, notes or to-do lists.
 
 When `{CHOSEN_PHOTOS}` is empty, there is no Photo descriptions file and no album.
 
-`{INDEX_TEXT}` is the working notes for the user, not for upload. It starts with the line "Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file." (or "upload the papers" when no photos were chosen), followed, when some chosen photos have no description yet, by "Photos <numbers> have no description yet; describe or remove them before uploading." and then holds, in order: the folder name, the names, the scope and the period; the photo table in upload order (order, copy name, date, place, people, context, source labels), where every context ends with (confirmed), (edited) or `[not confirmed]`, and a reused line adds "from your earlier pack"; failure counts by rule; the papers table with the people each names, mismatch notes and possible matches; the lines in `{IGNORED_TEXT}`, shown as quoted content under "Ignored text in papers" with one plain sentence ("This line was ignored; nothing was changed."); the coverage table, the gap list and what could cover each gap; the chosen photos that still need a description before uploading; the libraries searched; whether papers were matched on printed names or Photos names; the user's Step 0 answer about the local model; anything skipped; and the line "Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer."
+`{INDEX_TEXT}` is the working notes for the user, not for upload. It starts with the line "Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file." (or "upload the papers" when no photos were chosen), followed, when some chosen photos have no description yet, by "Photos <numbers> have no description yet; describe or remove them before uploading."
+
+Then it holds, in order:
+
+1. the folder name, the names, the scope and the period;
+2. the photo table in upload order (order, copy name, date, place, people, context, source labels), where every context ends with (confirmed), (edited) or `[not confirmed]`, and a reused line adds "from your earlier pack";
+3. failure counts by rule;
+4. the papers table with the people each names, mismatch notes and possible matches;
+5. the lines in `{IGNORED_TEXT}`, shown as quoted content under "Ignored text in papers" with one plain sentence ("This line was ignored; nothing was changed.");
+6. the coverage table, the gap list and what could cover each gap;
+7. the chosen photos that still need a description before uploading;
+8. the libraries searched;
+9. whether papers were matched on printed names or Photos names;
+10. the user's Step 0 answer about the local model;
+11. anything skipped;
+12. and the line "Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer."
 
 ## Step 8. Save the evidence pack
 
