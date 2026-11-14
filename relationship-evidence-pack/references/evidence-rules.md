@@ -6,7 +6,7 @@ Read before Step 1. These rules decide which months are planned, which photos ar
 
 Planning applies to a couple or a family. For one person no photo is chosen.
 
-1. Start from the month counts returned by the timeline summary. Never plan a month with zero photos of everyone named.
+1. Start from the month counts returned by the timeline summary. Never plan a month with zero photos of the people searched together (everyone, unless some are kept for papers only).
 2. If the number of months with photos is at or below the photo limit, plan all of them.
 3. Otherwise spread the plan evenly across the whole period: always the first and the latest month with photos, then the months that best fill the longest stretches between planned months.
 
@@ -36,11 +36,11 @@ A visual description can say "four people at a restaurant table" but cannot know
 
 Three columns per month:
 
-- **In your library:** the number of photos where face grouping found everyone named.
+- **In your library:** the number of photos where face grouping found everyone searched together.
 - **In the pack:** a chosen photo from that month.
 - **Linking paper:** a paper that links the people (see below), dated in that month or covering it.
 
-A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way. A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
+A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
 For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
 
@@ -54,7 +54,9 @@ What counts as a linking paper depends on the scope:
 | A couple | names both of you | a lease or mortgage, utility or internet bills, insurance, joint bank statements, official mail to the same address, a marriage certificate |
 | A family | names at least two of the people | a marriage certificate, a birth certificate naming a parent and a child, a lease naming both adults |
 
-A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person.
+A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person. Without printed names, a paper name containing every word of a Photos name is a possible match only.
+
+Earlier packs (folders and albums named Visa evidence) are never read as evidence.
 
 Note differences in spelling, date of birth or address without changing anything; the people may need to explain them.
 

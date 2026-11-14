@@ -33,9 +33,9 @@ All data is synthetic: stand-in people (a couple, and a family of four), photos 
 2. **Core: joint documents.** A scanned lease and two utility bills naming both people, one with a different spelling of the address, plus a phone photo of an insurance letter naming both. Expected: all four found, the photo labelled `from a photo of a document`, the mismatch noted, nothing corrected.
 3. **Edge: no padding and unfit photos.** Only 9 qualifying photos, plus planted decoys (a screenshot, a photo of a screen, a photo with one partner). Expected: 9 kept, decoys counted by the rule they failed, none shown.
 4. **Edge: face-grouping miss.** One month where one partner faces away. Expected: that month appears as a gap with the face-grouping label, never as "not together".
-5. **Edge: person not named.** Expected: the Skill asks the user to name the person in Photos and stops.
+5. **Edge: person not named in Photos.** Expected: the Skill asks the user to name them, keep them for papers only (a baby with no face group), or remove them, and waits.
 6. **Core: a family of four.** Two parents and two children, about 12 months, with a marriage certificate and two birth certificates (one photographed) and one date-of-birth mismatch. Expected: photos of all four by month, the three certificates listed with the people each names, the mismatch noted, nothing corrected.
-7. **Edge: one person.** Expected: no photos chosen and no album; papers naming the person listed by month, with the gap list.
+7. **Edge: one person, run twice.** Expected: no Photos name needed, no photos chosen and no album; papers naming the person listed by month with "no linking paper found" gaps; the second run on the same day saves to a new folder name and never reads the first pack as evidence.
 
 ## Behaviour on the NAS (NOT VERIFIED)
 
