@@ -201,6 +201,19 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["gaps"], [])
         self.assertEqual(log["same_address_docs"], 2)
 
+    def test_t2_married_couple_single_name_papers_fill_a_month_and_are_copied(self):
+        counts = months("2026-03", "2026-04", skip={"2026-04"})  # no photos in April
+        phone = R.Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        bill = R.Paper("electricity bill", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="88 Carlow Avenue")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [phone, bill])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-03", "2026-04", nas, User(relationship="married"))
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["linked"], 0)  # neither paper names both
+        self.assertEqual(log["gaps"], [])  # March by its photo, April by the same-address pair
+        self.assertEqual(log["same_address_docs"], 2)
+        self.assertIn("paper copies", log["summary"]["saved"])
+        self.assertEqual(log["writes_before_approval"], [])
+
     def test_u_unanswered_listed_photo_is_held_out_of_the_pack(self):
         counts = months("2026-01", "2026-03")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts),

@@ -352,6 +352,24 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         rows = coverage("2026-04", "2026-04", {"2026-04": 2}, [], [], common_law=True, address_docs=[a, b], partners=couple)
         self.assertTrue(rows[0]["gap"])
 
+    def test_married_couple_separate_name_bills_at_the_same_address_fill_a_month_without_photos(self):
+        couple = ["Mei Tan", "Daniel Reyes"]
+        a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        b = Paper("electricity bill", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="88 Carlow Avenue")
+        counts = {"2026-03": 2, "2026-04": 0, "2026-05": 0}  # no photos in April or May
+        rows = coverage("2026-03", "2026-05", counts, [], [], address_docs=[a, b], partners=couple)
+        self.assertEqual(rows[1]["papers"], ["same address on separate papers"])
+        self.assertFalse(rows[0]["gap"])  # March is still covered by its photos
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2026-05"])
+
+    def test_married_couple_separate_name_bills_at_different_addresses_leave_a_gap(self):
+        couple = ["Mei Tan", "Daniel Reyes"]
+        a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        b = Paper("electricity bill", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="5 Pine Rd")
+        rows = coverage("2026-04", "2026-04", {"2026-04": 0}, [], [], address_docs=[a, b], partners=couple)
+        self.assertTrue(rows[0]["gap"])
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2026-04"])
+
 
 class ExampleOutputIsConsistent(unittest.TestCase):
     """The worked example in references/example-output.md matches the rules."""
@@ -443,9 +461,9 @@ class ExampleOutputIsConsistent(unittest.TestCase):
         hint = closers(rows, joined["linked"])[("2026-02", "2026-05")]
         self.assertIn("electricity bills came every month until 2026-01", hint)
         self.assertIn("the lease starts in 2026-06", hint)
-        self.assertIn("electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026", text)
+        self.assertIn("electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026", text)
         self.assertIn("Do not upload this file", text)
-        self.assertIn("format difference only, no action needed", text)
+        self.assertIn("format difference only", text)
 
 
 if __name__ == "__main__":

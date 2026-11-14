@@ -130,8 +130,8 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     papers_only = photo_steps_skipped or timeline_failed
     common_law = user.relationship == "common-law"
     partners = printed[:2]
-    # exactly one partner named (a child named too does not matter); joint papers are never here
-    address_docs = [p for p in nas.papers if common_law and p.address and len(R.named_in(p, partners)) == 1
+    # any couple or family: exactly one partner named (a child named too does not matter); joint papers are never here
+    address_docs = [p for p in nas.papers if scope != "one person" and p.address and len(R.named_in(p, partners)) == 1
                     and not any(p is d for d in user.drop_papers)]
     linked = [p for p in linked if not any(p is d for d in user.drop_papers)]
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law,

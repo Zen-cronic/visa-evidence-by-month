@@ -19,7 +19,7 @@ FORBIDDEN_GAP_WORDS = ("no relationship", "not together", "not in the country", 
 RULES = {
     1: "the people the photo is about clearly visible in the foreground",
     2: "their faces visible and not covered",
-    3: "a real photo, not a screenshot or a photo of a screen, print or paper",
+    3: "a real photo, not a screenshot or a photo of a screen or paper (a photographed print of a photo passes)",
     4: "appropriate to send to a government officer",
     5: "not blurry",
 }
@@ -262,7 +262,9 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
              common_law: bool = False, address_docs: list[Paper] | None = None, partners: list[str] | None = None,
              planned: list[str] | None = None) -> list[dict]:
     """month_counts is None for one person or when the photo search failed: gaps then use papers only.
-    For common-law couples a month counts only by a paper showing both at the same address; photos do not count."""
+    For any couple or family (partners given), separate papers, one naming each partner, showing the same address
+    fill a month no single paper covers. For married and other couples photos still count; for common-law couples
+    a month counts only by a paper showing both at the same address, and photos do not count."""
     if common_law:
         # alone, a paper counts only when it names both partners and shows an address
         linked = [p for p in linked if p.address and (not partners or len(named_in(p, partners)) == len(partners))]
@@ -272,7 +274,7 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
     numbers = {c.month: i + 1 for i, c in enumerate(chosen)}
     for month in month_range(start, end):
         papers = [p.kind for p in linked if paper_covers(p, month)]
-        if common_law and partners and not papers:
+        if partners and address_docs and not papers:
             # separate papers, one naming each partner, showing the same address that month
             by_partner = [{normalise_address(p.address) for p in address_docs
                            if p.address and paper_covers(p, month) and any(name_matches(n, who) for n in p.names)}
@@ -382,7 +384,7 @@ def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]
             while m in ms:
                 run, m = run + 1, prev(m)
             if run >= 3:
-                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would cover these months, if you have them")
+                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would add evidence for these months, if you have them")
         for p in linked:
             if p.start and after and p.start == after:
                 lines.append(f"the {p.kind} starts in {after}")
