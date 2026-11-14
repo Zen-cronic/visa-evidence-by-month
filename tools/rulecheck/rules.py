@@ -329,3 +329,11 @@ def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]
                 lines.append(f"the {p.kind} starts in {after}")
         out[(a, b)] = "; ".join(lines) if lines else "no regular paper found near these months"
     return out
+
+
+def carry_over(earlier_lines: dict[str, tuple[str, str]], chosen_names: list[str]) -> dict[str, str]:
+    """Step 7: reuse only confirmed or edited context lines from an earlier index, only for photos chosen
+    again (matched by original file name). Status values are "confirmed", "edited" or "not confirmed"."""
+    return {name: f"{line} (from your earlier pack)"
+            for name, (line, status) in earlier_lines.items()
+            if name in chosen_names and status in ("confirmed", "edited")}

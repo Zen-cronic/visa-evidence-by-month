@@ -81,7 +81,8 @@
    "agent": "file-agent",
    "cli": "ug-filesystem",
    "actions": [
-    "ls"
+    "ls",
+    "cat"
    ]
   },
   {
