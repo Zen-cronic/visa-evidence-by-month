@@ -45,3 +45,10 @@ For common-law couples, the table shows at a glance whether the latest 12 months
 ## Joint documents (Step 5)
 
 Useful kinds: a lease or mortgage naming both, utility or internet bills, insurance, bank statements, official mail to the same address. Keep only documents naming both partners. Note differences in spelling or address without changing anything; the couple may need to explain them.
+
+Many people photograph papers with their phone instead of scanning them. Step 5b finds those photos and reads their text:
+
+- A photo of a document counts as joint only when its recognised text contains both partners' names as written. Names, addresses and dates are copied from the text, never guessed or completed.
+- Each one is labelled `from a photo of a document` in the index, with a note to upload a clean scan or the original if the officer needs it.
+- If the same paper exists as a scan and a photo, the scan is used and the photo is noted.
+- A photo of a document is never a relationship photo: it fails rule 3 in Step 4 and has no faces to group.
