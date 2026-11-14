@@ -111,7 +111,12 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     photo_steps_skipped = scope == "one person" or not user.photos_needed or len(photo_people) < 2
     papers_only = photo_steps_skipped or timeline_failed
     common_law = user.relationship == "common-law"
-    rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law)
+    partners = printed[:2]
+    address_docs = [p for p in nas.papers if common_law and p.address and len(R.named_in(p, partners)) == 1]
+    rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law,
+                      address_docs=address_docs, partners=partners)
+    same_address_docs = [p for p in address_docs
+                         if any(r["papers"] == ["same address on separate papers"] and R.paper_covers(p, r["month"]) for r in rows)]
     if common_law:
         papers_only = True
     gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law))
@@ -149,7 +154,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     folder_ok = results.get("folder") == "completed"
     if approved.get("folder") and chosen and folder_ok:
         results["photo copies"] = nas.call("file-agent", "cpmv", write=True, item="photo copies")
-    if approved.get("folder") and linked and folder_ok:
+    if approved.get("folder") and (linked or same_address_docs) and folder_ok:
         results["paper copies"] = nas.call("file-agent", "cpmv", write=True, item="paper copies")
     if approved.get("album"):
         results["album"] = nas.call("photo-agent", "create-album", write=True, item="album")
@@ -161,7 +166,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     if approved.get("folder"):
         if chosen:
             items["photo copies"] = True
-        if linked:
+        if linked or same_address_docs:
             items["paper copies"] = True
     summary = R.save_summary(items, results)
 
@@ -173,5 +178,6 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
-               written=list(nas.written), reused=reused, reuse_note=reuse_note)
+               written=list(nas.written), reused=reused, reuse_note=reuse_note,
+               same_address_docs=len(same_address_docs))
     return log

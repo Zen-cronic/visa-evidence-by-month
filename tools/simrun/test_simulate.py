@@ -163,6 +163,16 @@ class Scenarios(unittest.TestCase):
         self.assertNotIn(("photo-agent", "timeline-summary"), nas.calls)
         self.assertEqual(log["gaps"], [])
 
+    def test_q_common_law_single_name_papers_fill_a_month_and_are_copied(self):
+        counts = months("2026-04", "2026-04")
+        phone = R.Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        letter = R.Paper("bank letter", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="88 Carlow Avenue")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [phone, letter])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-04", "2026-04", nas, User(relationship="common-law"))
+        self.assertEqual(log["gaps"], [])
+        self.assertEqual(log["same_address_docs"], 2)
+        self.assertIn("paper copies", log["summary"]["saved"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
