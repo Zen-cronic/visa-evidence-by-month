@@ -27,7 +27,7 @@ The scope follows the people named at the start:
 | People named | Scope | What the evidence shows |
 |---|---|---|
 | 2 | A couple | Photos of both together, and papers naming both |
-| 3 or more | A family | Photos of everyone together, and papers linking family members |
+| 3 or more | A family | Photos of everyone together, or of the couple (the user chooses), and papers linking family members |
 | 1 | One person | Papers that name the person, month by month |
 
 From the photo library and papers already on the NAS, this Skill produces:
@@ -41,7 +41,7 @@ The Skill prepares evidence only. It does not judge eligibility, does not give l
 
 # Required input
 
-Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`). Everything else below has a default or is asked only when it is needed, as each item says:
+Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`), and, for a family, whose photos to search (`{PHOTO_SCOPE}`). Everything else below has a default or is asked only when it is needed, as each item says:
 
 - `{PEOPLE}`: one or more people, each as named in Photos people albums (if more than six are named, ask which six at most to search in photos together; the rest are kept for papers only), in the order they should appear. If the names are not known, Step 1 lists the named people albums first. `{SCOPE}` is one person, a couple or a family, from the number of people. For one person, a Photos name is not needed.
 - `{PAPER_NAMES}`: each person's full name as printed on their papers, such as "Tran Thi Linh" for the Photos name "Linh", and which word is the family name (`{FAMILY_NAMES}`, such as "Tran"). Ask for both once, just before Step 5, if papers are searched. For one person, use the name in `{PEOPLE}` as the printed name unless the user gives another; if that name is one word, ask for the full name as printed on their papers. If the user does not give it, papers can only be possible matches (see Step 5), never linked unless the user confirms each one in Step 7, and the index says so.
@@ -53,6 +53,7 @@ Ask once, in one short message, for: who is on the application (`{PEOPLE}`), sin
 - `{SAVE_LOCATION}`: where to create the evidence folder. Ask; you may suggest a folder for the user to accept or change, but never choose it without their yes. It must not be inside `{DOCS_FOLDER}`; if it is, ask for another, so a saved pack is never read back in as evidence.
 - `{PHOTO_LIMIT}`: default 20, a maximum. Not used for one person.
 - `{RELATIONSHIP}`: married, common-law, or other (for a couple or family). It decides what the coverage table counts (Step 6). For a family, also ask which two people are the partners (`{PARTNERS}`); for a couple, `{PARTNERS}` is the two people.
+- `{PHOTO_SCOPE}`: for a family only, "the couple" or "everyone". Ask in the same up-front message as the relationship type, in these words: "Search photos of the two of you together, or of everyone on the application? (Partner-visa photo requests are usually about the couple; children are linked by their birth certificates.)" There is no default; wait for the answer. Not asked for a couple or one person; not used when `{PHOTOS_NEEDED}` is no.
 - `{PHOTOS_NEEDED}`: whether the application asks for photos. Asked in the up-front message for a couple or family. For example, Canada's spouse checklist asks four questions (living together, children together, first marriage for both, married at least two years); if the answer to all four is yes, it says no additional proof of relationship is needed at this time. In that case, say so plainly, explain that an officer can still ask later, and ask whether to build a pack anyway; stop if the user says no. If photos are not needed but the user continues, skip Steps 2 to 4 and build the papers only. Default yes.
 
 Never ask for passport, application, tax or bank numbers.
@@ -75,13 +76,13 @@ Skip for one person, and when `{PHOTOS_NEEDED}` is no. If `{PEOPLE}` was not giv
 delegate --target photo-agent --instruction 'Use only the local model. List the people albums in Photos that have a name, with each name and person ID, and the number of unnamed people albums. Read only; do not rename, merge or change any album.'
 ```
 
-Show the names, ask the user to pick the people for the application, and wait. `{PEOPLE_TO_CHECK}` is everyone in `{PEOPLE}` except people the user already said to keep for papers only, each as the user gave it; papers-only people keep the name the user gave. If `{PEOPLE_TO_CHECK}` is empty, skip the next call. Otherwise send:
+Show the names, ask the user to pick the people for the application, and wait. `{PEOPLE_TO_CHECK}` is `{PARTNERS}` when `{PHOTO_SCOPE}` is the couple, otherwise everyone in `{PEOPLE}` except people the user already said to keep for papers only, each as the user gave it; everyone not checked keeps the name the user gave. If `{PEOPLE_TO_CHECK}` is empty, skip the next call. Otherwise send:
 
 ```
 delegate --target photo-agent --instruction 'Use only the local model. List the people albums in Photos that have a name. Check whether each of these names exists exactly: {PEOPLE_TO_CHECK}. For each, return the exact person name and person ID. If a name has no exact match, return up to five closest named people and the number of unnamed people albums; never guess. Also return which photo libraries are searched for this account, personal and shared. Read only; do not rename, merge or change any album.'
 ```
 
-After the reply, replace each checked name in `{PEOPLE}`, `{PARTNERS}` and `{CHILDREN}` with the exact Photos name returned or picked. If the people were picked from the list rather than named up front, ask the Step 0 consent question again for those names. If anyone is not found, ask the user to pick one of the closest names, to name that person in Photos and say done (then send the check call again for that name only), to keep that person for papers only (for example, a baby with no face group yet), or to remove them (then work out `{SCOPE}` again, and ask the relationship questions again only if it changed), and wait. Never drop a person silently. `{PHOTO_PEOPLE}` is everyone in `{PEOPLE}` except people kept for papers only; they stay in `{PEOPLE}` for papers, names and labels.
+After the reply, replace each checked name in `{PEOPLE}`, `{PARTNERS}` and `{CHILDREN}` with the exact Photos name returned or picked. If the people were picked from the list rather than named up front, ask the Step 0 consent question again for those names. If anyone is not found, ask the user to pick one of the closest names, to name that person in Photos and say done (then send the check call again for that name only), to keep that person for papers only (for example, a baby with no face group yet), or to remove them (then work out `{SCOPE}` again, and ask the relationship questions and `{PHOTO_SCOPE}` again only if it changed), and wait. Never drop a person silently. `{PHOTO_PEOPLE}` is `{PARTNERS}` when `{PHOTO_SCOPE}` is the couple, otherwise everyone in `{PEOPLE}` except people kept for papers only. Everyone not in `{PHOTO_PEOPLE}` stays in `{PEOPLE}` for papers, names and labels; children not searched are still linked by their birth certificates (Step 5).
 
 ## Step 2. Count photos of the people per month
 
@@ -102,8 +103,8 @@ delegate --target photo-agent --instruction 'Use only the local model. For each 
 `{MONTHS_WITH_PHOTOS}` is every month in `{MONTH_COUNTS}` with more than zero photos. If the sample call fails, keep `{MONTH_COUNTS}` and the normal gap definition, skip Steps 3 and 4, and show the chosen-photo column as "sample search failed".
 
 - If the timeline call failed, report it as failed, skip Steps 3 and 4, and continue with Step 5. A failed call is not an empty result; Step 6 marks the photo column as failed.
-- For a family where some months have zero photos of all these people, offer to count photos of the adults (the people in `{PHOTO_PEOPLE}` not in `{CHILDREN}`; ask who they are if `{CHILDREN}` was not given) instead for the whole period (partner-visa photo requests are usually about the couple; children are linked by their birth certificates), and wait. Do not offer it if that would leave fewer than two people or the same people already searched. If the user agrees, set `{PHOTO_PEOPLE}` to those adults and send Step 2 again; if they decline, continue with Step 3.
-- If there are no results, report "Photos face grouping found no photo of all these people in this period". For a couple, skip Steps 3 and 4 and continue with Step 5. For a family, ask whether to count photos of fewer people instead, such as the two adults (useful when a child was born during the period or is too young for face grouping), unless that would be the same people already searched, and wait. If the user declines, or there is no smaller group to offer, skip Steps 3 and 4 and continue with Step 5. If the user agrees, set `{PHOTO_PEOPLE}` to those names and send Step 2 again; every later step and label then uses `{PHOTO_PEOPLE}`. Never change the names, other people or dates on your own.
+- For a family where `{PHOTO_SCOPE}` is everyone and some months have zero photos of all these people, offer to count photos of the adults (the people in `{PHOTO_PEOPLE}` not in `{CHILDREN}`; ask who they are if `{CHILDREN}` was not given) instead for the whole period (partner-visa photo requests are usually about the couple; children are linked by their birth certificates), and wait. Do not offer it if that would leave fewer than two people or the same people already searched; when `{PHOTO_SCOPE}` is the couple, the adults are the people already searched, so it is never offered. If the user agrees, set `{PHOTO_PEOPLE}` to those adults and send Step 2 again; if they decline, continue with Step 3.
+- If there are no results, report "Photos face grouping found no photo of all these people in this period". For a couple, skip Steps 3 and 4 and continue with Step 5. For a family where `{PHOTO_SCOPE}` is everyone, ask whether to count photos of fewer people instead, such as the two adults (useful when a child was born during the period or is too young for face grouping), unless that would be the same people already searched, and wait; when `{PHOTO_SCOPE}` is the couple there is no smaller group to offer. If the user declines, or there is no smaller group to offer, skip Steps 3 and 4 and continue with Step 5. If the user agrees, set `{PHOTO_PEOPLE}` to those names and send Step 2 again; every later step and label then uses `{PHOTO_PEOPLE}`. Never change the names, other people or dates on your own.
 
 ## Step 3. Plan the months (no NAS call)
 
@@ -187,7 +188,7 @@ When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](refer
 
 These bullets apply when `{RELATIONSHIP}` is not common-law:
 - A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}`, no linking paper was found and no same-address pair fills it.
-- Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: <first gap month> to <last gap month>" (for example, "March to June 2025") (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`).
+- Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: <first gap month> to <last gap month>" (for example, "March to June 2025") (when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`, put "of the couple" in place of "of everyone" when `{PHOTO_SCOPE}` is the couple, "of the two adults" when the user agreed to count only the adults, or otherwise the names).
 - For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper and no same-address pair, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
 For every gap label, common-law included: never write "no relationship", "not together" or "not in the country". Also, if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
 
@@ -230,7 +231,7 @@ Ask them, in one reply:
 
 List separately every photo with no capture date ("check this date") and every photo where someone else appears ("someone else is in this photo: keep it, or drop it?"); these need an answer each, not "all ok".
 
-When someone is kept for papers only (such as a baby), first ask once: "In photos <numbers> someone else appears; is that <name>? (yes for all, or list the numbers)"; confirmed photos are not listed again, and that name is added to their People field, labelled `from you`.
+When someone on the application is not in `{PHOTO_PEOPLE}` (kept for papers only, such as a baby, or not searched because `{PHOTO_SCOPE}` is the couple), first ask once: "In photos <numbers> someone else appears; is that <name or names>? (yes for all, or list the numbers)"; confirmed photos are not listed again, and that name (or those names) is added to their People field, labelled `from you`.
 
 Then wait. Also:
 
@@ -274,7 +275,7 @@ If any context line the user wrote for the Photo descriptions file is not in Eng
 
 Then it holds, in order:
 
-1. the folder name, the names, the scope and the period;
+1. the folder name, the names, the scope, for a family whose photos were searched (`{PHOTO_SCOPE}`), and the period;
 2. the photo table in upload order (order, copy name, date, place, people, context, source labels), where every context ends with (confirmed), (edited) or `[not confirmed]`, and a reused line adds "from your earlier pack";
 3. failure counts by rule;
 4. the papers table with the people each names, mismatch notes and possible matches;
