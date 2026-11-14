@@ -7,7 +7,13 @@ description: Shows which months a couple or family can and cannot show evidence 
 
 - **For:** a couple or family preparing a partner or spouse sponsorship or visa application (with their children), asking "which months can we not prove yet?"
 - **Result:** a month-by-month coverage table and gap list for the user's own checking, and, after approval, an evidence folder with the photos, the papers and a Photo descriptions file organised for upload, a Photos album, and working notes the user keeps; all read back after saving.
-- **NAS capabilities, in order:** face albums to confirm people → a timeline of photos with several people together, by month → photo details and the vision model for the fit-to-send check → document extraction and reconciling, plus text recognition on photographed papers → making the folder, copying, creating the album and saving the index (after approval) → reading back what was saved. The table under Generation-time capability evidence names each catalog action.
+- **NAS capabilities, in order** (each catalog action is named under Generation-time capability evidence):
+  1. face albums, to confirm the people;
+  2. a timeline of photos with several people together, by month;
+  3. photo details and the vision model, for the fit-to-send check;
+  4. document extraction and reconciling, plus text recognition on photographed papers;
+  5. making the folder, copying, creating the album and saving the files (after approval);
+  6. reading back what was saved.
 - **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never puts a context line the user did not confirm in the Photo descriptions file (the working notes keep it marked `[not confirmed]`); nothing is written before approval.
 
 # Goal
