@@ -8,8 +8,10 @@ It works from the photos and papers already on the NAS:
 
 - finds photos where everyone on the application appears together, month by month, and checks each one is fit to send;
 - finds the papers that link the people (leases, bills, marriage and birth certificates, scanned or photographed) and notes every name, birth date and address mismatch without changing it;
-- lists the months with no evidence yet, and which of your regular papers could cover each one;
+- lists the months with no evidence yet, and which of your regular papers would add evidence for each one;
 - saves an evidence folder to build your upload from, only after you approve it.
+
+Evidence-binder apps sort what you collect and tag yourself. This finds what is already at home: face grouping across the whole photo library, papers matched on the names printed on them, photographed papers read, and the months that still need a paper.
 
 It also prepares one person's own papers. Every step asks Uliya to use only the on-device model; nothing is saved until you approve it, and each save is read back.
 
