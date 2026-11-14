@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 from rules import (
-    FORBIDDEN_GAP_WORDS, GAP_LABEL, Checked, Paper, choose_photos, confirm_people,
+    FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, gap_label, name_matches, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of,
 )
 
@@ -155,19 +155,44 @@ class EdgeOnePerson(unittest.TestCase):
         me = ["Ana Lima"]
         self.assertEqual(scope_of(me), "one person")
         papers = [Paper("lease", me, "scanned document", "2025-01", "2025-06"),
+                  Paper("letter", me, "scanned document", dated="2025-10-02"),
                   Paper("bank statement", me, "from a photo of a document", dated="2025-09-30")]
         out = join_papers(papers, me)
         counts = {m: 2 for m in month_range("2025-01", "2025-10")}
         counts["2025-07"] = counts["2025-08"] = 0
-        rows = coverage("2025-01", "2025-10", counts, [], out["linked"])
+        rows = coverage("2025-01", "2025-10", None, [], out["linked"])
         self.assertTrue(all(r["pack"] is None for r in rows))
-        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-07 to 2025-08"])
+        self.assertEqual(gap_lines(rows, gap_label(papers_only=True)), [f"{PAPER_GAP_LABEL}: 2025-07 to 2025-08"])
 
     def test_scope_bounds(self):
         with self.assertRaises(ValueError):
             scope_of([])
         with self.assertRaises(ValueError):
             scope_of([str(i) for i in range(7)])
+
+
+class NamesAndFailures(unittest.TestCase):
+    """Printed names match across case, commas and order; spelling variants are possible matches only."""
+
+    def test_printed_name_forms(self):
+        self.assertTrue(name_matches("TRAN, Thi Linh", "Tran Thi Linh"))
+        self.assertFalse(name_matches("Tran Thi Lin", "Tran Thi Linh"))
+
+    def test_spelling_variant_is_a_possible_match_not_a_link(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        p = Paper("lease", ["TRAN, Thi Lin", "Tran Van Minh"], "scanned document", "2025-01", "2025-12")
+        out = join_papers([p], couple)
+        self.assertEqual(out["linked"], [])
+        self.assertEqual(out["possible_matches"], [p])
+
+    def test_failed_photo_search_is_not_a_face_grouping_gap(self):
+        rows = coverage("2025-01", "2025-03", None, [], [])
+        lines = gap_lines(rows, gap_label(search_failed=True))
+        self.assertEqual(lines, [f"{PAPER_GAP_LABEL}; the photo search failed: 2025-01 to 2025-03"])
+        self.assertNotIn("face grouping", lines[0])
+
+    def test_fewer_people_label_names_who_was_counted(self):
+        self.assertIn("of the two adults", gap_label(who="the two adults"))
 
 
 class ExampleOutputIsConsistent(unittest.TestCase):

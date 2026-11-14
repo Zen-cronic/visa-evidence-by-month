@@ -68,4 +68,4 @@ if errors:
     for e in errors:
         print("  -", e)
     sys.exit(1)
-print("OK: every action exists, Steps 1-6 only read, every write is in Step 8 behind approval")
+print("OK: every action exists, Steps 1-7 only read, every write is in Step 8 behind approval")

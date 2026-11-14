@@ -8,9 +8,11 @@ synthetic cases. It does not call the NAS and does not prove runtime behaviour.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 GAP_LABEL = "no photo of everyone found by face grouping and no linking paper"
+PAPER_GAP_LABEL = "no linking paper found"
 FORBIDDEN_GAP_WORDS = ("no relationship", "not together", "not in the country", "apart")
 
 RULES = {
@@ -128,13 +130,34 @@ class Paper:
     asks: str | None = None  # an instruction found inside the paper
 
 
+def _words(name: str) -> list[str]:
+    return sorted(re.sub(r"[,.]", " ", name).lower().split())
+
+
+def name_matches(printed: str, given: str) -> bool:
+    """Same words, ignoring case, commas and word order."""
+    return _words(printed) == _words(given)
+
+
+def name_near(printed: str, given: str) -> bool:
+    """Same number of words and exactly one word spelled differently."""
+    a, b = _words(printed), _words(given)
+    return len(a) == len(b) >= 2 and len(set(a) ^ set(b)) == 2
+
+
+def _enough(named: int, people: list[str]) -> bool:
+    if len(people) <= 2:
+        return named == len(people)
+    return named >= 2
+
+
+def named_in(paper: Paper, people: list[str], near: bool = False) -> list[str]:
+    hit = name_near if near else name_matches
+    return [g for g in people if any(name_matches(n, g) or (near and hit(n, g)) for n in paper.names)]
+
+
 def links(paper: Paper, people: list[str]) -> bool:
-    named = [p for p in people if p in paper.names]
-    if len(people) == 1:
-        return len(named) == 1
-    if len(people) == 2:
-        return len(named) == 2
-    return len(named) >= 2
+    return _enough(len(named_in(paper, people)), people)
 
 
 def join_papers(papers: list[Paper], people: list[str]) -> dict:
@@ -144,8 +167,11 @@ def join_papers(papers: list[Paper], people: list[str]) -> dict:
     asked = [p.asks for p in readable if p.asks]
     linked: list[Paper] = []
     noted_photos: list[Paper] = []
+    possible: list[Paper] = []
     for p in readable:
         if not links(p, people):
+            if _enough(len(named_in(p, people, near=True)), people):
+                possible.append(p)  # shown to the user, never linked on its own
             continue
         twin = next(
             (q for q in linked if q.kind == p.kind and sorted(q.names) == sorted(p.names)
@@ -170,6 +196,7 @@ def join_papers(papers: list[Paper], people: list[str]) -> dict:
     return {
         "linked": linked,
         "noted_photos": noted_photos,
+        "possible_matches": possible,
         "unreadable": unreadable,
         "mismatches": mismatches,
         "asked_not_followed": asked,
@@ -184,18 +211,19 @@ def paper_covers(paper: Paper, month: str) -> bool:
     return bool(paper.dated) and paper.dated[:7] == month
 
 
-def coverage(start: str, end: str, month_counts: dict[str, int], chosen: list[Checked], linked: list[Paper]) -> list[dict]:
+def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: list[Checked], linked: list[Paper]) -> list[dict]:
+    """month_counts is None for one person or when the photo search failed: gaps then use papers only."""
     rows = []
     numbers = {c.month: i + 1 for i, c in enumerate(chosen)}
     for month in month_range(start, end):
         papers = [p.kind for p in linked if paper_covers(p, month)]
-        count = month_counts.get(month, 0)
+        count = None if month_counts is None else month_counts.get(month, 0)
         rows.append({
             "month": month,
             "library": count,
             "pack": numbers.get(month),
             "papers": papers,
-            "gap": count == 0 and not papers,
+            "gap": (count in (None, 0)) and not papers,
         })
     return rows
 
@@ -213,5 +241,11 @@ def group_gaps(rows: list[dict]) -> list[tuple[str, str]]:
     return runs
 
 
-def gap_lines(rows: list[dict]) -> list[str]:
-    return [f"{GAP_LABEL}: {a} to {b}" if a != b else f"{GAP_LABEL}: {a}" for a, b in group_gaps(rows)]
+def gap_label(papers_only: bool = False, search_failed: bool = False, who: str | None = None) -> str:
+    if papers_only or search_failed:
+        return PAPER_GAP_LABEL + ("; the photo search failed" if search_failed else "")
+    return GAP_LABEL if who is None else GAP_LABEL.replace("of everyone", f"of {who}")
+
+
+def gap_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
+    return [f"{label}: {a} to {b}" if a != b else f"{label}: {a}" for a, b in group_gaps(rows)]
