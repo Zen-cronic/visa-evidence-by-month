@@ -286,6 +286,22 @@ class NamesAndFailures(unittest.TestCase):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 
 
+class CommonLawExampleIsConsistent(unittest.TestCase):
+    """The common-law example in references/example-output.md follows the same-address rule."""
+
+    def test_common_law_example(self):
+        text = EXAMPLE.read_text()
+        couple = ["Mei Tan", "Daniel Reyes"]
+        lease = Paper("lease", couple, "scanned document", "2026-01", "2026-03", address="88 Carlow Avenue")
+        bank = Paper("bank statement", couple, "scanned document", "2026-04", "2026-05")
+        counts = {"2026-01": 4, "2026-02": 3, "2026-03": 5, "2026-04": 2, "2026-05": 3, "2026-06": 2}
+        rows = coverage("2026-01", "2026-06", counts, [], [lease, bank], common_law=True)
+        self.assertEqual(gap_lines(rows, gap_label(common_law=True)),
+                         ["no paper showing you both at the same address found: 2026-04 to 2026-06"])
+        self.assertIn("No paper showing you both at the same address found: April to June 2026", text)
+        self.assertIn("It does not show whether you meet the 12-month rule", text)
+
+
 class ExampleOutputIsConsistent(unittest.TestCase):
     """The worked example in references/example-output.md matches the rules."""
 
@@ -328,7 +344,8 @@ class ExampleOutputIsConsistent(unittest.TestCase):
         ]
 
     def example_rows(self) -> dict[str, tuple[int, str, str]]:
-        text = EXAMPLE.read_text()
+        full = EXAMPLE.read_text()
+        text = full[full.index("### Coverage"):full.index("### Gaps")]  # the family example only
         rows = {}
         for m in re.finditer(r"^\| \**(\d{4}-\d{2})\** \| \**(\d+)\** \| ([^|]+) \| \**([^|*]+?)\** \|$", text, re.M):
             rows[m.group(1)] = (int(m.group(2)), m.group(3).strip(), m.group(4).strip())
