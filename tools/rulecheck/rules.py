@@ -263,7 +263,25 @@ def gap_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
 
 # Step 7
 
-def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Paper], dropped: list[Paper]) -> list[Paper]:
-    """Add the possible matches the user confirmed, remove dropped papers; Step 6 is then redone."""
-    kept = [p for p in linked + [c for c in confirmed if c in possible] if not any(p is d for d in dropped)]
-    return kept
+def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Paper], dropped: list[Paper],
+                  people: list[str] | None = None, mismatches: list | None = None) -> list[Paper]:
+    """Add the possible matches the user confirmed, remove dropped papers; Step 6 is then redone.
+
+    When `people` and `mismatches` are given, each confirmed match adds its spelling difference to
+    `mismatches` (the user linked it knowingly, and may need to explain it)."""
+    added = [c for c in confirmed if c in possible]
+    if people is not None and mismatches is not None:
+        for c in added:
+            for given in people:
+                for printed in c.names:
+                    if name_near(printed, given):
+                        mismatches.append(("name spelling", given, sorted([printed, given])))
+    return [p for p in linked + added if not any(p is d for d in dropped)]
+
+
+def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str, list[str]]:
+    """Step 8: a declined item is the user's choice, a failed one is a failure; they are reported apart."""
+    declined = [k for k, ok in approved.items() if not ok]
+    failed = [k for k, ok in approved.items() if ok and results.get(k) != "completed"]
+    saved = [k for k, ok in approved.items() if ok and results.get(k) == "completed"]
+    return {"saved": saved, "declined": declined, "failed": failed}
