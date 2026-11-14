@@ -47,4 +47,4 @@ This list is from the spouse checklist. Common-law partners use IMM 5589 (https:
 | Photos spread across months and places | "taken at different times and places" |
 | A line for each photo, confirmed by the couple | "a brief description of context of each photo provided, label your photos accordingly" |
 | Joint documents naming both partners | IMM 5533 cohabitation list ("at least two (2)") |
-| Month-by-month coverage | 12 consecutive months for common-law partners |
+| Month-by-month coverage (a planning aid) | 12 consecutive months for common-law partners; for spouses there is no monthly requirement, only photos "taken at different times and places" |

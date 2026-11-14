@@ -1,6 +1,6 @@
 # User guide
 
-See which months your photos and papers prove you were together, find out what would fill each gap, and get an upload-ready folder, without your family's photos and papers leaving your NAS.
+See which months your photos and papers show evidence of your life together, find out what would fill each gap, and get a folder organised for upload, without your family's photos and papers leaving your NAS.
 
 It answers one question: **which months can we not prove yet?** For each month it shows the photos of everyone together, the paper that covers that month (a lease, a bill, a certificate), and, for any month with neither, what could close the gap. See [example-output.md](example-output.md).
 
@@ -16,7 +16,7 @@ It answers one question: **which months can we not prove yet?** For each month i
 
 - A couple: "Build our relationship evidence for the sponsorship application. Linh Tran and Minh Tran, covering June 2025 to now. Save in /Family/Visa." It then asks for your names as printed on papers and your papers folder.
 - A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, covering June 2025 to now. An and Bao are our children." If a child has no face group yet, such as a newborn, say "keep them for papers only". If Uliya does not show today's date, say it too.
-- One person: "Which months can I not prove with my papers? Siti Rahman, covering December 2025 to now."
+- One person: "Which months can I not prove with my papers? Siti Rahman, covering December 2025 to now." This lists which months have a paper naming you; it is not a residence or physical-presence calculation.
 
 It asks only for what it needs, when it needs it, and asks once which items to save; UGOS may then ask you to approve each write.
 
@@ -25,10 +25,12 @@ Words you will see: **face grouping** is how Photos recognises the same person a
 ## What you get
 
 - **A coverage table** with one row per month: photos of everyone found by face grouping (or of the people searched together, named in the label), the photo chosen for the pack, and the paper that covers the month.
-- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart. Each gap also says what could close it, such as "bills for February to May 2026", based on the linking papers it already found.
-- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. Reply "all ok" to confirm every context line, or give the numbers to confirm, edit or drop; any line you leave out is saved as `[not confirmed]`. The Skill never writes what a moment was.
+- **A gap list**: the months with no photo of everyone (or of the people searched together) and no linking paper. A gap means the Skill found nothing, not that you were apart. Gaps are for your own checking: not every application needs every month covered, and spouses have no monthly requirement. Each gap also says which papers would cover it, such as "bills for February to May 2026, if you have them", based on the linking papers it already found.
+- **Up to 20 photos**, one per month, each checked as fit to send, each with a line for date, place, people and context. Reply "all ok" to confirm every date, place and name, and write in your own words what was happening in each photo you want described; the Skill's own description is only a prompt. A photo with no description from you stays out of the Photo descriptions file until you add one. The Skill never writes what a moment was.
 - **The papers that link you**, with any difference in a name, birth date or address noted, never changed.
-- **A folder, an album and an index file** saved on the NAS, each only if you approve it, then read back to check they match.
+- **A folder organised for upload**: the photos, the papers and a **Photo descriptions** file with only the descriptions you wrote or confirmed. Upload these.
+- **An Evidence index** of working notes for you: the coverage table, gaps, mismatches and counts. **Do not upload it.**
+- **A Photos album** of the chosen photos. Each item is saved only if you approve it, then read back to check it matches.
 
 A worked example with a made-up family is in [example-output.md](example-output.md).
 

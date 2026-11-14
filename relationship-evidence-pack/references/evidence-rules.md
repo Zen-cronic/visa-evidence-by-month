@@ -28,7 +28,7 @@ The official checklist asks for "a brief description of context of each photo". 
 | Date | capture date in photo metadata | `from metadata` |
 | Place | place name in photo metadata; coordinates if that is all it holds | `from metadata`, or `unknown` |
 | People | the confirmed Photos people names | `from Photos people` |
-| Context | the visual description, or a line the user confirmed in an earlier pack for the same photo (same capture date and original file name) | `[confirm]` in every case; saved with (confirmed) or (edited) only if the user confirms or edits it in this run, otherwise `[not confirmed]`; a reused line is marked `from your earlier pack` |
+| Context | the user's own words; the visual description is only a prompt, and a line the user wrote in an earlier pack for the same photo (same capture date and original file name) may be reused | (confirmed) or (edited) only if it is the user's words, written, edited or re-confirmed in this run; a vision description the user did not replace stays `[not confirmed]` and the photo is left out of the Photo descriptions file; a reused line is marked `from your earlier pack` |
 
 A visual description can say "four people at a restaurant table" but cannot know it was a birthday dinner. Only the people in it can add that.
 
@@ -42,7 +42,9 @@ Three columns per month:
 
 A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
-For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Each gap gets one line on what could close it, using only linking papers: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
+For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show a shared address speak to living together; photos do not.
+
+Each gap gets one line on what could cover it, using only linking papers: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
 
 For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
 
@@ -60,7 +62,7 @@ A name on a paper matches when its words are the same as the name given, ignorin
 
 Copies inside earlier packs (folders named Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
 
-Note differences in spelling, date of birth or address without changing anything; the people may need to explain them.
+Note differences in spelling, date of birth or address without changing anything; the people may need to explain them in a letter, and must never alter a document. Differences only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4") are noted as "format difference only, no action needed".
 
 For one person, when the photo steps were skipped, or when the photo search failed, a gap is a month with no linking paper, labelled "no linking paper found".
 

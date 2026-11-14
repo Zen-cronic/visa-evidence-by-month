@@ -4,7 +4,7 @@
 
 ## The request
 
-This example is the all-four case: every family member has a face group, so photos of all four are searched together. Minh was married before, so the family answered no to one of the four questions on Canada's spouse checklist, which is why photos are needed (see [sources.md](sources.md)). The period is the time since they moved to Canada, June 2025, not the start of the marriage.
+This example is the all-four case: every family member has a face group, so photos of all four are searched together. Minh was married before, so the family answered no to one of the four questions on Canada's spouse checklist, which is why photos are needed (see [sources.md](sources.md)). This example covers the time since they moved to Canada, June 2025, to keep it short; a real spouse application would normally cover the whole relationship, including the wedding.
 
 
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
@@ -15,6 +15,8 @@ This example is the all-four case: every family member has a face group, so phot
 - Photo limit: 20.
 
 ## Evidence index (as saved in `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran`)
+
+Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file.
 
 **Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran**
 
@@ -69,7 +71,7 @@ Failed photos are never shown, copied or added to the album. Months where every 
 Mismatches, noted and not corrected:
 
 - **Date of birth, Tran Thi Linh:** 1986-04-02 on the marriage certificate, 1986-02-04 on Bao's birth certificate. This may be a day and month written in a different order; check the originals.
-- **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill.
+- **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill: format difference only, no action needed.
 
 From a photo of a document: Bao's birth certificate and the lease. Upload a clean scan or the original if the officer needs one.
 
@@ -107,7 +109,9 @@ Ignored text in papers:
 ### Gaps
 
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
-  What could close it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would close this gap; the lease starts in June 2026.
+  What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
+
+Gaps are for your own checking. Not every application needs every month covered; for spouses there is no monthly requirement.
 
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
 
@@ -115,7 +119,22 @@ Libraries searched: Linh Tran (personal), Tran family (shared).
 
 Papers matched on the names printed on them. Kept on this NAS with the on-device model: yes. Skipped: none.
 
-Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting.
+Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer.
+
+## Photo descriptions (for upload)
+
+Saved as `Photo descriptions` in the same folder. Only the lines the family wrote or confirmed in their own words; no counts, gaps or notes.
+
+| # | Copy | Date | Place | People | Description |
+|---|---|---|---|---|---|
+| 1 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Moving into our apartment; boxes in the hallway. |
+| 3 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 | not recorded | Linh, Minh, An and Bao Tran | An's first Halloween at her new school. |
+| 4 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Linh, Minh, An and Bao Tran | Bao's birthday at home. |
+| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Linh, Minh, An and Bao Tran | Christmas with Minh's parents. |
+| 7 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Linh, Minh, An and Bao Tran | Family trip to Montréal. |
+| 8 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Linh, Minh, An and Bao Tran | First day of school for both kids. |
+
+Add a description before uploading these: `02 2025-07-05 IMG_2210.jpg`, `06 2026-06-20 IMG_3102.jpg`, `09 2026-11-08 IMG_3530.jpg`.
 
 ## Checked after saving
 
