@@ -13,6 +13,9 @@ name=$(sed -n 's/^name: *//p' "$SKILL/SKILL.md" | head -1)
 echo "1. Rule checks"
 python3 -I -m unittest discover -s tools/rulecheck
 
+echo "1b. End-to-end simulation against a mock NAS"
+python3 -I -m unittest discover -s tools/simrun
+
 echo "2. UGREEN kit checker"
 node "$KIT/scripts/check-skill.mjs" "$SKILL" > dist-check.json || { cat dist-check.json; exit 1; }
 grep -q '"status": "static-pass"' dist-check.json
