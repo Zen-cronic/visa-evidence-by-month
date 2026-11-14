@@ -294,7 +294,7 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
     """Step 8: each item has its own approval. Copies and the index need the folder; the album does not.
     A declined item is the user's choice, a failed one is a failure, and an item whose folder was not
     created is not applicable; all three are reported apart."""
-    needs_folder = {"photo copies", "paper copies", "index"}
+    needs_folder = {"photo copies", "paper copies", "index", "descriptions"}
     folder_ok = approved.get("folder", False) and results.get("folder") == "completed"
     out = {"saved": [], "declined": [], "failed": [], "not applicable": []}
     for item, ok in approved.items():

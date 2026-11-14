@@ -47,8 +47,9 @@ class User:
     continue_if_unsure: bool = True
     papers_only: list[str] = field(default_factory=list)
     confirm_matches: bool = True
-    approve: dict[str, bool] = field(default_factory=lambda: {"folder": True, "album": True, "index": True})
+    approve: dict[str, bool] = field(default_factory=lambda: {"folder": True, "album": True, "index": True, "descriptions": True})
     reuse_lines: bool = True
+    photos_needed: bool = True
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -67,7 +68,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     photo_people = [p for p in people if p not in user.papers_only]
 
     # Step 1 (skipped for one person)
-    if scope != "one person":
+    if scope != "one person" and user.photos_needed:
         check = [p for p in people if p not in user.papers_only]
         nas.call("photo-agent", "figure-albums")
         missing = R.confirm_people(nas.named_people, check)["missing"]
@@ -77,7 +78,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     # Steps 2 to 4
     month_counts, chosen, timeline_failed = None, [], False
-    if scope != "one person" and len(photo_people) >= 2:
+    if scope != "one person" and user.photos_needed and len(photo_people) >= 2:
         nas.call("photo-agent", "timeline-summary")
         if nas.month_counts is None:
             timeline_failed = True
@@ -98,7 +99,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                                  people=printed, mismatches=mismatches)
 
     # Step 6 (redone after Step 7's answers, here folded in)
-    photo_steps_skipped = scope == "one person" or len(photo_people) < 2
+    photo_steps_skipped = scope == "one person" or not user.photos_needed or len(photo_people) < 2
     papers_only = photo_steps_skipped or timeline_failed
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked)
     gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed))
@@ -125,10 +126,11 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     writes_before_approval = [c for c in nas.calls if c[1] in ("mkdir", "cpmv", "create-album", "save-text")]
 
     # Step 8: approval per item, then independent writes
-    log["approvals_asked"] = ["folder", "album", "index"]
-    approved = {k: user.approve.get(k, False) for k in ("folder", "album", "index")}
+    log["approvals_asked"] = [k for k in ("folder", "album", "index", "descriptions")]
+    approved = {k: user.approve.get(k, False) for k in ("folder", "album", "index", "descriptions")}
     if not chosen:
         approved.pop("album")
+        approved.pop("descriptions")
     results = {}
     if approved.get("folder"):
         results["folder"] = nas.call("file-agent", "mkdir", write=True, item="folder")
@@ -141,6 +143,8 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         results["album"] = nas.call("photo-agent", "create-album", write=True, item="album")
     if approved.get("index") and folder_ok:
         results["index"] = nas.call("knowledge-agent", "save-text", write=True, item="index")
+    if approved.get("descriptions") and folder_ok:  # independent of the index save
+        results["descriptions"] = nas.call("knowledge-agent", "save-text", write=True, item="descriptions")
     items = dict(approved)
     if approved.get("folder"):
         if chosen:

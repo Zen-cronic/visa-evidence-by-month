@@ -31,7 +31,7 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["writes_before_approval"], [])
         self.assertEqual(log["chosen"], 11)
         self.assertEqual(log["gaps"], [])  # the lease covers March
-        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "folder", "index", "paper copies", "photo copies"])
+        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "folder", "index", "paper copies", "photo copies"])
 
     def test_b_family_with_a_papers_only_baby(self):
         counts = months("2025-06", "2026-11", skip={"2026-02", "2026-03", "2026-04", "2026-05"})
@@ -78,10 +78,11 @@ class Scenarios(unittest.TestCase):
         counts = months("2025-12", "2026-11")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-11")])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas,
-                  User(approve={"folder": False, "album": True, "index": True}))
+                  User(approve={"folder": False, "album": True, "index": True, "descriptions": True}))
         self.assertEqual(nas.written, ["album"])
         self.assertEqual(log["summary"]["declined"], ["folder"])
         self.assertIn("index", log["summary"]["not applicable"])
+        self.assertIn("descriptions", log["summary"]["not applicable"])
 
     def test_h_couple_with_one_partner_papers_only_gets_paper_gap_labels(self):
         nas = MockNAS(["Mei Tan"], {}, [], [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-06")])
@@ -121,6 +122,23 @@ class Scenarios(unittest.TestCase):
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User(confirm_matches=False))
         self.assertEqual(log["linked"], 0)
         self.assertNotIn("paper copies", log["summary"]["saved"])
+
+    def test_l_photos_not_needed_skips_photo_steps_and_files(self):
+        nas = MockNAS([], months("2025-12", "2026-02"), [], [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-01")])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User(photos_needed=False))
+        self.assertIsNone(log["stopped"])  # no face groups needed
+        self.assertNotIn(("photo-agent", "figure-albums"), nas.calls)
+        self.assertNotIn(("photo-agent", "timeline-summary"), nas.calls)
+        self.assertEqual(log["gaps"], [f"{R.PAPER_GAP_LABEL}: 2026-02"])
+        self.assertNotIn("descriptions", log["summary"]["saved"] + log["summary"]["failed"])
+
+    def test_m_failed_descriptions_save_keeps_the_index(self):
+        counts = months("2025-12", "2026-02")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-02")],
+                      write_results={"descriptions": "failed"})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User())
+        self.assertIn("index", log["summary"]["saved"])
+        self.assertEqual(log["summary"]["failed"], ["descriptions"])
 
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
