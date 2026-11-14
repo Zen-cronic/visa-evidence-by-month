@@ -2,6 +2,8 @@
 
 A Skill for UGREEN AI NAS that answers one question for a couple or family preparing a partner or spouse visa application, including their children: **"Which months can we not prove yet?"**
 
+Before: scrolling years of photos and papers month by month, by hand. After: "February to May 2026: no photo of everyone and no linking paper found; electricity bills for those months would cover it", plus a folder ready to upload, saved only after you approve it.
+
 It works from the photos and papers already on the NAS:
 
 - finds photos where everyone on the application appears together, month by month, and checks each one is fit to send;
