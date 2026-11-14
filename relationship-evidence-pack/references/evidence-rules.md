@@ -42,7 +42,7 @@ Three columns per month:
 
 A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way. A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
-For a family, a child too young to be recognised by face grouping can make every month look empty; the Skill then offers to count the adults only. For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
+For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
 
 ## Papers (Step 5)
 
@@ -54,7 +54,11 @@ What counts as a linking paper depends on the scope:
 | A couple | names both of you | a lease or mortgage, utility or internet bills, insurance, joint bank statements, official mail to the same address, a marriage certificate |
 | A family | names at least two of the people | a marriage certificate, a birth certificate naming a parent and a child, a lease naming both adults |
 
+A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person.
+
 Note differences in spelling, date of birth or address without changing anything; the people may need to explain them.
+
+For one person, or when the photo search failed, a gap is a month with no linking paper, labelled "no linking paper found".
 
 Many people photograph papers with their phone instead of scanning them. Step 5b finds those photos and reads their text:
 

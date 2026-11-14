@@ -8,7 +8,7 @@ UGREEN's checker from uliya-skill-kit 0.7.7 (catalog 2.2.0): `static-pass`, 0 er
 
 ## Capability trace (MEASURED, 2026-11-13)
 
-The Skill sends plain-language instructions; each one maps to actions in the kit's capability catalog 2.2.0, and those actions were checked against the catalog: they exist for the agent named and take the inputs the instruction relies on (such as several person names with the AND method, month grouping, and text-in-photo search). Steps 1 to 6 map only to actions the catalog marks as read; the 4 writes are all in Step 8 and each has an approval gate.
+The Skill sends plain-language instructions; each one maps to actions in the kit's capability catalog 2.2.0, and those actions were checked against the catalog: they exist for the agent named and take the inputs the instruction relies on (such as several person names with the AND method, month grouping, and text-in-photo search). Steps 1 to 7 map only to actions the catalog marks as read; every write is in Step 8 and each has an approval gate.
 
 | Step | Agent | Catalog actions |
 |---|---|---|
@@ -17,12 +17,13 @@ The Skill sends plain-language instructions; each one maps to actions in the kit
 | 4 | photo-agent | meta, vision-vlm |
 | 5a | document-agent | extract, reconcile |
 | 5b | photo-agent | search-picture, search-screen, vision-ocr |
-| 8 | file-agent, photo-agent, knowledge-agent | mkdir, cpmv (copy), create-album, save-text |
+| 7 | file-agent, photo-agent | ls, albums |
+| 8 | file-agent, photo-agent, knowledge-agent | mkdir, cpmv (copy), create-album (with add-item), save-text |
 | 9 | file-agent, photo-agent | ls, cat, album-detail |
 
 ## Rule checks (MEASURED, 2026-11-13)
 
-The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program, kept in the project's source repository outside this package, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): 13 checks, all passed. This confirms the written rules are complete and consistent and that the worked example follows them. It does not show how the Skill behaves on a NAS.
+The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program, kept in the project's source repository outside this package, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): all checks passed. This shows the written rules give the expected result on these cases and that the worked example follows them; it does not prove the rules cover every case. It does not show how the Skill behaves on a NAS.
 
 ## Test cases (rules MEASURED as above; NAS run PLANNED for the finalist day, also the demo script)
 

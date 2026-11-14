@@ -22,4 +22,4 @@ All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 
 ## Data
 
-The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It is designed to send nothing off the NAS: every step asks the experts to use only the local model, and the user confirms Uliya's model setting first. Test data and the worked example use made-up people; no real personal data is included in this package.
+The Skill reads only files the user points it to on their own NAS and writes only to the location the user confirms. It is designed to send nothing off the NAS: every reading step asks the experts to use only the local model, and the user confirms Uliya's model setting first. Test data and the worked example use made-up people; no real personal data is included in this package.
