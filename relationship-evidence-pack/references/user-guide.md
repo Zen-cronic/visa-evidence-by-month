@@ -6,8 +6,8 @@ It answers one question: **which months can we not prove yet?** For each month i
 
 ## Before you start
 
-1. **Name the people in Photos.** Open Photos, find each person's people album and give it a name. Face grouping finds photos only of named people. A baby without a face group yet can still be on the application for papers only.
-2. **Know each person's name as printed on their papers**, such as "Tran Thi Linh". Papers are matched on these names, not on Photos nicknames.
+1. **Name the people in Photos.** Open Photos, find each person's people album and give it a name. Face grouping finds photos only of named people. A baby without a face group yet can still be on the application for papers only. If someone is missing, you can name them in Photos during the run and say done; the Skill checks that name again without starting over.
+2. **Know each person's name as printed on their papers**, such as "Tran Thi Linh", and which word is the family name ("Tran"). Papers are matched on these names, not on Photos nicknames; case, commas, word order and accents do not matter ("TRẦN, Thị Linh" matches).
 3. **Put scanned papers in one folder**, if you have any: leases, bills, bank statements, marriage and birth certificates, letters. Photos of papers taken with your phone are found in the photo library; you do not need to move them.
 4. **Pick where to save the pack.** Any folder outside the papers folder.
 5. **Check Uliya's model setting** if you can, so your photos and papers stay on the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
@@ -47,5 +47,7 @@ A worked example with a made-up family is in [example-output.md](example-output.
 
 - Only people named in Photos can be found in photos; only papers on this NAS can be found.
 - Up to 3 sample photos in each planned month are checked (months beyond the 20-photo limit show "not checked (photo limit)"); a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
-- Photo descriptions come from the vision model and can be wrong, which is why you confirm each one.
+- The vision model only suggests what a photo shows; each description in the upload file is in your own words, and a line you do not confirm stays out of it.
+- Up to six people are searched in photos together; with more, you choose which six, and the rest count for papers only.
+- Descriptions you write in a language other than English or French are flagged in the working notes as needing a translation before upload.
 - A second run offers to reuse the context lines you confirmed in your latest earlier pack, for the same photos (same date and file name), marked "from your earlier pack" and shown for you to confirm again; everything else is found again from your library and papers.
