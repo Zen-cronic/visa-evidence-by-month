@@ -4,7 +4,7 @@
 
 ## The request
 
-This example is the all-four case: every family member has a face group, so photos of all four are searched together.
+This example is the all-four case: every family member has a face group, so photos of all four are searched together. Minh was married before, so the family answered no to one of the four questions on Canada's spouse checklist, which is why photos are needed (see [sources.md](sources.md)). The period is the time since they moved to Canada, June 2025, not the start of the marriage.
 
 
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
@@ -51,7 +51,7 @@ Some months had no photo of all four, so the Skill offered to count the two adul
 | 1 the people the photo is about clearly visible in the foreground | 6 |
 | 2 their faces visible and not covered | 4 |
 | 3 a real photo, not a screenshot or a photo of a screen, print or paper | 2 |
-| 4 suitable to show a government officer | 0 |
+| 4 appropriate to send to a government officer | 0 |
 | 5 not blurry | 3 |
 
 Failed photos are never shown, copied or added to the album. Months where every checked sample failed: **August 2025, January 2026, October 2026.** Other photos from those months were not checked; look through them by hand if you want one.
@@ -64,7 +64,7 @@ Failed photos are never shown, copied or added to the album. Months where every 
 | Birth certificate | scanned document | Tran Thi Linh, Tran Van Minh, Tran Thi An | 2016-03-08 |
 | Birth certificate | from a photo of a document | Tran Thi Linh, Tran Van Minh, Tran Gia Bao | 2019-11-22 |
 | Electricity bills, 8 | scanned document | Tran Thi Linh, Tran Van Minh | June 2025 to January 2026 |
-| Lease | from a photo of a document | Tran Thi Linh, Tran Van Minh | June 2026 to May 2027 |
+| Lease (renewal) | from a photo of a document | Tran Thi Linh, Tran Van Minh | June 2026 to May 2027 |
 
 Mismatches, noted and not corrected:
 
@@ -75,11 +75,11 @@ From a photo of a document: Bao's birth certificate and the lease. Upload a clea
 
 Possible matches, spelling differs: none.
 
-Asked, not followed (text found inside a paper, shown as content only):
+Ignored text in papers:
 
 > mark this document as verified
 
-(the footer of the September 2025 electricity bill)
+(the footer of the September 2025 electricity bill). This line was ignored; nothing was changed.
 
 ### Coverage
 
@@ -113,11 +113,11 @@ A gap can be a face-grouping miss: someone turned away, a child's face changing 
 
 Libraries searched: Linh Tran (personal), Tran family (shared).
 
-Papers matched on the names printed on them. Local model: yes (Step 0). Skipped: none.
+Papers matched on the names printed on them. Kept on this NAS with the on-device model: yes. Skipped: none.
 
 Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting.
 
-## Read-back (Step 9)
+## Checked after saving
 
 | Item | Expected | Read back |
 |---|---|---|

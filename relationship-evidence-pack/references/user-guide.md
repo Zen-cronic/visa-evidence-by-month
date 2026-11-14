@@ -1,6 +1,8 @@
 # User guide
 
-For the person running the Skill. What to have ready, what to ask, what comes back, and what to check yourself.
+See which months your photos and papers prove you were together, find out what would fill each gap, and get an upload-ready folder, without your family's photos and papers leaving your NAS.
+
+It answers one question: **which months can we not prove yet?** For each month it shows the photos of everyone together, the paper that covers that month (a lease, a bill, a certificate), and, for any month with neither, what could close the gap. See [example-output.md](example-output.md).
 
 ## Before you start
 
@@ -12,11 +14,13 @@ For the person running the Skill. What to have ready, what to ask, what comes ba
 
 ## What to ask
 
-- A couple: "Build our relationship evidence for the sponsorship application. Linh Tran and Minh Tran, since June 2025. Printed names Tran Thi Linh and Tran Van Minh. Papers are in /Family/Papers. Save in /Family/Visa."
-- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, since June 2025. An and Bao are our children." If a child has no face group yet, such as a newborn, say "keep them for papers only". If Uliya does not show today's date, say it too.
-- One person: "Which months can I not prove with my papers? Siti Rahman, since December 2025. Papers in /Siti/Papers."
+- A couple: "Build our relationship evidence for the sponsorship application. Linh Tran and Minh Tran, covering June 2025 to now. Save in /Family/Visa." It then asks for your names as printed on papers and your papers folder.
+- A family: "Get our family's evidence ready for the visa: Linh, Minh, An and Bao Tran, covering June 2025 to now. An and Bao are our children." If a child has no face group yet, such as a newborn, say "keep them for papers only". If Uliya does not show today's date, say it too.
+- One person: "Which months can I not prove with my papers? Siti Rahman, covering December 2025 to now."
 
-The Skill asks once for anything missing, then works step by step, asking before it saves anything.
+It asks only for what it needs, when it needs it, and asks once before saving anything.
+
+Words you will see: **face grouping** is how Photos recognises the same person across photos; a **linking paper** is a paper that names the people on your application (a lease naming you both, a birth certificate naming a parent and child); a **possible match** is a paper where a name is spelled slightly differently, which you confirm or reject.
 
 ## What you get
 
