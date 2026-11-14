@@ -358,6 +358,13 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         rows = coverage("2026-01", "2026-06", counts, [], [old, lease])
         self.assertIn("the lease starts in 2026-05", closers(rows, [old, lease])[("2026-03", "2026-04")])
 
+    def test_a_photographed_print_passes_rule_3_and_is_labelled(self):
+        from rules import rule3
+        self.assertEqual(rule3("print"), (True, "print"))
+        self.assertEqual(rule3("photo"), (True, None))
+        for kind in ("screenshot", "photo of a screen", "photo of paper"):
+            self.assertEqual(rule3(kind), (False, None))
+
     def test_accented_printed_names_match(self):
         self.assertTrue(name_matches("TRẦN, Thị Linh", "Tran Thi Linh"))
         self.assertTrue(name_matches("Đặng Văn Minh", "Dang Van Minh"))

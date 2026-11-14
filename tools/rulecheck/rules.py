@@ -110,6 +110,18 @@ class Choice:
     failures: dict[int, int] = field(default_factory=lambda: {r: 0 for r in RULES})
 
 
+RULE3_FAILS = {"screenshot", "photo of a screen", "photo of paper"}
+
+
+def rule3(kind: str) -> tuple[bool, str | None]:
+    """Step 4 rule 3: what the vision check says the image is -> (passes, label for the photo line).
+    A photographed print of a photo passes and is labelled "print"; a screenshot, a photo of a screen
+    or a photo of paper fails."""
+    if kind in RULE3_FAILS:
+        return False, None
+    return True, ("print" if kind == "print" else None)
+
+
 def choose_photos(checked: list[Checked], plan: list[str], limit: int) -> Choice:
     """First passing photo per planned month, one per month, never padded."""
     result = Choice()
