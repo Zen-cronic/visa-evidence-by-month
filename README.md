@@ -19,6 +19,7 @@ An excerpt from the worked example (a synthetic family of four; the full run is 
 
 | Month | Photos of all four in the library | In the pack | Linking paper |
 |---|---|---|---|
+| 2025-12 | 15 | #5 | electricity bill |
 | 2026-01 | 1 | 1 sample checked, none fit to send | electricity bill |
 | **2026-02** | **0** | — | **—** |
 | **2026-03** | **0** | — | **—** |
@@ -30,6 +31,18 @@ An excerpt from the worked example (a synthetic family of four; the full run is 
   What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
 
 A gap means nothing was found, never that the family was apart. With your approval, the Skill saves the chosen photos, the papers, a Photo descriptions file to upload and working notes for you, then reads each one back.
+
+What it saves, after you approve each item:
+
+```
+Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran/
+  01 Photos/            chosen photos, renamed 01 2025-06-14 IMG_2031.jpg ...
+  02 Papers/            linking papers, renamed in date order
+  Photo descriptions    one line per photo, for upload
+  Evidence index        working notes for you: coverage, gaps, mismatches
+```
+
+Canada's spouse checklist is the worked example. Other countries' partner visas also ask for proof of a shared life over time; check your own country's checklist for what it accepts.
 
 ## What's here
 
