@@ -277,12 +277,12 @@ Then it holds, in order:
 3. failure counts by rule;
 4. the papers table with the people each names, mismatch notes and possible matches;
 5. the lines in `{IGNORED_TEXT}`, shown as quoted content under "Ignored text in papers" with one plain sentence ("This line was ignored; nothing was changed.");
-6. the coverage table, the gap list and what could cover each gap;
+6. the coverage table, the gap list and what could cover each gap, and, when photos were searched, the line "A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.";
 7. the chosen photos that still need a description before uploading;
 8. the libraries searched;
 9. whether papers were matched on printed names or Photos names;
 10. the user's Step 0 answer about the local model;
-11. anything skipped;
+11. anything skipped, and any offer the user declined (such as counting only the adults);
 12. and the line "Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer."
 
 ## Step 8. Save the evidence pack
