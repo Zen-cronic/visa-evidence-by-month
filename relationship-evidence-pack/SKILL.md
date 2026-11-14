@@ -193,15 +193,36 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 
 ## Step 6. Build coverage and gaps (no NAS call)
 
-For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns: photos of `{PHOTO_PEOPLE}` in the library (from `{MONTH_COUNTS}`; empty for one person or when photos are not needed, "search failed" if Step 2 failed), a chosen photo in the pack (from `{CHOSEN_PHOTOS}`), and a linking paper dated in or covering that month (from `{LINKED_DOCS}`). A paper with a covered period (a lease, a bill period) covers each month of that period; a certificate or letter counts only for the month it is dated.
+For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns:
+
+- photos of `{PHOTO_PEOPLE}` in the library (from `{MONTH_COUNTS}`; empty for one person or when photos are not needed, "search failed" if Step 2 failed);
+- a chosen photo in the pack (from `{CHOSEN_PHOTOS}`);
+- and a linking paper dated in or covering that month (from `{LINKED_DOCS}`).
+
+A paper with a covered period (a lease, a bill period) covers each month of that period; a certificate or letter counts only for the month it is dated.
 
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 6): it sets what counts as covered, the "Same address shown (counts)" column, the gap rule and label, the papers for what could cover a gap, and the footer.
 
-The rest of this paragraph applies to everyone else. A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}` and no linking paper was found. Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: March to June 2025" (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`). For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed). Never write "no relationship", "not together" or "not in the country".
+The rest of this paragraph applies to everyone else:
+- A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}` and no linking paper was found.
+- Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: March to June 2025" (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`).
+- For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
+- Never write "no relationship", "not together" or "not in the country".
 
 For every gap label, common-law included: if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
 
-For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` (for common-law, the papers the common-law rules name): a series of at least 3 papers of the same extracted type, naming the same people, one in each of the consecutive months ending the month before the gap, written as "<type>s came every month until <month>; <type>s for <gap months> would cover these months, if you have them"; and a paper covering a period that starts the month after the gap, written as "the <type> starts in <month>". For example, "electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026". If neither exists, say "no regular paper found near these months". It suggests only; never say such a paper exists. Under the gap list, always add, when `{RELATIONSHIP}` is married: "Gaps are for your own checking. Spouses have no monthly requirement."; when it is common-law: the common-law footer; otherwise: "Gaps are for your own checking. Not every application needs every month covered."
+For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` (for common-law, the papers the common-law rules name):
+
+- a series of at least 3 papers of the same extracted type, naming the same people, one in each of the consecutive months ending the month before the gap, written as "<type>s came every month until <month>; <type>s for <gap months> would cover these months, if you have them";
+- and a paper covering a period that starts the month after the gap, written as "the <type> starts in <month>".
+
+For example, "electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026". If neither exists, say "no regular paper found near these months". It suggests only; never say such a paper exists.
+
+Under the gap list, always add:
+
+- when `{RELATIONSHIP}` is married: "Gaps are for your own checking. Spouses have no monthly requirement.";
+- when it is common-law: the common-law footer;
+- otherwise: "Gaps are for your own checking. Not every application needs every month covered."
 
 ## Step 7. Check the save location and confirm every line
 
@@ -286,7 +307,17 @@ Then it holds, in order:
 
 ## Step 8. Save the evidence pack
 
-Show what will be saved and ask one question: "Save the folder with its copies, the album, the working notes and the photo descriptions? (yes, or choose items)". A yes approves the items listed; the user may instead name the items to save: the folder with its photo and paper copies (8a to 8c), the album (8d), the working notes (8e) and the Photo descriptions file (8f). When `{CHOSEN_PHOTOS}` is empty, leave the album and the Photo descriptions file out of the question. UGOS may then ask the user to approve each write. Tell the user the copies and the index can only be saved in the folder. Send only the items the user approves. The writes are independent: if one is declined, cancelled or fails, skip it and keep going with the others. In the summary, say which items the user declined, which failed, and which were "not saved: folder declined"; a declined item is the user's choice, not a failure.
+Show what will be saved and ask one question: "Save the folder with its copies, the album, the working notes and the photo descriptions? (yes, or choose items)".
+
+- A yes approves the items listed; the user may instead name the items to save: the folder with its photo and paper copies (8a to 8c), the album (8d), the working notes (8e) and the Photo descriptions file (8f).
+- When `{CHOSEN_PHOTOS}` is empty, leave the album and the Photo descriptions file out of the question.
+- UGOS may then ask the user to approve each write.
+- Tell the user the copies and the index can only be saved in the folder.
+
+Send only the items the user approves. Also:
+
+- The writes are independent: if one is declined, cancelled or fails, skip it and keep going with the others.
+- In the summary, say which items the user declined, which failed, and which were "not saved: folder declined"; a declined item is the user's choice, not a failure.
 
 8a. If the folder is approved, send:
 
