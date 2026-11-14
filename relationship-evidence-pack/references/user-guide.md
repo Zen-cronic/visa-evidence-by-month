@@ -46,6 +46,7 @@ A worked example with a made-up family is in [example-output.md](example-output.
 ## Limits
 
 - Only people named in Photos can be found in photos; only papers on this NAS can be found.
+- It is built for partners who live together, or did. If you live apart, your main evidence is usually visits, travel and money transfers, which this Skill does not look for; most months will show as gaps, and that says nothing about your relationship.
 - Up to 3 sample photos in each planned month are checked (months beyond the 20-photo limit show "not checked (photo limit)"); a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
 - The vision model only suggests what a photo shows; each description in the upload file is in your own words, and a line you do not confirm stays out of it.
 - Up to six people are searched in photos together; with more, you choose which six, and the rest count for papers only.
