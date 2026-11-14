@@ -201,6 +201,15 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["gaps"], [])
         self.assertEqual(log["same_address_docs"], 2)
 
+    def test_u_unanswered_listed_photo_is_held_out_of_the_pack(self):
+        counts = months("2026-01", "2026-03")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts),
+                      [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-03")])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-03", nas, User(unanswered_photos=["2026-02.jpg"]))
+        self.assertEqual(log["chosen"], 2)
+        self.assertEqual(log["waiting_for_answer"], ["2026-02.jpg"])
+        self.assertEqual(log["gaps"], [])  # the lease still covers February
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

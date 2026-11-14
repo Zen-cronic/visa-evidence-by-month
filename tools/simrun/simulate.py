@@ -54,6 +54,7 @@ class User:
     four_yes: bool = False  # answered yes to all four spouse-checklist questions
     continue_if_not_needed: bool = True
     drop_papers: list = field(default_factory=list)  # papers the user drops in Step 7
+    unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -107,6 +108,10 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     if user.confirm_matches:
         linked = R.apply_answers(linked, joined["possible_matches"], joined["possible_matches"], [],
                                  people=printed, mismatches=mismatches)
+
+    # Step 7 answers folded in: listed photos left unanswered are removed before Step 6 is redone
+    waiting = [c.path for c in chosen if c.path in user.unanswered_photos]
+    chosen = [c for c in chosen if c.path not in user.unanswered_photos]
 
     # Step 6 (redone after Step 7's answers, here folded in)
     photo_steps_skipped = scope == "one person" or not user.photos_needed or len(photo_people) < 2
@@ -183,5 +188,5 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
                written=list(nas.written), reused=reused, reuse_note=reuse_note,
-               same_address_docs=len(same_address_docs))
+               same_address_docs=len(same_address_docs), waiting_for_answer=waiting)
     return log
