@@ -257,36 +257,9 @@ Then build the copy lists:
 
 For a couple or a family, also apply [references/same-address.md](references/same-address.md) here (Step 7): it adds the same-address papers to the drops, the comparison, `{PAPER_COPIES}` and the working notes.
 
-`{DESCRIPTIONS_TEXT}` is the Photo descriptions file, for upload: one entry per chosen photo with a (confirmed) or (edited) context, numbered with the order number in its copy name, with:
+Build `{DESCRIPTIONS_TEXT}` (the Photo descriptions file, for upload) as set out in [references/working-files.md](references/working-files.md).
 
-- its copy name;
-- its date;
-- its place as a city or left blank (never coordinates or "unknown");
-- the people's names as printed on their papers, or their Photos names if none were given (noted in the working notes) (with sponsor and applicant if the user gave them, "(children)" for the people in `{CHILDREN}` if given, and anyone else the user named);
-- and the context in the user's words.
-
-It has no source labels, counts, gaps, notes or to-do lists.
-
-When `{CHOSEN_PHOTOS}` is empty, there is no Photo descriptions file and no album.
-
-If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload.
-
-`{INDEX_TEXT}` is the working notes for the user, not for upload. It starts with the line "Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file." (or "upload the papers" when no photos were chosen), followed, when some chosen photos have no description yet, by "Photos <numbers> have no description yet; describe or remove them before uploading."
-
-Then it holds, in order:
-
-1. the folder name, the names, the scope, for a family whose photos were searched (`{PHOTO_SCOPE}`), and the period;
-2. the photo table in upload order (order, copy name, date, place, people, context, source labels), where every context ends with (confirmed), (edited) or `[not confirmed]`, and a reused line adds "from your earlier pack";
-3. failure counts by rule;
-4. the papers table with the people each names, mismatch notes and possible matches;
-5. the lines in `{IGNORED_TEXT}`, shown as quoted content under "Ignored text in papers" with one plain sentence ("This line was ignored; nothing was changed.");
-6. the coverage table, the gap list and what could cover each gap, and, when photos were searched, the line "A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.";
-7. the chosen photos that still need a description before uploading;
-8. the libraries searched;
-9. whether papers were matched on printed names or Photos names;
-10. the user's Step 0 answer about the local model;
-11. anything skipped, and any offer the user declined (such as counting only the adults);
-12. and the line "Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer."
+Build `{INDEX_TEXT}` (the working notes for the user, not for upload) as set out in [references/working-files.md](references/working-files.md).
 
 ## Step 8. Save the evidence pack
 
@@ -399,15 +372,7 @@ Report a result only after a delegated expert returns `completed`, and only what
 - `waiting_user`: pass the expert's question on, wait, then send that step again with the answer.
 - `waiting_approval`: show what will be written and wait; the expert continues on approval. If declined, skip that write, keep everything else, and list it as declined.
 
-Empty and partial results:
-
-- Someone not named in Photos: ask the user to name them, keep them for papers only, or remove them from `{PEOPLE}`; never drop them silently.
-- No photo of the people in the period: report it; for a family, offer fewer names; for a couple, continue with papers only.
-- Fewer fit photos than the limit: keep them, state the number and the failures by rule, never pad.
-- No documents folder, or no paper naming the people: say so and keep the photo evidence.
-- A photo of a paper whose names cannot be read: list it as unreadable; never count it as linking.
-- Unreadable documents: list them as failed and continue.
-- A read-back that does not match: report the exact difference and do not write again.
+Empty and partial results: see [references/completion.md](references/completion.md).
 
 Never invent NAS data, a date, a place, a name or a context. Never move or delete the user's files.
 
