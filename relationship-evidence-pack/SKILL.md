@@ -32,7 +32,7 @@ The scope follows the people named at the start:
 
 From the photo library and papers already on the NAS, this Skill produces:
 
-1. A month-by-month coverage table and a gap list: the months where Photos face grouping found no photo of the people and no linking paper, and no papers in each partner's name showing the same address, were found (for common-law partners, the months with no paper showing both at the same address).
+1. A month-by-month coverage table and a gap list: the months where nothing was found, meaning no photo of the people from face grouping, no linking paper and no pair of papers in each partner's name at the same address (for common-law partners, only papers showing both at the same address count).
 2. For a couple or family, up to the photo limit of photos of the people together, one per month, spread across the period, each checked as fit to send, each with a line whose every field says where it came from.
 3. The papers that link the people, scanned or photographed, with every name, birth date or address mismatch noted, and papers whose spelling differs listed as possible matches.
 4. An evidence folder with copies in upload order and a Photo descriptions file (only lines the user wrote or confirmed, to include in the upload), a Photos album of the chosen photos, and an Evidence index of working notes for the user (gaps, mismatches, counts; not for upload), all read back after saving.
