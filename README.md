@@ -60,7 +60,7 @@ The Skill passes the static checker and the rule and capability checks. It has n
 
 | Path | What it is |
 |---|---|
-| `relationship-evidence-pack/` | The Skill: `SKILL.md` plus `references/` (rules, same-address rules, common-law rules, saving, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
+| `relationship-evidence-pack/` | The Skill: `SKILL.md` plus `references/` (rules, same-address rules, common-law rules, saving, working files, completion, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
 | `tools/rulecheck/` | A small reference program that restates the Skill's steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) and checks them on synthetic cases, including the worked example. |
 | `tools/capcheck/` | Checks every action the Skill relies on against the UGREEN capability catalog: it exists, takes the inputs used, Steps 1 to 7 only read, and every write is behind approval. |
 | `scripts/build-package.sh` | Runs the checks and builds the upload ZIP. |
