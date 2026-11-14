@@ -128,11 +128,11 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 | # | Copy | Date | Place | People | Description |
 |---|---|---|---|---|---|
 | 1 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Moving into our apartment; boxes in the hallway. |
-| 3 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 | not recorded | Linh, Minh, An and Bao Tran | An's first Halloween at her new school. |
-| 4 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Linh, Minh, An and Bao Tran | Bao's birthday at home. |
-| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Linh, Minh, An and Bao Tran | Christmas with Minh's parents. |
-| 7 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Linh, Minh, An and Bao Tran | Family trip to Montréal. |
-| 8 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Linh, Minh, An and Bao Tran | First day of school for both kids. |
+| 3 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 | unknown | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | An's first Halloween at her new school. |
+| 4 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Bao's birthday at home. |
+| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Christmas with Minh's parents. |
+| 7 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Family trip to Montréal. |
+| 8 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | First day of school for both kids. |
 
 Add a description before uploading these: `02 2025-07-05 IMG_2210.jpg`, `06 2026-06-20 IMG_3102.jpg`, `09 2026-11-08 IMG_3530.jpg`.
 
@@ -144,6 +144,7 @@ Add a description before uploading these: `02 2025-07-05 IMG_2210.jpg`, `06 2026
 | `02 Papers` | 12 copies (4 papers and 8 bills), names as planned | 12 files, names match |
 | Album `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran` | 9 photos | 9 photos |
 | `Evidence index` | the text above | row counts and final line match |
+| `Photo descriptions` | 6 entries and 3 to add | 6 entries and 3 to add, match |
 
 ## What this example shows
 
