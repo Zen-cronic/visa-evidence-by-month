@@ -14,7 +14,7 @@ GAP_LABEL = "no photo of everyone found by face grouping and no linking paper"
 FORBIDDEN_GAP_WORDS = ("no relationship", "not together", "not in the country", "apart")
 
 RULES = {
-    1: "everyone named is visible",
+    1: "everyone named clearly visible",
     2: "every face visible and not covered",
     3: "a real photo, not a screenshot or a photo of a screen, print or paper",
     4: "suitable to show a government officer",
@@ -51,9 +51,8 @@ def confirm_people(named_albums: list[str], people: list[str]) -> dict:
 
 # Step 3
 
-def plan_months(month_counts: dict[str, int], limit: int, paper_months: set[str] | None = None) -> list[str]:
+def plan_months(month_counts: dict[str, int], limit: int) -> list[str]:
     """Spread up to `limit` months across the period; never plan a zero month."""
-    paper_months = paper_months or set()
     with_photos = sorted(m for m, n in month_counts.items() if n > 0)
     if len(with_photos) <= limit:
         return with_photos
@@ -68,9 +67,9 @@ def plan_months(month_counts: dict[str, int], limit: int, paper_months: set[str]
             if not inside:
                 continue
             mid = (idx[a] + idx[b]) / 2
-            # longest stretch first; inside it, prefer a month with no linking paper, then the middle
-            pick = min(inside, key=lambda m: (m in paper_months, abs(idx[m] - mid), idx[m]))
-            key = (idx[b] - idx[a], pick not in paper_months)
+            # longest stretch first; inside it, the month nearest the middle
+            pick = min(inside, key=lambda m: (abs(idx[m] - mid), idx[m]))
+            key = idx[b] - idx[a]
             if best is None or key > best[0]:
                 best = (key, pick)
         if best is None:
@@ -97,24 +96,19 @@ class Choice:
 
 
 def choose_photos(checked: list[Checked], plan: list[str], limit: int) -> Choice:
-    """First passing photo per planned month, at most one per calendar day, never padded."""
+    """First passing photo per planned month, one per month, never padded."""
     result = Choice()
     for c in checked:
         if c.failed_rule is not None:
             result.failures[c.failed_rule] += 1
-    used_days: set[str] = set()
     for month in plan:
-        pick = next(
-            (c for c in checked if c.month == month and c.failed_rule is None and c.date not in used_days),
-            None,
-        )
+        pick = next((c for c in checked if c.month == month and c.failed_rule is None), None)
         if pick is None:
             if any(c.month == month for c in checked):
                 result.none_fit.append(month)
             continue
         if len(result.chosen) < limit:
             result.chosen.append(pick)
-            used_days.add(pick.date)
     return result
 
 

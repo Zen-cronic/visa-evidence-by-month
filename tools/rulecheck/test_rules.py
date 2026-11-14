@@ -54,10 +54,6 @@ class CoreGapList(unittest.TestCase):
         idx = [months.index(m) for m in plan]
         self.assertLessEqual(max(b - a for a, b in zip(idx, idx[1:])), 3)
 
-    def test_prefers_months_without_a_linking_paper(self):
-        counts = {"2025-01": 1, "2025-02": 1, "2025-03": 1, "2025-04": 1, "2025-05": 1}
-        plan = plan_months(counts, 3, paper_months={"2025-03"})
-        self.assertNotIn("2025-03", plan)
 
 
 class CoreJointPapers(unittest.TestCase):
@@ -114,11 +110,6 @@ class EdgeNoPadding(unittest.TestCase):
         self.assertEqual(choice.failures[1], 1)
         self.assertTrue(all(c.failed_rule is None for c in choice.chosen))
 
-    def test_one_photo_per_calendar_day(self):
-        same_day = [Checked("a.jpg", "2025-01", "2025-01-31", None),
-                    Checked("b.jpg", "2025-02", "2025-01-31", None)]
-        choice = choose_photos(same_day, ["2025-01", "2025-02"], 20)
-        self.assertEqual(len(choice.chosen), 1)
 
 
 class EdgeFaceGroupingMiss(unittest.TestCase):
@@ -256,7 +247,7 @@ class ExampleOutputIsConsistent(unittest.TestCase):
             if r["pack"]:
                 self.assertEqual(pack, f"#{r['pack']}", r["month"])
             elif r["month"] in choice.none_fit:
-                self.assertEqual(pack, "none fit to send", r["month"])
+                self.assertRegex(pack, r"^\d samples? checked, none fit to send$", r["month"])
             else:
                 self.assertEqual(pack, "—", r["month"])
             if r["papers"]:
