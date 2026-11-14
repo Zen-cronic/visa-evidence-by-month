@@ -167,7 +167,6 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 - Any name on a paper that differs from `{MATCH_NAMES}` only in spelling goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
 - Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
 - For a photo of a document, suggest uploading a clear scan of the original.
-- If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload.
 - For a paper not in English or French, note that it needs a translation for the application (check the current rules for who may translate).
 - Most small differences need no letter; when unsure, ask a licensed consultant.
 - Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only, no action needed" rather than a mismatch.
@@ -184,13 +183,11 @@ A paper with a covered period (a lease, a bill period) covers each month of that
 
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 6): it sets what counts as covered, the "Same address shown (counts)" column, the gap rule and label, the papers for what could cover a gap, and the footer.
 
-The rest of this paragraph applies to everyone else:
+These bullets apply when `{RELATIONSHIP}` is not common-law:
 - A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}` and no linking paper was found.
-- Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: March to June 2025" (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`).
+- Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: <first gap month> to <last gap month>" (for example, "March to June 2025") (with "of the two adults", or the names, in place of "of everyone" when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`).
 - For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
-- Never write "no relationship", "not together" or "not in the country".
-
-For every gap label, common-law included: if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
+For every gap label, common-law included: never write "no relationship", "not together" or "not in the country". Also, if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
 
 For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` (for common-law, the papers the common-law rules name):
 
@@ -268,6 +265,8 @@ When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](refer
 It has no source labels, counts, gaps, notes or to-do lists.
 
 When `{CHOSEN_PHOTOS}` is empty, there is no Photo descriptions file and no album.
+
+If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload.
 
 `{INDEX_TEXT}` is the working notes for the user, not for upload. It starts with the line "Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file." (or "upload the papers" when no photos were chosen), followed, when some chosen photos have no description yet, by "Photos <numbers> have no description yet; describe or remove them before uploading."
 
@@ -362,7 +361,7 @@ Leave out of the read any path that is empty (declined, failed, unclear or not a
 
 # Values and sending rules
 
-Every delegation below uses values in braces. Before sending a delegation:
+Every delegation in this file uses values in braces. Before sending a delegation:
 
 - Replace every value with its real value: a user answer, a real result returned with `completed` by an earlier step, or a value derived from those as defined in this file. Lists are written out in full, one item per line.
 - If a value is missing, do not send. Ask the user, or skip the steps that need it as each step says.
