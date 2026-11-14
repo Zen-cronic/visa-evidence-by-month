@@ -195,7 +195,7 @@ For every gap label, common-law included: never write "no relationship", "not to
 For each gap, add one line on what could cover it, using only papers in `{LINKED_DOCS}` and, for a couple or family, the single-name papers same-address.md names (for common-law, as the common-law rules say):
 
 - a series of at least 3 papers of the same extracted type, naming the same people, one in each of the consecutive months ending the month before the gap, written as "<type>s came every month until <month>; <type>s for <gap months> would add evidence for these months, if you have them";
-- and a paper covering a period that starts the month after the gap, written as "the <type> starts in <month>".
+- and a paper whose covered period starts the month after the gap and that did not appear in the months before it (such as a new lease), written as "the <type> starts in <month>".
 
 For example, "electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026". If neither exists, say "no regular paper found near these months". It suggests only; never say such a paper exists.
 
