@@ -42,11 +42,11 @@ Three columns per month:
 
 A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
-For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show a shared address speak to living together; photos do not.
+For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show both at the same address speak to living together; photos do not show living together, though they can show a couple presenting themselves as a couple.
 
 Each gap gets one line on what could cover it, using only linking papers: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
 
-For common-law couples, the table shows at a glance whether the latest 12 months are continuous. It states the facts only; it never says whether an officer will accept them.
+For common-law couples, the table counts a month only when a paper shows both at the same address. It does not show whether the couple meets the 12-month rule, and says so; it never says whether an officer will accept the evidence.
 
 ## Papers (Step 5)
 
@@ -62,7 +62,7 @@ A name on a paper matches when its words are the same as the name given, ignorin
 
 Copies inside earlier packs (folders named Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
 
-Note differences in spelling, date of birth or address without changing anything; the people may need to explain them in a letter, and must never alter a document. Differences only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4") are noted as "format difference only, no action needed".
+Note differences in spelling, date of birth or address without changing anything; most small differences need no letter; never alter a document, and ask a licensed consultant when unsure. Differences only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4") are noted as "format difference only, no action needed".
 
 For one person, when the photo steps were skipped, or when the photo search failed, a gap is a month with no linking paper, labelled "no linking paper found".
 

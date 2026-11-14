@@ -11,6 +11,7 @@ It answers one question: **which months can we not prove yet?** For each month i
 3. **Put scanned papers in one folder**, if you have any: leases, bills, bank statements, marriage and birth certificates, letters. Photos of papers taken with your phone are found in the photo library; you do not need to move them.
 4. **Pick where to save the pack.** Any folder outside the papers folder.
 5. **Check Uliya's model setting** if you can, so nothing you share leaves the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
+6. **Know your relationship type and whether photos are needed.** The Skill asks whether you are married, common-law or other, and whether your application asks for photos. On Canada's spouse checklist, if you answer yes to all four of its questions, no additional proof of relationship is needed at this time; the Skill tells you so and asks whether to build a pack anyway.
 
 ## What to ask
 
@@ -39,7 +40,7 @@ A worked example with a made-up family is in [example-output.md](example-output.
 - Every `[not confirmed]` line: confirm it, edit it, or drop the photo.
 - Every gap month: look through those months by hand. Face grouping can miss a turned head, a new haircut, or photos in a library your account cannot open.
 - Every possible match and mismatch: decide whether you need to explain it in your application.
-- Photos of papers: upload a clean scan or the original if the officer needs it.
+- Photos of papers: upload a clear scan of the original.
 - The current official checklist for your application. Rules differ by country and change over time; this Skill does not give legal advice.
 
 ## Limits

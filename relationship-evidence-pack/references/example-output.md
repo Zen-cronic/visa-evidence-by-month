@@ -9,7 +9,7 @@ This example is the all-four case: every family member has a face group, so phot
 
 - People, as named in Photos: Linh Tran, Minh Tran, An Tran, Bao Tran. Scope: a family.
 - Printed names: Tran Thi Linh, Tran Van Minh, Tran Thi An, Tran Gia Bao. Children: An Tran, Bao Tran.
-- Today: 2026-11-14. Save location: `/Family/Visa`.
+- Today: 2026-11-14. Save location: `/Family/Visa`. Relationship: married. Photos needed: yes.
 - Period: June 2025 to November 2026 (18 months).
 - Scanned papers folder: `/Family/Papers`. Photos of papers: yes.
 - Photo limit: 20.
@@ -111,7 +111,9 @@ Ignored text in papers:
 - **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
   What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026.
 
-Gaps are for your own checking. Not every application needs every month covered; for spouses there is no monthly requirement.
+Gaps are for your own checking. Spouses have no monthly requirement.
+
+Chosen photos that still need a description before uploading: 02, 06, 09.
 
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
 
@@ -123,18 +125,16 @@ Prepared from files on this NAS. Not legal advice. Check the current official ch
 
 ## Photo descriptions (for upload)
 
-Saved as `Photo descriptions` in the same folder. Only the lines the family wrote or confirmed in their own words; no counts, gaps or notes.
+Saved as `Photo descriptions` in the same folder. Only the lines the family wrote or confirmed in their own words, with names as printed on their papers; no counts, gaps, notes or to-do lists. Minh's parents appear in photo 5; the family chose to keep it and named them.
 
 | # | Copy | Date | Place | People | Description |
 |---|---|---|---|---|---|
-| 1 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Moving into our apartment; boxes in the hallway. |
-| 3 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 | unknown | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | An's first Halloween at her new school. |
-| 4 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Bao's birthday at home. |
-| 5 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Christmas with Minh's parents. |
-| 7 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | Family trip to Montréal. |
-| 8 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Linh Tran (applicant), Minh Tran (sponsor), An and Bao Tran (children) | First day of school for both kids. |
-
-Add a description before uploading these: `02 2025-07-05 IMG_2210.jpg`, `06 2026-06-20 IMG_3102.jpg`, `09 2026-11-08 IMG_3530.jpg`.
+| 1 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Moving into our apartment; boxes in the hallway. |
+| 2 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 |  | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | An's first Halloween at her new school. |
+| 3 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Bao's birthday at home. |
+| 4 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children); Minh's parents | Christmas with Minh's parents. |
+| 5 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Family trip to Montréal. |
+| 6 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | First day of school for both kids. |
 
 ## Checked after saving
 
@@ -144,7 +144,7 @@ Add a description before uploading these: `02 2025-07-05 IMG_2210.jpg`, `06 2026
 | `02 Papers` | 12 copies (4 papers and 8 bills), names as planned | 12 files, names match |
 | Album `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran` | 9 photos | 9 photos |
 | `Evidence index` | the text above | row counts and final line match |
-| `Photo descriptions` | 6 entries and 3 to add | 6 entries and 3 to add, match |
+| `Photo descriptions` | 6 entries | 6 entries, match |
 
 ## What this example shows
 
