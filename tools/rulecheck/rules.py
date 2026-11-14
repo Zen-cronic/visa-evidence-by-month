@@ -19,7 +19,7 @@ RULES = {
     1: "the people the photo is about clearly visible in the foreground",
     2: "their faces visible and not covered",
     3: "a real photo, not a screenshot or a photo of a screen, print or paper",
-    4: "suitable to show a government officer",
+    4: "appropriate to send to a government officer",
     5: "not blurry",
 }
 
