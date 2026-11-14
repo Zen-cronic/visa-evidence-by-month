@@ -58,7 +58,7 @@ What counts as a linking paper depends on the scope:
 | A couple | names both of you | a lease or mortgage, utility or internet bills, insurance, joint bank statements, official mail to the same address, a marriage certificate |
 | A family | names at least two of the people | a marriage certificate, a birth certificate naming a parent and a child, a lease naming both adults |
 
-A name on a paper matches when its words are the same as the name given, ignoring case, commas and word order: "TRAN, Thi Linh" matches "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person. Without printed names, a paper name containing every word of a Photos name is a possible match only.
+A name on a paper matches when its words are the same as the name given, ignoring case, commas, accents and word order: "TRAN, Thi Linh" and "Trần Thị Linh" match "Tran Thi Linh". A paper whose only difference is the spelling of a given name ("Tran Thi Lin") is listed as a possible match; it links only if the user says it is the same person. Without printed names, a paper name containing every word of a Photos name is a possible match only.
 
 Copies inside earlier packs (folders whose name starts with Visa evidence) are never read as evidence; the original photos in an earlier pack's album still count.
 

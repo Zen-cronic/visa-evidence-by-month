@@ -337,6 +337,11 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertEqual(len(result["linked"]), 1)
         self.assertIn(birth, result["possible_matches"])
 
+    def test_accented_printed_names_match(self):
+        self.assertTrue(name_matches("TRẦN, Thị Linh", "Tran Thi Linh"))
+        self.assertTrue(name_matches("Đặng Văn Minh", "Dang Van Minh"))
+        self.assertFalse(name_matches("Trần Thị Lan", "Tran Thi Linh"))
+
     def test_single_name_papers_at_different_addresses_do_not_count(self):
         couple = ["Mei Tan", "Daniel Reyes"]
         a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")

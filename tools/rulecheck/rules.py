@@ -9,6 +9,7 @@ synthetic cases. It does not call the NAS and does not prove runtime behaviour.
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 
 GAP_LABEL = "no photo of everyone found by face grouping and no linking paper"
@@ -130,12 +131,18 @@ class Paper:
     asks: str | None = None  # an instruction found inside the paper
 
 
+def _fold(name: str) -> str:
+    """Drop accents so "Trần Thị Linh" and "Tran Thi Linh" compare equal (đ has no decomposition)."""
+    decomposed = unicodedata.normalize("NFD", name.replace("đ", "d").replace("Đ", "D"))
+    return "".join(c for c in decomposed if not unicodedata.combining(c))
+
+
 def _words(name: str) -> list[str]:
-    return sorted(re.sub(r"[,.]", " ", name).lower().split())
+    return sorted(re.sub(r"[,.]", " ", _fold(name)).lower().split())
 
 
 def name_matches(printed: str, given: str) -> bool:
-    """Same words, ignoring case, commas and word order."""
+    """Same words, ignoring case, commas, accents and word order."""
     return _words(printed) == _words(given)
 
 

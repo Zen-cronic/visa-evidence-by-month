@@ -23,7 +23,7 @@ The Skill sends plain-language instructions; each one maps to actions in the kit
 
 ## Rule checks (MEASURED, 2026-11-13)
 
-The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program (36 rule cases), kept in the project's source repository and not part of the Skill, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): all checks passed. This shows the written rules give the expected result on these cases and that the worked example follows them; it does not prove the rules cover every case. It does not show how the Skill behaves on a NAS.
+The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program (37 rule cases), kept in the project's source repository and not part of the Skill, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): all checks passed. This shows the written rules give the expected result on these cases and that the worked example follows them; it does not prove the rules cover every case. It does not show how the Skill behaves on a NAS.
 
 ## Simulated runs (MEASURED, 2026-11-13)
 
