@@ -322,6 +322,21 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertEqual(len(unplanned), 10)
         self.assertFalse(any(r["gap"] for r in rows))
 
+    def test_scan_and_photo_with_different_type_labels_are_one_paper(self):
+        people = ["Tran Thi Linh", "Tran Van Minh"]
+        scan = Paper("marriage certificate", people, "scanned document", dated="2024-05-01", dob={"Tran Thi Linh": "1994-03-02"})
+        photo = Paper("certificate", people, "from a photo of a document", dated="2024-05-01", dob={"Tran Thi Linh": "1994-03-20"})
+        result = join_papers([photo, scan], people)
+        self.assertEqual([p.source for p in result["linked"]], ["scanned document"])
+        self.assertEqual(result["mismatches"], [])
+
+    def test_spelling_variant_on_a_linking_paper_is_listed(self):
+        people = ["Tran Thi Linh", "Tran Van Minh", "Tran Gia Bao"]
+        birth = Paper("birth certificate", ["Tran Thi Linh", "Tran Van Minh", "Tran Gia Bau"], "scanned document", dated="2024-09-01")
+        result = join_papers([birth], people)
+        self.assertEqual(len(result["linked"]), 1)
+        self.assertIn(birth, result["possible_matches"])
+
     def test_single_name_papers_at_different_addresses_do_not_count(self):
         couple = ["Mei Tan", "Daniel Reyes"]
         a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")

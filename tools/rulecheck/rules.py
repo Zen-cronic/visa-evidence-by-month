@@ -193,8 +193,12 @@ def join_papers(papers: list[Paper], people: list[str], printed_names: bool = Tr
             if _enough(len(named_in(p, people, near=True)), people):
                 possible.append(p)  # shown to the user, never linked on its own
             continue
+        # a spelling variant on a paper that links through other names is still listed for that person
+        if set(named_in(p, people, near=True)) - set(named_in(p, people)):
+            possible.append(p)
+        # same paper: the same people and the same printed date or period (type labels may differ)
         twin = next(
-            (q for q in linked if q.kind == p.kind and sorted(q.names) == sorted(p.names)
+            (q for q in linked if sorted(named_in(q, people)) == sorted(named_in(p, people))
              and (q.start, q.end, q.dated) == (p.start, p.end, p.dated)),
             None,
         )
@@ -311,7 +315,8 @@ def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Pa
                 for printed in c.names:
                     if name_near(printed, given):
                         mismatches.append(("name spelling", given, sorted([printed, given])))
-    return [p for p in linked + added if not any(p is d for d in dropped)]
+    new = [c for c in added if not any(c is q for q in linked)]  # a confirmed variant on an already-linked paper is not added twice
+    return [p for p in linked + new if not any(p is d for d in dropped)]
 
 
 def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str, list[str]]:
