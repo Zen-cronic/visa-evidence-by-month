@@ -41,4 +41,4 @@ A worked example with a made-up family is in [example-output.md](example-output.
 - Only people named in Photos can be found in photos; only papers on this NAS can be found.
 - Up to 3 sample photos a month are checked; a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
 - Photo descriptions come from the vision model and can be wrong, which is why you confirm each one.
-- A second run starts fresh: it does not carry over the context lines you confirmed in an earlier pack, so confirm them again.
+- A second run offers to reuse the context lines you confirmed in your latest earlier pack, for the same photos, marked "from your earlier pack"; everything else is found again from your library and papers.
