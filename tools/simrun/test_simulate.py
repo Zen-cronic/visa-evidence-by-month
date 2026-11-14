@@ -236,6 +236,14 @@ class Scenarios(unittest.TestCase):
         self.assertNotIn(("file-agent", "cpmv"), nas.calls)
         self.assertNotIn("photo copies", log["summary"]["saved"])
 
+    def test_y_accented_printed_names_link_a_paper_and_fill_months(self):
+        counts = months("2026-03", "2026-04", skip={"2026-03", "2026-04"})  # no photos at all
+        lease = R.Paper("lease", ["TRẦN Thị Linh", "TRẦN Văn Minh"], "scanned document", "2026-03", "2026-04")
+        nas = MockNAS(FAMILY[:2], counts, samples(counts), [lease])
+        log = run(FAMILY[:2], FAMILY_PRINTED[:2], "2026-03", "2026-04", nas, User())
+        self.assertEqual(log["linked"], 1)
+        self.assertEqual(log["gaps"], [])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
