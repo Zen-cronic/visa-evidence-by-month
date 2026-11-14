@@ -26,7 +26,7 @@ The official checklist asks for "a brief description of context of each photo". 
 | Field | Source | Label |
 |---|---|---|
 | Date | capture date in photo metadata | `from metadata` |
-| Place | place name in photo metadata; coordinates if that is all it holds | `from metadata`, or `unknown` |
+| Place | place name in photo metadata, or one the user gives | `from metadata`, `from you`, or `unknown` (left blank in the Photo descriptions file) |
 | People | the confirmed Photos people names | `from Photos people` |
 | Context | the user's own words; the visual description is only a prompt, and a line the user wrote in an earlier pack for the same photo (same capture date and original file name) may be reused | (confirmed) or (edited) only if it is the user's words, written, edited or re-confirmed in this run; a vision description the user did not replace stays `[not confirmed]` and the photo is left out of the Photo descriptions file; a reused line is marked `from your earlier pack` |
 
@@ -40,7 +40,7 @@ Three columns per month:
 - **In the pack:** a chosen photo from that month.
 - **Linking paper:** a paper that links the people (see below), dated in that month or covering it.
 
-A gap is a month with no photo of everyone found by face grouping and no linking paper. Always label it that way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
+A gap is a month with no photo of everyone found by face grouping and no linking paper. For common-law couples, a gap is instead a month with no paper showing both at the same address, whatever the photos, labelled "no paper showing you both at the same address found". Always label gaps this way; when fewer people were searched together, the label names them ("of the two adults"). A gap can be a face-grouping miss (one partner turned away, a new haircut, photos in a library this account cannot open), so the index lists the libraries searched and suggests checking those months by hand. The Skill never states that the people were apart or away.
 
 For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show both at the same address speak to living together; photos do not show living together, though they can show a couple presenting themselves as a couple.
 

@@ -16,7 +16,7 @@ This example is the all-four case: every family member has a face group, so phot
 
 ## Evidence index (as saved in `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran`)
 
-Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file.
+Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file. Photos 02, 06 and 09 have no description yet; describe or remove them before uploading.
 
 **Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran**
 
@@ -129,12 +129,12 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 
 | # | Copy | Date | Place | People | Description |
 |---|---|---|---|---|---|
-| 1 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Moving into our apartment; boxes in the hallway. |
-| 2 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 |  | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | An's first Halloween at her new school. |
-| 3 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Bao's birthday at home. |
-| 4 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children); Minh's parents | Christmas with Minh's parents. |
-| 5 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Family trip to Montréal. |
-| 6 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | First day of school for both kids. |
+| 01 | `01 2025-06-14 IMG_2031.jpg` | 2025-06-14 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Moving into our apartment; boxes in the hallway. |
+| 03 | `03 2025-10-31 IMG_2588.jpg` | 2025-10-31 |  | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | An's first Halloween at her new school. |
+| 04 | `04 2025-11-22 IMG_2650.jpg` | 2025-11-22 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Bao's birthday at home. |
+| 05 | `05 2025-12-25 IMG_2799.jpg` | 2025-12-25 | Moncton, NB | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children); Minh's parents | Christmas with Minh's parents. |
+| 07 | `07 2026-07-11 IMG_3240.jpg` | 2026-07-11 | Montréal, QC | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | Family trip to Montréal. |
+| 08 | `08 2026-09-02 IMG_3391.jpg` | 2026-09-02 | Halifax, NS | Tran Thi Linh (applicant), Tran Van Minh (sponsor), Tran Thi An and Tran Gia Bao (children) | First day of school for both kids. |
 
 ## Checked after saving
 
