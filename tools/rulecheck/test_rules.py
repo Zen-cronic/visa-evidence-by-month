@@ -261,6 +261,13 @@ class NamesAndFailures(unittest.TestCase):
         self.assertEqual(sorted(out), [("2025-06-14", "IMG_2031.jpg"), ("2025-10-31", "IMG_2588.jpg")])
         self.assertTrue(all(v.endswith("(from your earlier pack) [confirm]") for v in out.values()))
 
+    def test_a_certificate_covers_only_its_own_month(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        cert = Paper("marriage certificate", couple, "scanned document", dated="2025-03-14")
+        rows = coverage("2025-02", "2025-05", {m: 0 for m in month_range("2025-02", "2025-05")}, [], [cert])
+        self.assertEqual([r["month"] for r in rows if r["papers"]], ["2025-03"])
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-02", f"{GAP_LABEL}: 2025-04 to 2025-05"])
+
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 
