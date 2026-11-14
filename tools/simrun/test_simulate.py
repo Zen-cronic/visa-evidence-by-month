@@ -173,6 +173,24 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["same_address_docs"], 2)
         self.assertIn("paper copies", log["summary"]["saved"])
 
+    def test_r_dropped_same_address_paper_is_not_copied_and_month_reopens(self):
+        counts = months("2026-04", "2026-04")
+        phone = R.Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        letter = R.Paper("bank letter", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="88 Carlow Avenue")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [phone, letter])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-04", "2026-04", nas, User(relationship="common-law", drop_papers=[letter]))
+        self.assertEqual(log["same_address_docs"], 0)
+        self.assertEqual(log["gaps"], [f"{R.COMMON_LAW_GAP_LABEL}: 2026-04"])
+        self.assertNotIn("paper copies", log["summary"]["saved"])
+
+    def test_s_joint_lease_is_not_also_a_single_name_paper(self):
+        counts = months("2026-01", "2026-01")
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-01", address="88 Carlow Ave")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-01", nas, User(relationship="common-law"))
+        self.assertEqual(log["same_address_docs"], 0)
+        self.assertEqual(log["linked"], 1)
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

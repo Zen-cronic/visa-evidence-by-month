@@ -53,6 +53,7 @@ class User:
     relationship: str = "married"  # married / common-law / other
     four_yes: bool = False  # answered yes to all four spouse-checklist questions
     continue_if_not_needed: bool = True
+    drop_papers: list = field(default_factory=list)  # papers the user drops in Step 7
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -112,7 +113,9 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     papers_only = photo_steps_skipped or timeline_failed
     common_law = user.relationship == "common-law"
     partners = printed[:2]
-    address_docs = [p for p in nas.papers if common_law and p.address and len(R.named_in(p, partners)) == 1]
+    address_docs = [p for p in nas.papers if common_law and p.address and len(R.named_in(p, partners)) == 1
+                     and p not in linked and not any(p is d for d in user.drop_papers)]
+    linked = [p for p in linked if not any(p is d for d in user.drop_papers)]
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law,
                       address_docs=address_docs, partners=partners)
     same_address_docs = [p for p in address_docs
