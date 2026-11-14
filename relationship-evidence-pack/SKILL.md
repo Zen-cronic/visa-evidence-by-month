@@ -64,7 +64,7 @@ Run the steps in order. Each step uses only real results from the steps before i
 
 ## Step 0. Consent and local model (no NAS call)
 
-Ask the user and wait: "Does every adult named here agree to build this evidence pack, and does a parent or guardian agree for each child?" and "Is Uliya set to use the model on this NAS only, so nothing you share here leaves it?". If the user says no to either, stop before reading anything and say why. If the user is unsure about the model, explain that every reading step below asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
+Ask the user and wait: "Does every adult named here agree to build this evidence pack, and does a parent or guardian agree for each child?" and "Is Uliya set to use the model on this NAS only, so nothing you share here leaves it?". If the user says no or is unsure about consent, stop before reading anything and say why. If the user is unsure about the model, explain that every step below that reads or saves content asks the experts to use only the local model, suggest checking Uliya's model settings, and ask whether to continue; continue only on a yes. If any expert later reports that it cannot use the local model, stop that step and say so.
 
 ## Step 1. Confirm everyone in Photos
 
@@ -74,13 +74,13 @@ Skip for one person. If `{PEOPLE}` was not given, first send:
 delegate --target photo-agent --instruction 'Use only the local model. List the people albums in Photos that have a name, with each name and person ID, and the number of unnamed people albums. Read only; do not rename, merge or change any album.'
 ```
 
-Show the names, ask the user to pick the people for the application, and wait. `{PEOPLE_TO_CHECK}` is everyone in `{PEOPLE}` except people the user already said to keep for papers only; for those, use the name the user gave. Then send:
+Show the names, ask the user to pick the people for the application, and wait. `{PEOPLE_TO_CHECK}` is everyone in `{PEOPLE}` except people the user already said to keep for papers only, each as the user gave it; papers-only people keep the name the user gave. If `{PEOPLE_TO_CHECK}` is empty, skip the next call. Otherwise send:
 
 ```
 delegate --target photo-agent --instruction 'Use only the local model. List the people albums in Photos that have a name. Check whether each of these names exists exactly: {PEOPLE_TO_CHECK}. For each, return the exact person name and person ID. If a name has no exact match, return up to five closest named people and the number of unnamed people albums; never guess. Also return which photo libraries are searched for this account, personal and shared. Read only; do not rename, merge or change any album.'
 ```
 
-If anyone is not found, ask the user to pick one of the closest names, to name that person in Photos and run again, or to keep that person for papers only (for example, a baby with no face group yet), and wait. Never drop a person silently. `{PHOTO_PEOPLE}` is everyone in `{PEOPLE}` except people kept for papers only; they stay in `{PEOPLE}` for papers, names and labels.
+After the reply, replace each checked name in `{PEOPLE}` with the exact Photos name returned or picked. If anyone is not found, ask the user to pick one of the closest names, to name that person in Photos and run again, or to keep that person for papers only (for example, a baby with no face group yet), and wait. Never drop a person silently. `{PHOTO_PEOPLE}` is everyone in `{PEOPLE}` except people kept for papers only; they stay in `{PEOPLE}` for papers, names and labels.
 
 ## Step 2. Count photos of the people per month
 
@@ -179,7 +179,7 @@ Save the names returned as `{EXISTING}`. `{NAMES_LINE}` is the names in `{PEOPLE
 
 Show the user the draft index: the chosen photos with their labelled lines, the failure counts by rule, the papers with the people each names, the possible matches, the mismatches, the coverage table and the gap list. Ask them to confirm, edit or replace each `[confirm]` context, to say whether each possible match is the same person, and to drop any photo or paper they do not want, then wait. Only confirmed or edited lines are saved as context; the rest are saved as `[not confirmed]`.
 
-After the answers, add to `{LINKED_DOCS}` each possible match the user says is the same person, marked "linked, confirmed by you", and add its spelling difference to the mismatches; remove every dropped photo and paper from `{CHOSEN_PHOTOS}` and `{LINKED_DOCS}`, and redo Step 6 with these values, so the coverage table and gap list match what will be saved. `{PHOTO_COPIES}` has one line per chosen photo, in upload order: its file path, then " -> ", then its copy name: two-digit order number, capture date as YYYY-MM-DD, then its original file name, such as "/Photos/2025/IMG_2031.jpg -> 01 2025-06-14 IMG_2031.jpg". `{PAPER_COPIES}` has one line per paper file in `{LINKED_DOCS}` in the same form, with copy names made of P and a two-digit order number (P01, P02 and so on), the paper's date or period start, and its original file name. `{CHOSEN_PHOTO_IDS}` is the photo ID of each chosen photo, or its file path where no ID was returned.
+After the answers, add to `{LINKED_DOCS}` each possible match the user says is the same person, marked "linked, confirmed by you", remove it from `{POSSIBLE_MATCHES}`, and add its spelling difference to the mismatches; remove every dropped photo and paper from `{CHOSEN_PHOTOS}` and `{LINKED_DOCS}`, then redo the 5c comparison of names, dates of birth and addresses across the updated `{LINKED_DOCS}` (mismatches from dropped papers go) and redo Step 6 with these values, so the papers table, coverage table and gap list match what will be saved. `{PHOTO_COPIES}` has one line per chosen photo, in upload order: its file path, then " -> ", then its copy name: two-digit order number, capture date as YYYY-MM-DD, then its original file name, such as "/Photos/2025/IMG_2031.jpg -> 01 2025-06-14 IMG_2031.jpg". `{PAPER_COPIES}` has one line per paper file in `{LINKED_DOCS}` in the same form, with copy names made of P and a two-digit order number (P01, P02 and so on), the paper's date or period start, and its original file name. `{CHOSEN_PHOTO_IDS}` is the photo ID of each chosen photo, or its file path where no ID was returned.
 
 `{INDEX_TEXT}` holds, in order: the folder name, the names, the scope and the period; the photo table in upload order (order, copy name, date, place, people, context, source labels); failure counts by rule; the papers table with the people each names, mismatch notes and possible matches; any text found inside a paper that asked for something, shown as quoted content under "Asked, not followed"; the coverage table and gap list; the libraries searched; whether papers were matched on printed names or Photos names; anything skipped; and the line "Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting."
 
@@ -187,36 +187,38 @@ After the answers, add to `{LINKED_DOCS}` each possible match the user says is t
 
 Show what will be saved and ask for approval of each item separately: the folder with its photo and paper copies (8a to 8c), the album (8d) and the index (8e). Send only the items the user approves. The writes are independent: if one is declined, cancelled or fails, skip it and keep going with the others. In the summary, say which items the user declined and which failed; a declined item is the user's choice, not a failure.
 
-8a. Always send:
+8a. If the folder is approved, send:
 
 ```
 delegate --target file-agent --instruction 'Create the folder {EVIDENCE_FOLDER} with two subfolders, 01 Photos and 02 Papers. Do not change anything that already exists. Return the created paths.'
 ```
 
-Only if 8a completed, continue with 8b to 8e.
+8b, 8c and 8e need the folder: send them only if 8a completed. 8d does not; it depends only on its own approval.
 
-8b. Only if `{PHOTO_COPIES}` is not empty:
+8b. If approved and `{PHOTO_COPIES}` is not empty:
 
 ```
 delegate --target file-agent --instruction 'Copy, never move, each file below into {EVIDENCE_FOLDER}/01 Photos. Each line is the source path, then -> , then the name to give the copy: {PHOTO_COPIES}. Do not overwrite existing files. Return every copied path and every copy that failed.'
 ```
 
-8c. Only if `{PAPER_COPIES}` is not empty:
+8c. If approved and `{PAPER_COPIES}` is not empty:
 
 ```
 delegate --target file-agent --instruction 'Copy, never move, each file below into {EVIDENCE_FOLDER}/02 Papers. Each line is the source path, then -> , then the name to give the copy: {PAPER_COPIES}. Do not overwrite existing files. Return every copied path and every copy that failed.'
 ```
 
-8d. Only if `{CHOSEN_PHOTOS}` is not empty:
+8d. If the album is approved and `{CHOSEN_PHOTOS}` is not empty:
 
 ```
-delegate --target photo-agent --instruction 'Create one custom album named {ALBUM_NAME} and add exactly these photos and no others, given by photo ID or by file path: {CHOSEN_PHOTO_IDS}. If an album with this name already exists, do not change it; say so and stop. Return the album ID, the number of photos added, and any photo that could not be added. If the album was blocked or not created, say so plainly.'
+delegate --target photo-agent --instruction 'Use only the local model. Create one custom album named {ALBUM_NAME} and add exactly these photos and no others, given by photo ID or by file path: {CHOSEN_PHOTO_IDS}. If an album with this name already exists, do not change it; say so and stop. Return the album ID, the number of photos added, and any photo that could not be added. If the album was blocked or not created, say so plainly.'
 ```
 
-8e. Always, after 8a:
+Save the album ID returned as `{ALBUM_ID}`.
+
+8e. If the index is approved, after 8a:
 
 ```
-delegate --target knowledge-agent --instruction 'Save this Markdown text exactly as given, without rewriting, summarising or adding anything, as a file named Evidence index in the folder {EVIDENCE_FOLDER}: {INDEX_TEXT}. Return the saved file path.'
+delegate --target knowledge-agent --instruction 'Use only the local model. Save this Markdown text exactly as given, without rewriting, summarising or adding anything, as a file named Evidence index in the folder {EVIDENCE_FOLDER}: {INDEX_TEXT}. Return the saved file path.'
 ```
 
 Save the path returned as `{INDEX_PATH}`.
@@ -233,13 +235,13 @@ delegate --target file-agent --instruction 'Use only the local model. List the f
 delegate --target photo-agent --instruction 'Use only the local model. Show the details of album {ALBUM_ID}: its name and the number and names of the photos in it. Read only.'
 ```
 
-Skip the folder read if 8a did not complete, and the album read-back if no album was created. Compare: the number of files in 01 Photos against the number of lines in `{PHOTO_COPIES}`, the number of files in 02 Papers against the number of lines in `{PAPER_COPIES}`, album photos against `{CHOSEN_PHOTOS}`, and the index's table row counts and final line against `{INDEX_TEXT}`; ignore differences in spacing or line endings. Report what was read back, not what a write step claimed.
+If `{INDEX_PATH}` is empty (the index was declined, failed or unclear), send the folder read without the index clause and look for a file named Evidence index in the listing. Skip the folder read if 8a did not complete, and the album read-back if no album was created. Compare: the number of files in 01 Photos against the number of lines in `{PHOTO_COPIES}`, the number of files in 02 Papers against the number of lines in `{PAPER_COPIES}`, album photos against `{CHOSEN_PHOTOS}`, and the index's table row counts and final line against `{INDEX_TEXT}`; ignore differences in spacing or line endings. Report what was read back, not what a write step claimed.
 
 # Completion and failure
 
 Report a result only after a delegated expert returns `completed`, and only what it returned.
 
-- `completed`: use the real result. The final summary gives the scope, the evidence folder path, the album name with its read-back photo count (or "album: declined by you"), the index path with a match or mismatch from Step 9, the photos chosen against the limit, failures by rule, the papers, mismatches and possible matches, and the gap list.
+- `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album and the index, its read-back result or "declined by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the photos chosen against the limit, failures by rule, the papers, mismatches and possible matches, and the gap list.
 - `failed`: say which step failed and why. A failed search is reported as failed, never as "nothing found". Skip only the steps that need its result, as each step says. If a write failed after others succeeded, list what exists and delete nothing.
 - `cancelled`: for a write in Step 8, skip that write and continue with the others and Step 9. For any other step, stop and list which steps finished.
 - `waiting_user`: pass the expert's question on, wait, then send that step again with the answer.
