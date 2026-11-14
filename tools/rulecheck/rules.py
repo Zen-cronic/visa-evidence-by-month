@@ -331,9 +331,9 @@ def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]
     return out
 
 
-def carry_over(earlier_lines: dict[str, tuple[str, str]], chosen_names: list[str]) -> dict[str, str]:
-    """Step 7: reuse only confirmed or edited context lines from an earlier index, only for photos chosen
-    again (matched by original file name). Status values are "confirmed", "edited" or "not confirmed"."""
-    return {name: f"{line} (from your earlier pack)"
-            for name, (line, status) in earlier_lines.items()
-            if name in chosen_names and status in ("confirmed", "edited")}
+def carry_over(earlier_lines: dict[tuple[str, str], tuple[str, str]], chosen: list[tuple[str, str]]) -> dict[tuple[str, str], str]:
+    """Step 7: reuse only (confirmed) or (edited) context lines from an earlier index, only for photos chosen
+    again, matched on (capture date, original file name). A reused line is still shown as [confirm]."""
+    return {key: f"{line} (from your earlier pack) [confirm]"
+            for key, (line, status) in earlier_lines.items()
+            if key in chosen and status in ("confirmed", "edited")}

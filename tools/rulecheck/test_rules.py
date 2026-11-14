@@ -251,14 +251,15 @@ class NamesAndFailures(unittest.TestCase):
         rows = coverage("2025-01", "2025-05", {"2025-01": 1, "2025-02": 1, "2025-03": 1, "2025-04": 0, "2025-05": 0}, [], mixed)
         self.assertEqual(closers(rows, mixed)[("2025-04", "2025-05")], "no regular paper found near these months")
 
-    def test_carry_over_reuses_only_confirmed_lines_for_photos_chosen_again(self):
-        earlier = {"IMG_2031.jpg": ("Moving into our apartment.", "confirmed"),
-                   "IMG_2210.jpg": ("Four people on a beach.", "not confirmed"),
-                   "IMG_2588.jpg": ("An's first Halloween.", "edited"),
-                   "IMG_9999.jpg": ("Not chosen this time.", "confirmed")}
-        out = carry_over(earlier, ["IMG_2031.jpg", "IMG_2210.jpg", "IMG_2588.jpg"])
-        self.assertEqual(out, {"IMG_2031.jpg": "Moving into our apartment. (from your earlier pack)",
-                               "IMG_2588.jpg": "An's first Halloween. (from your earlier pack)"})
+    def test_carry_over_matches_date_and_name_and_asks_again(self):
+        earlier = {("2025-06-14", "IMG_2031.jpg"): ("Moving into our apartment.", "confirmed"),
+                   ("2025-07-05", "IMG_2210.jpg"): ("Four people on a beach.", "not confirmed"),
+                   ("2025-10-31", "IMG_2588.jpg"): ("An's first Halloween.", "edited"),
+                   ("2024-03-02", "IMG_2031.jpg"): ("Same file name, other phone.", "confirmed")}
+        chosen = [("2025-06-14", "IMG_2031.jpg"), ("2025-07-05", "IMG_2210.jpg"), ("2025-10-31", "IMG_2588.jpg")]
+        out = carry_over(earlier, chosen)
+        self.assertEqual(sorted(out), [("2025-06-14", "IMG_2031.jpg"), ("2025-10-31", "IMG_2588.jpg")])
+        self.assertTrue(all(v.endswith("(from your earlier pack) [confirm]") for v in out.values()))
 
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
