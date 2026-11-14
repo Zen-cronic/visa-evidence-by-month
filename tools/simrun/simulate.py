@@ -58,6 +58,7 @@ class User:
     children: list = field(default_factory=list)  # Photos names of children, if given
     accept_adults: bool = True  # agrees to count the adults' photos when offered
     unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
+    photo_scope: str = "everyone"  # for a family: "the couple" or "everyone" (the Skill asks; no default there)
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -79,11 +80,13 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             log["stopped"] = "step 0: no additional proof needed; user chose to stop"
             return log
         user.photos_needed = False
-    photo_people = [p for p in people if p not in user.papers_only]
+    couple_only = scope == "a family" and user.photo_scope == "the couple"
+    # the couple: the two partners (listed first); everyone: all but papers-only people
+    photo_people = people[:2] if couple_only else [p for p in people if p not in user.papers_only]
 
     # Step 1 (skipped for one person)
     if scope != "one person" and user.photos_needed:
-        check = [p for p in people if p not in user.papers_only]
+        check = list(photo_people)
         nas.call("photo-agent", "figure-albums")
         missing = R.confirm_people(nas.named_people, check)["missing"]
         if missing:
@@ -101,7 +104,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             # Step 2 offer: count the adults only, never the same people again, never fewer than two
             adults = [p for p in photo_people if p not in user.children]
             log["adults_offered"] = 0
-            if (scope == "a family" and any(n == 0 for n in month_counts.values())
+            if (scope == "a family" and not couple_only and any(n == 0 for n in month_counts.values())
                     and len(adults) >= 2 and adults != photo_people):
                 log["adults_offered"] += 1
                 if user.accept_adults:
@@ -140,7 +143,8 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                          if any(r["papers"] == ["same address on separate papers"] and R.paper_covers(p, r["month"]) for r in rows)]
     if common_law:
         papers_only = True
-    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law))
+    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law,
+                                         who="the couple" if couple_only else None))
 
     # Step 7: read the save location, pick a free name
     nas.call("file-agent", "ls")
@@ -202,5 +206,5 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
                written=list(nas.written), reused=reused, reuse_note=reuse_note,
-               same_address_docs=len(same_address_docs), waiting_for_answer=waiting)
+               same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people)
     return log

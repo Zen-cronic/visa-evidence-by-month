@@ -1,4 +1,4 @@
-"""The four traced scenarios, run end to end against the mock NAS.
+"""The traced scenarios, run end to end against the mock NAS.
 
 Run from the repository root:  python3 -m unittest discover -s tools/simrun -v
 """
@@ -239,6 +239,20 @@ class Scenarios(unittest.TestCase):
         log = run(FAMILY, FAMILY_PRINTED, "2026-01", "2026-03", nas, User(children=FAMILY[2:]))
         self.assertEqual(log["adults_offered"], 1)
         self.assertEqual(sum(1 for c in nas.calls if c[1] == "timeline-summary"), 2)
+
+    def test_z_family_of_four_choosing_the_couple_searches_two_people(self):
+        counts = months("2026-01", "2026-03", skip={"2026-02"})
+        papers = [R.Paper("birth certificate", FAMILY_PRINTED[:2] + [FAMILY_PRINTED[2]], "scanned document", dated="2026-01-05"),
+                  R.Paper("birth certificate", FAMILY_PRINTED[:2] + [FAMILY_PRINTED[3]], "scanned document", dated="2026-03-09")]
+        nas = MockNAS(FAMILY[:2], counts, samples(counts), papers)  # the children have no face groups; not needed
+        log = run(FAMILY, FAMILY_PRINTED, "2026-01", "2026-03", nas, User(photo_scope="the couple", children=FAMILY[2:]))
+        self.assertIsNone(log["stopped"])  # Step 1 checks only the partners
+        self.assertEqual(log["photo_people"], FAMILY[:2])
+        self.assertEqual(log["adults_offered"], 0)
+        self.assertEqual(sum(1 for c in nas.calls if c[1] == "timeline-summary"), 1)
+        self.assertEqual(log["linked"], 2)  # both children's birth certificates still link
+        self.assertEqual(log["gaps"], [R.GAP_LABEL.replace("of everyone", "of the couple") + ": 2026-02"])
+        self.assertEqual(log["writes_before_approval"], [])
 
     def test_x_failed_listing_and_taken_name_never_writes_into_the_old_pack(self):
         counts = months("2026-01", "2026-03")
