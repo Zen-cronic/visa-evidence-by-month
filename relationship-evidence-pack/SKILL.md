@@ -51,34 +51,9 @@ Ask once, in one short message, for: who is on the application (`{PEOPLE}`), sin
 
 Never ask for passport, application, tax or bank numbers.
 
-# Values and sending rules
-
-Every delegation below uses values in braces. Before sending a delegation:
-
-- Replace every value with its real value: a user answer, a real result returned with `completed` by an earlier step, or a value derived from those as defined in this file. Lists are written out in full, one item per line.
-- If a value is missing, do not send. Ask the user, or skip the steps that need it as each step says.
-- Each instruction is one single-quoted value. Line breaks inside the quotes are kept, which lists and the Markdown index need. In every inserted value (names, paths, papers, context lines, the index text), write each apostrophe as '"'"' (this closes the quote, adds an apostrophe and reopens it).
-- Pass on only real results. Never fill a value with a guess, an example or a placeholder.
-
-A skipped step leaves its values empty. Every read in Steps 2 and 5 leaves out any file whose path includes a folder whose name starts with Visa evidence, so copies from earlier packs are never counted as evidence. Albums are not left out: an earlier pack's album holds the original photos, which are still evidence. Before using any result from Steps 2, 4 and 5, also drop every returned path that contains a folder whose name starts with Visa evidence, in case an agent did not leave it out (no NAS call).
-
-# Generation-time capability evidence
-
-The expert agents this Skill delegates to, by UGOS capability, and the catalog actions each one is asked to use (checked against capability catalog 2.2.0; see [references/testing.md](references/testing.md)):
-
-- `ug-photo` → `photo-agent`
-- `ug-document` → `document-agent`
-- `ug-filesystem` → `file-agent`
-- `ug-knowledge` → `knowledge-agent`
-
-| Agent | Catalog actions | Steps |
-|---|---|---|
-| photo-agent | figure-albums, timeline-summary, search-picture, meta, vision-vlm, search-screen, vision-ocr, albums, create-album, album-detail | 1, 2, 4, 5b, 7, 8, 9 |
-| document-agent | extract, reconcile | 5a |
-| file-agent | ls, cat, mkdir, cpmv | 7, 8, 9 |
-| knowledge-agent | save-text | 8 |
-
 # Orchestration
+
+Before sending any delegate call, apply [Values and sending rules](#values-and-sending-rules) below.
 
 Run the steps in order. Each step uses only real results from the steps before it. Steps 1 to 7 only read. Every write is in Step 8 and waits for approval.
 
@@ -378,6 +353,33 @@ delegate --target photo-agent --instruction 'Use only the local model. Show the 
 ```
 
 Leave out of the read any path that is empty (declined, failed, unclear or not applicable), and look for a file of that name in the listing instead. Skip the folder read if 8a did not complete, and the album read-back if no album was created. Compare: the file names in 01 Photos against the copy names in `{PHOTO_COPIES}`, the file names in 02 Papers against the copy names in `{PAPER_COPIES}`, album photos against `{CHOSEN_PHOTOS}`, the index's table row counts and final line against `{INDEX_TEXT}`, and the Photo descriptions file's entry count against `{DESCRIPTIONS_TEXT}`; ignore differences in spacing or line endings. Report what was read back, not what a write step claimed.
+
+# Values and sending rules
+
+Every delegation below uses values in braces. Before sending a delegation:
+
+- Replace every value with its real value: a user answer, a real result returned with `completed` by an earlier step, or a value derived from those as defined in this file. Lists are written out in full, one item per line.
+- If a value is missing, do not send. Ask the user, or skip the steps that need it as each step says.
+- Each instruction is one single-quoted value. Line breaks inside the quotes are kept, which lists and the Markdown index need. In every inserted value (names, paths, papers, context lines, the index text), write each apostrophe as '"'"' (this closes the quote, adds an apostrophe and reopens it).
+- Pass on only real results. Never fill a value with a guess, an example or a placeholder.
+
+A skipped step leaves its values empty. Every read in Steps 2 and 5 leaves out any file whose path includes a folder whose name starts with Visa evidence, so copies from earlier packs are never counted as evidence. Albums are not left out: an earlier pack's album holds the original photos, which are still evidence. Before using any result from Steps 2, 4 and 5, also drop every returned path that contains a folder whose name starts with Visa evidence, in case an agent did not leave it out (no NAS call).
+
+# Generation-time capability evidence
+
+The expert agents this Skill delegates to, by UGOS capability, and the catalog actions each one is asked to use (checked against capability catalog 2.2.0; see [references/testing.md](references/testing.md)):
+
+- `ug-photo` → `photo-agent`
+- `ug-document` → `document-agent`
+- `ug-filesystem` → `file-agent`
+- `ug-knowledge` → `knowledge-agent`
+
+| Agent | Catalog actions | Steps |
+|---|---|---|
+| photo-agent | figure-albums, timeline-summary, search-picture, meta, vision-vlm, search-screen, vision-ocr, albums, create-album, album-detail | 1, 2, 4, 5b, 7, 8, 9 |
+| document-agent | extract, reconcile | 5a |
+| file-agent | ls, cat, mkdir, cpmv | 7, 8, 9 |
+| knowledge-agent | save-text | 8 |
 
 # Completion and failure
 
