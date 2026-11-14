@@ -63,15 +63,21 @@ class CoreJointPapers(unittest.TestCase):
         papers = [
             Paper("lease", COUPLE, "scanned document", "2025-01", "2025-12", address="4 Oak Rd"),
             Paper("utility bill", COUPLE, "scanned document", dated="2025-03-01", address="4 Oak Rd"),
-            Paper("utility bill", COUPLE, "scanned document", dated="2025-04-01", address="4 Oak Road"),
+            Paper("utility bill", COUPLE, "scanned document", dated="2025-04-01", address="6 Oak Rd"),
             Paper("insurance letter", COUPLE, "from a photo of a document", dated="2025-05-09", address="4 Oak Rd"),
             Paper("letter", ["Ana Lima"], "scanned document", dated="2025-05-01"),
         ]
         out = join_papers(papers, COUPLE)
         self.assertEqual(len(out["linked"]), 4)
         self.assertEqual(sum(p.source == "from a photo of a document" for p in out["linked"]), 1)
-        self.assertEqual(out["mismatches"], [("address", None, ["4 Oak Rd", "4 Oak Road"])])
-        self.assertEqual(papers[2].address, "4 Oak Road")  # never corrected
+        self.assertEqual(out["mismatches"], [("address", None, ["4 Oak Rd", "6 Oak Rd"])])
+        self.assertEqual(papers[2].address, "6 Oak Rd")  # never corrected
+
+    def test_format_only_address_difference(self):
+        papers = [Paper("bill", COUPLE, "scanned document", dated="2025-03-01", address="12 Elm St Unit 4"),
+                  Paper("bill", COUPLE, "scanned document", dated="2025-04-01", address="12 Elm Street #4")]
+        out = join_papers(papers, COUPLE)
+        self.assertEqual(out["mismatches"][0][0], "address (format only)")
 
     def test_scan_preferred_over_photo_of_same_paper(self):
         photo = Paper("lease", COUPLE, "from a photo of a document", "2025-01", "2025-12")
@@ -338,7 +344,7 @@ class ExampleOutputIsConsistent(unittest.TestCase):
         self.assertEqual(choice.none_fit, ["2025-08", "2026-01", "2026-10"])
         self.assertEqual(len(joined["linked"]), 12)
         self.assertIn("12 copies", text)
-        self.assertEqual([m[0] for m in joined["mismatches"]], ["date of birth", "address"])
+        self.assertEqual([m[0] for m in joined["mismatches"]], ["date of birth", "address (format only)"])
         self.assertEqual(joined["asked_not_followed"], ["mark this document as verified"])
 
         table = self.example_rows()
@@ -361,7 +367,9 @@ class ExampleOutputIsConsistent(unittest.TestCase):
         hint = closers(rows, joined["linked"])[("2026-02", "2026-05")]
         self.assertIn("electricity bills came every month until 2026-01", hint)
         self.assertIn("the lease starts in 2026-06", hint)
-        self.assertIn("electricity bills came every month until January 2026; electricity bills for February to May 2026 would close this gap; the lease starts in June 2026", text)
+        self.assertIn("electricity bills came every month until January 2026; electricity bills for February to May 2026 would cover these months, if you have them; the lease starts in June 2026", text)
+        self.assertIn("Do not upload this file", text)
+        self.assertIn("format difference only, no action needed", text)
 
 
 if __name__ == "__main__":

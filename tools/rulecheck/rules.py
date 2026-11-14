@@ -165,6 +165,16 @@ def links(paper: Paper, people: list[str]) -> bool:
     return _enough(len(named_in(paper, people)), people)
 
 
+ABBREVIATIONS = {"street": "st", "road": "rd", "avenue": "ave", "apartment": "unit", "apt": "unit", "suite": "unit"}
+
+
+def normalise_address(address: str) -> str:
+    """Abbreviation and punctuation differences only: "12 Elm Street #4" and "12 Elm St Unit 4" are the same."""
+    s = address.lower().replace("#", " unit ")
+    s = re.sub(r"[.,]", " ", s)
+    return " ".join(ABBREVIATIONS.get(w, w) for w in s.split())
+
+
 def join_papers(papers: list[Paper], people: list[str], printed_names: bool = True) -> dict:
     """Keep linking papers; prefer a scan over a photo of the same paper; note, never fix, mismatches."""
     unreadable = [p for p in papers if not p.readable]
@@ -202,7 +212,8 @@ def join_papers(papers: list[Paper], people: list[str], printed_names: bool = Tr
             mismatches.append(("date of birth", person, dobs))
     addresses = sorted({p.address for p in linked if p.address})
     if len(addresses) > 1:
-        mismatches.append(("address", None, addresses))
+        same = len({normalise_address(a) for a in addresses}) == 1
+        mismatches.append(("address (format only)" if same else "address", None, addresses))
     return {
         "linked": linked,
         "noted_photos": noted_photos,
@@ -323,7 +334,7 @@ def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]
             while m in ms:
                 run, m = run + 1, prev(m)
             if run >= 3:
-                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would close this gap")
+                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would cover these months, if you have them")
         for p in linked:
             if p.start and after and p.start == after:
                 lines.append(f"the {p.kind} starts in {after}")
