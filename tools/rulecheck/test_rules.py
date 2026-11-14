@@ -225,7 +225,14 @@ class NamesAndFailures(unittest.TestCase):
     def test_declined_is_not_failed(self):
         out = save_summary({"folder": True, "album": False, "index": True},
                            {"folder": "completed", "index": "failed"})
-        self.assertEqual(out, {"saved": ["folder"], "declined": ["album"], "failed": ["index"]})
+        self.assertEqual(out, {"saved": ["folder"], "declined": ["album"], "failed": ["index"], "not applicable": []})
+
+    def test_album_does_not_depend_on_the_folder(self):
+        out = save_summary({"folder": False, "photo copies": True, "album": True, "index": True},
+                           {"album": "completed"})
+        self.assertEqual(out["saved"], ["album"])
+        self.assertEqual(out["declined"], ["folder"])
+        self.assertEqual(sorted(out["not applicable"]), ["index", "photo copies"])
 
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))

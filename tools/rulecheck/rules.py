@@ -280,8 +280,19 @@ def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Pa
 
 
 def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str, list[str]]:
-    """Step 8: a declined item is the user's choice, a failed one is a failure; they are reported apart."""
-    declined = [k for k, ok in approved.items() if not ok]
-    failed = [k for k, ok in approved.items() if ok and results.get(k) != "completed"]
-    saved = [k for k, ok in approved.items() if ok and results.get(k) == "completed"]
-    return {"saved": saved, "declined": declined, "failed": failed}
+    """Step 8: each item has its own approval. Copies and the index need the folder; the album does not.
+    A declined item is the user's choice, a failed one is a failure, and an item whose folder was not
+    created is not applicable; all three are reported apart."""
+    needs_folder = {"photo copies", "paper copies", "index"}
+    folder_ok = approved.get("folder", False) and results.get("folder") == "completed"
+    out = {"saved": [], "declined": [], "failed": [], "not applicable": []}
+    for item, ok in approved.items():
+        if not ok:
+            out["declined"].append(item)
+        elif item in needs_folder and not folder_ok:
+            out["not applicable"].append(item)
+        elif results.get(item) == "completed":
+            out["saved"].append(item)
+        else:
+            out["failed"].append(item)
+    return out
