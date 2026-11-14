@@ -27,6 +27,7 @@ class MockNAS:
     write_results: dict[str, str] = field(default_factory=dict)  # item -> completed / failed
     earlier_index: dict | None = None  # (date, file name) -> (line, status); None = no earlier pack
     earlier_read: str = "completed"  # completed / failed / cancelled
+    list_read: str = "completed"  # the Step 7 folder listing; failed means the user continues with the base name
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
     written: list[str] = field(default_factory=list)
 
@@ -146,7 +147,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     nas.call("photo-agent", "albums")
     base = "Visa evidence " + " and ".join(people)
     name = base
-    if name in nas.existing:
+    if nas.list_read == "completed" and name in nas.existing:
         name = f"{base} 2026-11-14"
         n = 2
         while name in nas.existing:
@@ -170,6 +171,8 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         approved.pop("descriptions")
     results = {}
     if approved.get("folder"):
+        if name in nas.existing:  # 8a never writes into an existing folder: it reports failed
+            nas.write_results["folder"] = "failed"
         results["folder"] = nas.call("file-agent", "mkdir", write=True, item="folder")
     folder_ok = results.get("folder") == "completed"
     if approved.get("folder") and chosen and folder_ok:

@@ -227,6 +227,15 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["adults_offered"], 1)
         self.assertEqual(sum(1 for c in nas.calls if c[1] == "timeline-summary"), 2)
 
+    def test_x_failed_listing_and_taken_name_never_writes_into_the_old_pack(self):
+        counts = months("2026-01", "2026-03")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts),
+                      [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-03")],
+                      existing=["Visa evidence Mei Tan and Daniel Reyes"], list_read="failed")
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-03", nas, User())
+        self.assertNotIn(("file-agent", "cpmv"), nas.calls)
+        self.assertNotIn("photo copies", log["summary"]["saved"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))
