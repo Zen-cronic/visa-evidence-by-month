@@ -293,16 +293,25 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         text = EXAMPLE.read_text()
         couple = ["Mei Tan", "Daniel Reyes"]
         lease = Paper("lease", couple, "scanned document", "2026-01", "2026-03", address="88 Carlow Avenue")
-        bank = Paper("bank statement", couple, "scanned document", "2026-04", "2026-05")
+        bank = Paper("bank statement", couple, "scanned document", "2026-05", "2026-06")
+        phone = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        letter = Paper("bank letter", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="88 Carlow Avenue")
         counts = {"2026-01": 4, "2026-02": 3, "2026-03": 5, "2026-04": 2, "2026-05": 3, "2026-06": 2}
-        rows = coverage("2026-01", "2026-06", counts, [], [lease, bank], common_law=True)
+        rows = coverage("2026-01", "2026-06", counts, [], [lease, bank], common_law=True,
+                        address_docs=[phone, letter], partners=couple)
         self.assertEqual(gap_lines(rows, gap_label(common_law=True)),
-                         ["no paper showing you both at the same address found: 2026-04 to 2026-06"])
-        self.assertIn("No paper showing you both at the same address found: April to June 2026", text)
+                         ["no paper showing you both at the same address found: 2026-05 to 2026-06"])
+        self.assertIn("No paper showing you both at the same address found: May to June 2026", text)
         self.assertIn("It does not show whether you meet the 12-month rule", text)
-        same_address = [lease]  # closers for common-law use same-address papers only
-        self.assertEqual(closers(rows, same_address)[("2026-04", "2026-06")], "no regular paper found near these months")
+        self.assertEqual(closers(rows, [lease])[("2026-05", "2026-06")], "no regular paper found near these months")
         self.assertIn("What could cover it: no regular paper found near these months.", text)
+
+    def test_single_name_papers_at_different_addresses_do_not_count(self):
+        couple = ["Mei Tan", "Daniel Reyes"]
+        a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
+        b = Paper("bank letter", ["Daniel Reyes"], "scanned document", dated="2026-04-20", address="5 Pine Rd")
+        rows = coverage("2026-04", "2026-04", {"2026-04": 2}, [], [], common_law=True, address_docs=[a, b], partners=couple)
+        self.assertTrue(rows[0]["gap"])
 
 
 class ExampleOutputIsConsistent(unittest.TestCase):
