@@ -1,6 +1,6 @@
 # User guide
 
-See which months your photos and papers show evidence of your life together, find out what would fill each gap, and get a folder organised for upload, without your family's photos and papers leaving your NAS.
+See which months your photos and papers show evidence of your life together, find out what would fill each gap, and get a folder organised for upload, and, with Uliya set to its on-device model, without your family's photos and papers leaving your NAS.
 
 It answers one question: **which months can we not prove yet?** For each month it shows the photos of everyone together, the paper that covers that month (a lease, a bill, a certificate), and, for any month with neither, what could close the gap. See [example-output.md](example-output.md).
 
