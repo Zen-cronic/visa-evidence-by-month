@@ -359,10 +359,15 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
     return out
 
 
-def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]:
+def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | None = None,
+            partners: list[str] | None = None, labels: dict[str, str] | None = None) -> dict[tuple[str, str], str]:
     """Step 6: for each gap, from linking papers only: a series of at least 3 papers of the same type naming
     the same people, one each month up to the month before the gap; and a covering paper that starts the
-    month after it. Suggests only; never claims the paper exists."""
+    month after it. Suggests only; never claims the paper exists.
+
+    same-address.md: with partners and single-name address_docs, a series of same-address pairs (one type per
+    partner, the same address each month) names both types; when only one partner's papers form a series,
+    the line names the missing half. `labels` gives the short name shown for each partner (default: as given)."""
     out = {}
     months = [r["month"] for r in rows]
     series: dict[tuple[str, tuple[str, ...]], set[str]] = {}
@@ -385,11 +390,50 @@ def closers(rows: list[dict], linked: list[Paper]) -> dict[tuple[str, str], str]
                 run, m = run + 1, prev(m)
             if run >= 3:
                 lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would add evidence for these months, if you have them")
+        if partners and len(partners) == 2 and address_docs:
+            lines.extend(_address_series(address_docs, partners, labels or {}, before, a, b, prev))
         for p in linked:
             if p.start and after and p.start == after:
                 lines.append(f"the {p.kind} starts in {after}")
         out[(a, b)] = "; ".join(lines) if lines else "no regular paper found near these months"
     return out
+
+
+def _address_series(address_docs: list[Paper], partners: list[str], labels: dict[str, str], before: str,
+                    a: str, b: str, prev) -> list[str]:
+    """same-address.md, what could cover each gap: runs of single-name papers ending the month before the gap."""
+    # per partner and type: month -> normalised addresses on that partner's papers of that type
+    by: dict[tuple[str, str], dict[str, set[str]]] = {}
+    for p in address_docs:
+        if not (p.dated and p.address):
+            continue
+        who = [g for g in partners if any(name_matches(n, g) for n in p.names)]
+        if len(who) == 1:
+            by.setdefault((who[0], p.kind), {}).setdefault(p.dated[:7], set()).add(normalise_address(p.address))
+
+    def run(months: dict[str, set[str]], other: dict[str, set[str]] | None = None) -> int:
+        n, m = 0, before
+        while m in months and (other is None or (m in other and months[m] & other[m])):
+            n, m = n + 1, prev(m)
+        return n
+
+    first, second = partners
+    name = {g: labels.get(g, g) for g in partners}
+    lines, paired = [], set()
+    for (pa, ka), ma in sorted(by.items()):
+        if pa != first:
+            continue
+        for (pb, kb), mb in sorted(by.items()):
+            if pb == second and run(ma, mb) >= 3:
+                both = f"{ka}s ({name[first]}) and {kb}s ({name[second]})"
+                lines.append(f"{both} came every month until {before}; {both} for {a} to {b} would add evidence for these months, if you have them")
+                paired |= {(pa, ka), (pb, kb)}
+    for (who, kind), months in sorted(by.items(), key=lambda kv: (partners.index(kv[0][0]), kv[0][1])):
+        if (who, kind) not in paired and run(months) >= 3:
+            other = second if who == first else first
+            lines.append(f"{kind}s in {name[who]}'s name came every month until {before}; a paper in {name[other]}'s name "
+                         f"at the same address for {a} to {b} would add evidence, if you have one")
+    return lines
 
 
 def carry_over(earlier_lines: dict[tuple[str, str], tuple[str, str]], chosen: list[tuple[str, str]]) -> dict[tuple[str, str], str]:

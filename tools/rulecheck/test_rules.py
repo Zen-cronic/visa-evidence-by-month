@@ -371,6 +371,116 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2026-04"])
 
 
+MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+               "October", "November", "December"]
+
+
+def human(text: str) -> str:
+    """Write the rules' YYYY-MM months as the index does: "2026-04 to 2026-05" -> "April to May 2026"."""
+    def name(m: str) -> str:
+        return MONTH_NAMES[int(m[5:]) - 1]
+    text = re.sub(r"(\d{4})-(\d{2}) to \1-(\d{2})", lambda g: f"{name(g[0][:7])} to {name(g[1] + '-' + g[3])} {g[1]}", text)
+    return re.sub(r"(\d{4})-(\d{2})", lambda g: f"{name(g[0])} {g[1]}", text)
+
+
+class SameAddressSeries(unittest.TestCase):
+    """same-address.md: single-name papers in a run before a gap suggest what could cover it."""
+
+    COUPLE = ["Mei Tan", "Daniel Reyes"]
+    LABELS = {"Mei Tan": "Mei", "Daniel Reyes": "Daniel"}
+
+    def bills(self, who: str, kind: str, months: list[str], address: str = "88 Carlow Ave") -> list[Paper]:
+        return [Paper(kind, [who], "scanned document", dated=f"{m}-10", address=address) for m in months]
+
+    def test_a_series_of_pairs_names_both_types(self):
+        docs = (self.bills("Mei Tan", "phone bill", ["2026-01", "2026-02", "2026-03"])
+                + self.bills("Daniel Reyes", "bank letter", ["2026-01", "2026-02", "2026-03"], "88 Carlow Avenue"))
+        rows = coverage("2026-01", "2026-05", {m: 0 for m in month_range("2026-01", "2026-05")}, [], [],
+                        address_docs=docs, partners=self.COUPLE)
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2026-04 to 2026-05"])
+        self.assertEqual(closers(rows, [], docs, self.COUPLE, self.LABELS)[("2026-04", "2026-05")],
+                         "phone bills (Mei) and bank letters (Daniel) came every month until 2026-03; phone bills (Mei) "
+                         "and bank letters (Daniel) for 2026-04 to 2026-05 would add evidence for these months, if you have them")
+
+    def test_one_partners_series_names_the_missing_half(self):
+        docs = self.bills("Daniel Reyes", "bank letter", ["2026-01", "2026-02", "2026-03"])
+        rows = coverage("2026-01", "2026-04", {"2026-01": 1, "2026-02": 1, "2026-03": 1, "2026-04": 0}, [], [],
+                        address_docs=docs, partners=self.COUPLE)
+        self.assertEqual(closers(rows, [], docs, self.COUPLE, self.LABELS)[("2026-04", "2026-04")],
+                         "bank letters in Daniel's name came every month until 2026-03; a paper in Mei's name at the "
+                         "same address for 2026-04 to 2026-04 would add evidence, if you have one")
+
+    def test_pairs_at_different_addresses_are_not_a_pair_series(self):
+        docs = (self.bills("Mei Tan", "phone bill", ["2026-01", "2026-02"])
+                + self.bills("Daniel Reyes", "bank letter", ["2026-01", "2026-02"], "5 Pine Rd"))
+        rows = coverage("2026-01", "2026-03", {"2026-01": 1, "2026-02": 1, "2026-03": 0}, [], [],
+                        address_docs=docs, partners=self.COUPLE)
+        self.assertEqual(closers(rows, [], docs, self.COUPLE, self.LABELS)[("2026-03", "2026-03")],
+                         "no regular paper found near these months")
+
+
+class MarriedCoupleScopeExampleIsConsistent(unittest.TestCase):
+    """The third example: a married family that chose to search photos of the couple."""
+
+    PARTNERS = ["Ayu Lestari", "Rizal Hakim"]
+    PEOPLE = PARTNERS + ["Kirana Hakim"]
+    LABELS = {"Ayu Lestari": "Ayu", "Rizal Hakim": "Rizal"}
+    COUNTS = {"2026-01": 3, "2026-02": 0, "2026-03": 2, "2026-04": 0, "2026-05": 0, "2026-06": 4}
+
+    def section(self) -> str:
+        text = EXAMPLE.read_text()
+        return text[text.index("## A third, shorter example"):text.index("## What this example shows")]
+
+    def test_married_couple_scope_example(self):
+        text = self.section()
+        self.assertLessEqual(len(text.strip().splitlines()), 25)
+        photo_people = self.PARTNERS  # {PHOTO_SCOPE} is the couple; Kirana is papers only
+        self.assertIn("Photos of: the couple", text)
+        address = "41 Birchmount Road"
+        phone = [Paper("phone bill", ["Rizal Hakim"], "scanned document", dated=f"{m}-05", address=address)
+                 for m in ("2026-01", "2026-02", "2026-03", "2026-06")]
+        bank = [Paper("bank letter", ["Ayu Lestari"], "scanned document", dated=f"{m}-12", address="41 Birchmount Rd")
+                for m in ("2026-01", "2026-02", "2026-06")]
+        birth = Paper("birth certificate", self.PEOPLE, "scanned document", dated="2024-08-17")
+        joined = join_papers([birth, *phone, *bank], self.PEOPLE)
+        self.assertEqual(joined["linked"], [birth])  # single-name papers do not link on their own
+        address_docs = phone + bank
+
+        plan = plan_months(self.COUNTS, 20)
+        checked = [c for m in plan for c in passing(m, 3)]
+        choice = choose_photos(checked, plan, 20)
+        rows = coverage("2026-01", "2026-06", self.COUNTS, choice.chosen, joined["linked"],
+                        address_docs=address_docs, partners=self.PARTNERS)
+
+        pair = "phone bill (Rizal) + bank letter (Ayu), one name, same address"
+        for r in rows:
+            cells = [f"**{r['month']}**", f"**{r['library']}**"] if r["gap"] else [r["month"], str(r["library"])]
+            pack = f"#{r['pack']}" if r["pack"] else "—"
+            if r["papers"] == ["same address on separate papers"]:
+                paper = pair
+            else:
+                self.assertEqual(r["papers"], [], r["month"])
+                paper = "**—**" if r["gap"] else "—"
+            self.assertIn(f"| {cells[0]} | {cells[1]} | {pack} | {paper} |", text, r["month"])
+        self.assertEqual([r["month"] for r in rows if r["papers"]], ["2026-01", "2026-02", "2026-06"])
+
+        self.assertLess(len(photo_people), len(self.PEOPLE))
+        label = gap_label(who="the couple")
+        lines = gap_lines(rows, label)
+        self.assertEqual(lines, ["no photo of the couple found by face grouping and no linking paper: 2026-04 to 2026-05"])
+        self.assertIn(human(lines[0][0].upper() + lines[0][1:]), text)
+        hint = closers(rows, joined["linked"], address_docs, self.PARTNERS, self.LABELS)[("2026-04", "2026-05")]
+        self.assertEqual(hint, "phone bills in Rizal's name came every month until 2026-03; a paper in Ayu's name "
+                               "at the same address for 2026-04 to 2026-05 would add evidence, if you have one")
+        self.assertIn(f"What could cover it: {human(hint)}.", text)
+        self.assertIn("Gaps are for your own checking. Spouses have no monthly requirement.", text)
+        # the March phone bill fills no month, so it is listed, not copied
+        filling = {p.dated[:7] for p in address_docs} & {r["month"] for r in rows if r["papers"]}
+        unfilled = [p for p in address_docs if p.dated[:7] not in filling]
+        self.assertEqual([(p.kind, p.dated[:7]) for p in unfilled], [("phone bill", "2026-03")])
+        self.assertIn("filled no month (listed, not copied): phone bill (Rizal), March 2026", text)
+
+
 class ExampleOutputIsConsistent(unittest.TestCase):
     """The worked example in references/example-output.md matches the rules."""
 
