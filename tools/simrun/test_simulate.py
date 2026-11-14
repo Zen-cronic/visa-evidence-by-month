@@ -191,6 +191,16 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["same_address_docs"], 0)
         self.assertEqual(log["linked"], 1)
 
+    def test_t_common_law_family_partner_and_child_letter_pairs(self):
+        counts = months("2026-04", "2026-04")
+        benefit = R.Paper("child benefit letter", ["Tran Thi Linh", "Tran Gia Bao"], "scanned document",
+                          dated="2026-04-10", address="12 Elm St")
+        bill = R.Paper("phone bill", ["Tran Van Minh"], "scanned document", dated="2026-04-18", address="12 Elm Street")
+        nas = MockNAS(FAMILY, counts, samples(counts), [benefit, bill])
+        log = run(FAMILY, FAMILY_PRINTED, "2026-04", "2026-04", nas, User(relationship="common-law"))
+        self.assertEqual(log["gaps"], [])
+        self.assertEqual(log["same_address_docs"], 2)
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

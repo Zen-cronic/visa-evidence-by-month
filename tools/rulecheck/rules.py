@@ -237,7 +237,8 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
     """month_counts is None for one person or when the photo search failed: gaps then use papers only.
     For common-law couples a month counts only by a paper showing both at the same address; photos do not count."""
     if common_law:
-        linked = [p for p in linked if p.address]
+        # alone, a paper counts only when it names both partners and shows an address
+        linked = [p for p in linked if p.address and (not partners or len(named_in(p, partners)) == len(partners))]
         month_counts = None
     rows = []
     address_docs = address_docs or []

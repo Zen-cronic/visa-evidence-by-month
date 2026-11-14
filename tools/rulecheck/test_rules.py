@@ -306,6 +306,14 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertEqual(closers(rows, [lease])[("2026-05", "2026-06")], "no regular paper found near these months")
         self.assertIn("What could cover it: no regular paper found near these months.", text)
 
+    def test_partner_and_child_paper_alone_does_not_fill_a_common_law_month(self):
+        partners = ["Tran Thi Linh", "Tran Van Minh"]
+        benefit = Paper("child benefit letter", ["Tran Thi Linh", "Tran Gia Bao"], "scanned document",
+                        dated="2026-04-10", address="12 Elm St")
+        rows = coverage("2026-04", "2026-04", {"2026-04": 2}, [], [benefit], common_law=True,
+                        address_docs=[benefit], partners=partners)
+        self.assertTrue(rows[0]["gap"])
+
     def test_single_name_papers_at_different_addresses_do_not_count(self):
         couple = ["Mei Tan", "Daniel Reyes"]
         a = Paper("phone bill", ["Mei Tan"], "scanned document", dated="2026-04-15", address="88 Carlow Ave")
