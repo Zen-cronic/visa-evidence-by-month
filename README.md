@@ -1,6 +1,15 @@
 # Relationship evidence for visa applications, from your NAS
 
-A Skill for UGREEN AI NAS that shows which months a couple or family can and cannot prove together, from the photos and papers already on the NAS. It finds photos where everyone on the application appears together, month by month, checks each candidate is fit to send, finds the papers that link the people (leases, bills, marriage and birth certificates, scanned or photographed), notes every name, birth date and address mismatch without changing it, and lists the months with no evidence yet. It also works for one person's papers. Everything runs on the NAS with the local model, reads only until you approve each save, and reads back what it saved.
+A Skill for UGREEN AI NAS that answers one question for a couple or family preparing a partner or spouse visa application, including their children: **"Which months can we not prove yet?"**
+
+It works from the photos and papers already on the NAS:
+
+- finds photos where everyone on the application appears together, month by month, and checks each one is fit to send;
+- finds the papers that link the people (leases, bills, marriage and birth certificates, scanned or photographed) and notes every name, birth date and address mismatch without changing it;
+- lists the months with no evidence yet, and which of your regular papers could cover each one;
+- saves an evidence folder ready to upload, only after you approve it.
+
+It also prepares one person's own papers. Every step asks Uliya to use only the on-device model; nothing is saved until you approve it, and each save is read back.
 
 It prepares evidence only. It does not judge eligibility, give legal advice or submit anything.
 
