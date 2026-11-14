@@ -22,6 +22,8 @@ Papers matched on the names printed on them: Tran Thi Linh, Tran Van Minh, Tran 
 
 ### Photos (upload order)
 
+Some months had no photo of all four, so the Skill offered to count the two adults instead; the family declined, to keep the children in the photos.
+
 9 photos chosen; limit 20, a maximum. One photo per month: 12 months had photos of all four people, and in 3 of them every checked sample failed.
 
 | # | File | Date | Place | People | Context |
@@ -44,7 +46,7 @@ Papers matched on the names printed on them: Tran Thi Linh, Tran Van Minh, Tran 
 
 | Rule | Failed |
 |---|---|
-| 1 everyone searched together clearly visible | 6 |
+| 1 everyone searched together clearly visible as the main subjects | 6 |
 | 2 every face visible and not covered | 4 |
 | 3 a real photo, not a screenshot or a photo of a screen, print or paper | 2 |
 | 4 suitable to show a government officer | 0 |

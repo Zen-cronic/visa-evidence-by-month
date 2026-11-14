@@ -13,7 +13,7 @@ Planning applies to a couple or a family. For one person no photo is chosen.
 ## Choosing photos (Step 4)
 
 - Check only the sample photos returned for planned months.
-- A photo is fit to send only if it passes every rule, in order: everyone searched together clearly visible (who they are comes from face grouping); every face visible and not covered; a real photo, not a screenshot or a photo of a screen, print or paper; suitable to show a government officer (no nudity, intimate or sexual content); not blurry.
+- A photo is fit to send only if it passes every rule, in order: everyone searched together clearly visible as the main subjects, not counting people in the background (who they are comes from face grouping); the main subjects' faces visible and not covered, ignoring people in the background; a real photo, not a screenshot or a photo of a screen, print or paper; suitable to show a government officer (no nudity, intimate or sexual content); not blurry.
 - Count every failed photo by the first rule it failed, and show the counts.
 - Choose the first passing photo in each planned month: one photo per month, so the pack is spread over time rather than filled with shots from one busy month.
 - The limit is a maximum, not a target. A short period, or months where nothing passes, gives fewer photos; keep the smaller number and say so. Never pad.
