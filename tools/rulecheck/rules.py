@@ -145,6 +145,11 @@ def name_near(printed: str, given: str) -> bool:
     return len(a) == len(b) >= 2 and len(set(a) ^ set(b)) == 2
 
 
+def name_contains(printed: str, photos_name: str) -> bool:
+    """Without printed names: the printed name holds every word of the Photos name. Possible match only."""
+    return set(_words(photos_name)) <= set(_words(printed))
+
+
 def _enough(named: int, people: list[str]) -> bool:
     if len(people) <= 2:
         return named == len(people)
@@ -160,7 +165,7 @@ def links(paper: Paper, people: list[str]) -> bool:
     return _enough(len(named_in(paper, people)), people)
 
 
-def join_papers(papers: list[Paper], people: list[str]) -> dict:
+def join_papers(papers: list[Paper], people: list[str], printed_names: bool = True) -> dict:
     """Keep linking papers; prefer a scan over a photo of the same paper; note, never fix, mismatches."""
     unreadable = [p for p in papers if not p.readable]
     readable = [p for p in papers if p.readable]
@@ -169,6 +174,11 @@ def join_papers(papers: list[Paper], people: list[str]) -> dict:
     noted_photos: list[Paper] = []
     possible: list[Paper] = []
     for p in readable:
+        if not printed_names:
+            hits = [g for g in people if any(name_contains(n, g) for n in p.names)]
+            if _enough(len(hits), people):
+                possible.append(p)  # Photos names can never link a paper on their own
+            continue
         if not links(p, people):
             if _enough(len(named_in(p, people, near=True)), people):
                 possible.append(p)  # shown to the user, never linked on its own

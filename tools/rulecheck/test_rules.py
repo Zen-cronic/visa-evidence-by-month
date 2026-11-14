@@ -191,6 +191,19 @@ class NamesAndFailures(unittest.TestCase):
         self.assertEqual(lines, [f"{PAPER_GAP_LABEL}; the photo search failed: 2025-01 to 2025-03"])
         self.assertNotIn("face grouping", lines[0])
 
+    def test_photos_names_only_give_possible_matches(self):
+        p = Paper("lease", ["Tran Thi Linh", "Tran Van Minh"], "scanned document", "2025-01", "2025-12")
+        out = join_papers([p], ["Linh Tran", "Minh Tran"], printed_names=False)
+        self.assertEqual(out["linked"], [])
+        self.assertEqual(out["possible_matches"], [p])
+
+    def test_duplicate_photos_of_one_paper_are_kept_once(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        shots = [Paper("lease", couple, "from a photo of a document", "2025-01", "2025-12") for _ in range(3)]
+        out = join_papers(shots, couple)
+        self.assertEqual(len(out["linked"]), 1)
+        self.assertEqual(len(out["noted_photos"]), 2)
+
     def test_fewer_people_label_names_who_was_counted(self):
         self.assertIn("of the two adults", gap_label(who="the two adults"))
 

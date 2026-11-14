@@ -14,7 +14,8 @@
    "agent": "photo-agent",
    "cli": "ug-photo",
    "actions": [
-    "timeline-summary"
+    "timeline-summary",
+    "search-picture"
    ],
    "params": {
     "timeline-summary": [
@@ -25,6 +26,12 @@
      "start-time",
      "end-time",
      "file-type"
+    ],
+    "search-picture": [
+     "person-name",
+     "figure-pet-method",
+     "start-time",
+     "end-time"
     ]
    }
   },
