@@ -38,6 +38,7 @@ A worked example with a made-up family is in [example-output.md](example-output.
 ## Check yourself before you submit
 
 - Every `[not confirmed]` line: confirm it, edit it, or drop the photo.
+- Every photo marked `print`: give the date the original photo was taken, or drop it. Its file date is only when the print was photographed.
 - Every gap month: look through those months by hand. Face grouping can miss a turned head, a new haircut, or photos in a library your account cannot open.
 - Every possible match and mismatch: decide whether you need to explain it in your application.
 - Photos of papers: upload a clear scan of the original.

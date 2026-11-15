@@ -25,7 +25,7 @@ The official checklist asks for "a brief description of context of each photo". 
 
 | Field | Source | Label |
 |---|---|---|
-| Date | capture date in photo metadata, or one the user gives | `from metadata` or `from you` (`undated` when neither) |
+| Date | capture date in photo metadata, or one the user gives; for a photographed print, only the date the user gives (its metadata is when the print was photographed) | `from metadata` or `from you` (`undated` when neither) |
 | Place | place name in photo metadata, or one the user gives | `from metadata`, `from you`, or `unknown` (left blank in the Photo descriptions file) |
 | People | the confirmed Photos people names | `from Photos people` |
 | Context | the user's own words; the visual description is only a prompt, and a line the user wrote in an earlier pack for the same photo (same capture date and original file name) may be reused | (confirmed) or (edited) only if it is the user's words, written, edited or re-confirmed in this run; a vision description the user did not replace stays `[not confirmed]` and the photo is left out of the Photo descriptions file; a reused line is marked `from your earlier pack` |
