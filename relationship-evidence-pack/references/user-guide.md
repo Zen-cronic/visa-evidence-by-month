@@ -39,7 +39,7 @@ A worked example with a made-up family is in [example-output.md](example-output.
 
 - Every `[not confirmed]` line: confirm it, edit it, or drop the photo.
 - Every photo marked `print`: give the date the original photo was taken, or drop it. Its file date is only when the print was photographed.
-- Every gap month: look through those months by hand. Face grouping can miss a turned head, a new haircut, or photos in a library your account cannot open.
+- Every gap month: look through those months by hand. Face grouping can miss a turned head, a new haircut, or photos in a library your account cannot open. For common-law, a gap means no paper showing you both at the same address, so look for such a paper instead; photos cannot fill it.
 - Every possible match and mismatch: decide whether you need to explain it in your application.
 - Photos of papers: upload a clear scan of the original.
 - The current official checklist for your application. Rules differ by country and change over time; this Skill does not give legal advice.

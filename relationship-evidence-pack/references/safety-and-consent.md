@@ -23,4 +23,4 @@ The pack is about one person, a couple or a family. Step 0 asks whether every ad
 
 ## What the user should still do
 
-Check every confirmed line, look at the gap months by hand (photos may sit in a library this account cannot open), and add any missing documents before submitting.
+Check every confirmed line, look at the gap months by hand (photos may sit in a library this account cannot open; for common-law, look for a paper showing both at the same address instead, as photos cannot fill a gap), and add any missing documents before submitting.

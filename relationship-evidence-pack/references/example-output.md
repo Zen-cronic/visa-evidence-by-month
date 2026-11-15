@@ -190,7 +190,7 @@ Single-name papers that filled no month (listed, not copied): phone bill (Rizal)
 
 ## A fourth note: a month the photo search did not return
 
-If neither photo call answers for a month (the timeline leaves it out and the sample search leaves it out or fails), its row shows "unresolved" in the library column and "—" in the pack column. It is never 0 and never a gap (not for common-law, where photos never decide a month and a month with no paper showing you both at the same address is a gap). If no linking paper or same-address pair covers it, one line goes under the gap list, before the "Gaps are for your own checking" note: "Photos not returned and no linking paper: <month>; check by hand." The final summary lists the same months to check by hand.
+If neither photo call answers for a month (the timeline leaves it out and the sample search leaves it out or fails), its row shows "unresolved" in the library column and "—" in the pack column. It is never 0 and never a gap (not for common-law, where photos never decide a month and a month with no paper showing you both at the same address is a gap). If no linking paper or same-address pair covers it (not for common-law), one line goes under the gap list, before the "Gaps are for your own checking" note: "Photos not returned and no linking paper: <month>; check by hand." The final summary lists the same months to check by hand.
 
 ## What this example shows
 
