@@ -144,8 +144,8 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 | `01 Photos` | 9 copies, names as planned | 9 files, names match |
 | `02 Papers` | 12 copies (4 papers and 8 bills), names as planned | 12 files, names match |
 | Album `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran` | 9 photos | 9 photos |
-| `Evidence index` | the text above | row counts and final line match |
-| `Photo descriptions` | 6 entries | 6 entries, match |
+| `Evidence index` | the text above | full text matches (whitespace ignored) |
+| `Photo descriptions` | 6 entries | 6 entries, full text matches |
 
 ## A second, shorter example: a common-law couple
 

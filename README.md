@@ -60,8 +60,8 @@ What is checked on every change (CI):
 
 - UGREEN's static checker: `static-pass`, 0 errors, 0 warnings.
 - A capability trace: every action the Skill asks for exists in capability catalog 2.2.0, Steps 1 to 7 only read, and every write is in Step 8 behind approval.
-- 51 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including all three worked examples.
-- 33 simulated runs against a mock NAS: every scope, failed and cancelled calls, a month missing from the timeline, a failed photo-check batch, declined approvals, drops, second runs and common-law and same-address cases.
+- 53 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including all three worked examples.
+- 35 simulated runs against a mock NAS: every scope, failed and cancelled calls, a month missing from the timeline, a failed photo-check batch, declined approvals, drops, second runs and common-law and same-address cases.
 
 What is not checked yet: it has not run on a UGREEN AI NAS. `relationship-evidence-pack/references/testing.md` lists each behaviour still to confirm there, such as whether the agents read the linked reference files and how many photos one vision call accepts.
 
