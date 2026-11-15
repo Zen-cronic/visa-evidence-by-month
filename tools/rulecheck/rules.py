@@ -112,7 +112,7 @@ fill_returned = month_states  # older name
 
 
 def months_to_sample(timeline: dict[str, int], timeline_sample_months: set[str], start: str, end: str) -> list[str]:
-    """{MONTHS_WITH_PHOTOS}: the sample call is sent, per month, for each month the timeline counted photos for
+    """{MONTHS_TO_SAMPLE}: the sample call is sent, per month, for each month the timeline counted photos for
     but returned no sample photo, and for each month the timeline did not list."""
     return [m for m in month_range(start, end)
             if m not in timeline or (timeline[m] > 0 and m not in timeline_sample_months)]
@@ -121,7 +121,7 @@ def months_to_sample(timeline: dict[str, int], timeline_sample_months: set[str],
 def merge_candidates(timeline_samples: list, sample_result: list | None, months_asked: set[str] | None = None,
                      timeline: dict[str, int] | None = None) -> list:
     """{CANDIDATES}: the sample call's photos are added per month after the timeline's samples, never replacing
-    them; a failed sample call (None) adds nothing. When months_asked ({MONTHS_WITH_PHOTOS}) is given, only the
+    them; a failed sample call (None) adds nothing. When months_asked ({MONTHS_TO_SAMPLE}) is given, only the
     sample call's photos for those months are added; when timeline is given, samples for a month it lists as 0
     are ignored."""
     zero = {m for m, n in (timeline or {}).items() if n == 0}
