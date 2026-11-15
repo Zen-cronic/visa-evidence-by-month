@@ -106,13 +106,20 @@ For one person, or when `{PHOTOS_NEEDED}` is no, skip Steps 2 to 4: one person's
 delegate --target photo-agent --instruction 'Use only the local model. Give a read-only timeline summary of photos in which all of these people appear together, using the AND method for people, images only, grouped by month, from the first day of {START_MONTH} to the last day of {END_MONTH}: {PHOTO_PEOPLE}. Leave out any photo whose path includes a folder whose name starts with Visa evidence. For every month return the number of matching photos, and up to 3 sample photos with photo ID, file path and capture date. Include months with zero matches. Say which libraries were searched. If nothing matches in the whole period, say no results.'
 ```
 
-Save the month counts as `{MONTH_COUNTS}` and the sample photos as `{CANDIDATES}`. This is the timeline call. A month in the period that the reply does not list is "not returned", never 0 and never a gap; save those months as `{MONTHS_NOT_RETURNED}`. If its counts came back without sample photos, or `{MONTHS_NOT_RETURNED}` is not empty, send this sample call for the months with photos and the months not returned, and use its result as `{CANDIDATES}`:
+This is the timeline call. Save its month counts as `{MONTH_COUNTS}` and its sample photos, by month, as `{CANDIDATES}`. `{MONTHS_NOT_RETURNED}` is every month in the period the reply does not list. `{MONTHS_WITH_PHOTOS}` is each month the timeline counted photos for but returned no sample photo, plus every month in `{MONTHS_NOT_RETURNED}`; if it is not empty, send this sample call:
 
 ```
 delegate --target photo-agent --instruction 'Use only the local model. For each of these months, search for images in which all of these people appear together, using the AND method: {PHOTO_PEOPLE}. Leave out any photo whose path includes a folder whose name starts with Visa evidence. Return up to 3 photos per month with photo ID, file path and capture date. List every month given, writing none where no photo matches. Months: {MONTHS_WITH_PHOTOS}. Read only.'
 ```
 
-`{MONTHS_WITH_PHOTOS}` is every month in `{MONTH_COUNTS}` with more than zero photos, plus every month in `{MONTHS_NOT_RETURNED}`. For each month in `{MONTHS_NOT_RETURNED}`: a month the sample call lists as none is 0 (and can be a gap); a month it returns photos for is recovered: add it to `{MONTH_COUNTS}` as "at least N (sample search)", N being the number of photos it returned, and plan it like any month with photos; only a month neither call lists stays "not returned" in the coverage table. If the sample call fails, keep `{MONTH_COUNTS}` and the normal gap definition, and the months not returned stay "not returned". If the timeline call returned sample photos, keep them as `{CANDIDATES}` and run Steps 3 and 4 for the months that have them; otherwise skip Steps 3 and 4 and show the chosen-photo column as "sample search failed".
+Add the photos it returns to `{CANDIDATES}` under their month, after any timeline samples; never replace them. Then give each month in the period exactly one final state, saved as `{MONTH_STATES}`:
+
+- N, the timeline's count, for a month the timeline counted photos for; if the sample call lists that month as none, leaves it out or fails, the count stays and the month has no candidates;
+- "at least N (sample search)", for a month the timeline did not list and the sample call returned N photos for;
+- 0, for a month the timeline listed as 0, or one it did not list that the sample call lists as none;
+- "unresolved", for a month the timeline did not list and the sample call left out or failed for.
+
+Every month the sample call lists, with photos or as none, leaves `{MONTHS_NOT_RETURNED}`, which then holds exactly the unresolved months. Steps 3 and 6 use `{MONTH_STATES}`. If no month has a candidate, skip Steps 3 and 4.
 
 - If the timeline call failed, report it as failed, skip Steps 3 and 4, and continue with Step 5. A failed call is not an empty result; Step 6 marks the photo column as failed.
 - For a family where `{PHOTO_SCOPE}` is everyone and some months have zero photos of all these people, offer to count photos of the adults (the people in `{PHOTO_PEOPLE}` not in `{CHILDREN}`; ask who they are if `{CHILDREN}` was not given) instead for the whole period (partner-visa photo requests are usually about the couple; children are linked by their birth certificates), and wait. Do not offer it if that would leave fewer than two people or the same people already searched; when `{PHOTO_SCOPE}` is the couple, the adults are the people already searched, so it is never offered. If the user agrees, set `{PHOTO_PEOPLE}` to those adults and send Step 2 again; if they decline, continue with Step 3.
@@ -120,7 +127,7 @@ delegate --target photo-agent --instruction 'Use only the local model. For each 
 
 ## Step 3. Plan the months (no NAS call)
 
-Using `{MONTH_COUNTS}` and the rules in [references/evidence-rules.md](references/evidence-rules.md), choose up to `{PHOTO_LIMIT}` months to cover, spread across the whole period, always including the first and the latest month that have photos. Save as `{PLAN_MONTHS}`. Never plan a month with zero photos.
+Using `{MONTH_STATES}` and the rules in [references/evidence-rules.md](references/evidence-rules.md), choose up to `{PHOTO_LIMIT}` months to cover from the months with at least one candidate in `{CANDIDATES}`, spread across the whole period, always including the first and the latest of them. Save as `{PLAN_MONTHS}`. Never plan a month without a candidate. A month with photos but no candidate shows "no sample returned" in the pack column ("sample search failed" if the sample call failed), also when Steps 3 and 4 are skipped.
 
 ## Step 4. Check candidate photos
 
@@ -188,7 +195,7 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 
 For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns:
 
-- photos of `{PHOTO_PEOPLE}` in the library (from `{MONTH_COUNTS}`; empty for one person or when photos are not needed, "search failed" if Step 2 failed, "not returned" for a month neither Step 2 call returned);
+- photos of `{PHOTO_PEOPLE}` in the library (the month's state in `{MONTH_STATES}`; empty for one person or when photos are not needed, "search failed" if the timeline call failed);
 - a chosen photo in the pack (from `{CHOSEN_PHOTOS}`);
 - and a linking paper dated in or covering that month (from `{LINKED_DOCS}`), or, for a married or other couple or family, a same-address pair (common-law shows pairs in its own column).
 
@@ -199,7 +206,7 @@ For a couple or a family, also apply [references/same-address.md](references/sam
 When `{RELATIONSHIP}` is common-law, also apply [references/common-law.md](references/common-law.md) here (Step 6). Common-law: a month counts only when one paper names both partners with an address, or a same-address pair (one paper in each partner's name) shows the same address; photos never count; label gaps "no paper showing you both at the same address found". The file sets what counts as covered, the "Same address shown (counts)" column, the gap rule and label, the papers for what could cover a gap, and the footer.
 
 These bullets apply when `{RELATIONSHIP}` is not common-law:
-- A gap is a month where face grouping found no photo of `{PHOTO_PEOPLE}`, no linking paper was found and no same-address pair fills it. A month "not returned" in Step 2 is never 0 and never a gap; show it as "not returned".
+- A gap is a month whose state is 0 (face grouping found no photo of `{PHOTO_PEOPLE}`), with no linking paper and no same-address pair. An "unresolved" month is never 0 and never a gap; list those with no linking paper and no same-address pair under the gap list as "photos not returned and no linking paper: <months>; check by hand", consecutive months grouped as for gaps.
 - Group consecutive gap months and label them exactly "no photo of everyone found by face grouping and no linking paper: <first gap month> to <last gap month>" (for example, "March to June 2025") (when `{PHOTO_PEOPLE}` is fewer than `{PEOPLE}`, put "of the couple" in place of "of everyone" when `{PHOTO_SCOPE}` is the couple, "of the two adults" when the user agreed to count only the adults, or otherwise the names).
 - For one person, when Steps 2 to 4 were skipped, or if the timeline call in Step 2 failed, a gap is a month with no linking paper and no same-address pair, labelled "no linking paper found" (adding "the photo search failed" if the timeline call failed).
 For every gap label, common-law included: never write "no relationship", "not together" or "not in the country". Also, if 5a failed, add "(scanned papers could not be read)"; if the 5b searches failed, add "(photos of papers could not be searched)".
@@ -378,7 +385,7 @@ The expert agents this Skill delegates to, by UGOS capability, and the catalog a
 
 Report a result only after a delegated expert returns `completed`, and only what it returned.
 
-- `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album, the working notes and the Photo descriptions file, its read-back result or "declined by you", "cancelled by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the folder path and album name, the photos chosen against the limit, the chosen photos with no description yet, failures by rule, the papers, mismatches and possible matches, and the gap list.
+- `completed`: use the real result. The final summary gives the scope and, for each of the folder (with its copies), the album, the working notes and the Photo descriptions file, its read-back result or "declined by you", "cancelled by you", "failed" with the reason, or "not applicable" (for example, no album for one person), the folder path and album name, the photos chosen against the limit, the chosen photos with no description yet, failures by rule, the papers, mismatches and possible matches, the gap list, and any "photos not returned and no linking paper" months to check by hand.
 - `failed`: say which step failed and why. A failed search is reported as failed, never as "nothing found". Skip only the steps that need its result, as each step says. If a write failed after others succeeded, list what exists and delete nothing.
 - `cancelled`: for a write in Step 8, skip that write and continue with the others and Step 9. For the optional earlier-index read in Step 7, continue without it. For any other step, stop and list which steps finished.
 - `waiting_user`: pass the expert's question on, wait, then send that step again with the answer.
