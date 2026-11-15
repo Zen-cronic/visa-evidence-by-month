@@ -56,7 +56,14 @@ See `relationship-evidence-pack/references/user-guide.md`: name the people in Ph
 
 ## Status
 
-The Skill passes the static checker and the rule and capability checks. It has not yet run on a UGREEN AI NAS; `relationship-evidence-pack/references/testing.md` lists what is measured and what is not.
+What is checked on every change (CI):
+
+- UGREEN's static checker: `static-pass`, 0 errors, 0 warnings.
+- A capability trace: every action the Skill asks for exists in capability catalog 2.2.0, Steps 1 to 7 only read, and every write is in Step 8 behind approval.
+- 46 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including all three worked examples.
+- 29 simulated runs against a mock NAS: every scope, failed and cancelled calls, declined approvals, drops, second runs and common-law and same-address cases.
+
+What is not checked yet: it has not run on a UGREEN AI NAS. `relationship-evidence-pack/references/testing.md` lists each behaviour still to confirm there, such as whether the agents read the linked reference files and how many photos one vision call accepts.
 
 ## What's here
 
@@ -77,7 +84,7 @@ Needs Node.js, Python 3 and the unpacked `uliya-skill-kit` (0.7.7):
 KIT=/path/to/uliya-skill-kit scripts/build-package.sh
 ```
 
-It runs the rule checks, UGREEN's static checker (must report `static-pass` with no errors or warnings), the capability trace and the package checks (Markdown only, size limits, no scripts or secrets), then writes `dist/<skill-name>.zip`.
+It runs the rule checks, the simulated runs, UGREEN's static checker (must report `static-pass` with no errors or warnings), the capability trace and the package checks (Markdown only, size limits, no scripts or secrets), then writes `dist/<skill-name>.zip`.
 
 To rename the Skill:
 
