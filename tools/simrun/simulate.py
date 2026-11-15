@@ -33,6 +33,7 @@ class MockNAS:
     sample_omit: list = field(default_factory=list)  # counted months the Step 2 sample call leaves out of its reply
     sample_fail: bool = False  # the Step 2 sample call fails
     timeline_samples: bool = True  # the timeline reply came back with sample photos
+    timeline_no_results: bool = False  # the timeline reply is "no results" for the whole period
     vision_batch_fail: set = field(default_factory=set)  # planned months whose batched Step 4 call fails
     vision_retry_fail: set = field(default_factory=set)  # of those, months whose one-month retry also fails
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
@@ -109,7 +110,11 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         if nas.month_counts is None:
             timeline_failed = True
         else:
-            timeline = {m: n for m, n in nas.month_counts.items() if m not in nas.timeline_missing}
+            if nas.timeline_no_results:  # every month is 0; no sample call is sent for it
+                timeline = R.timeline_reply(R.NO_RESULTS, start, end)
+                log["no_results_message"] = "Photos face grouping found no photo of all these people in this period"
+            else:
+                timeline = {m: n for m, n in nas.month_counts.items() if m not in nas.timeline_missing}
             # the timeline's own samples exist only for the months it counted photos for
             timeline_samples = [c for c in nas.samples if timeline.get(c.month, 0) > 0] if nas.timeline_samples else []
             to_sample = R.months_to_sample(timeline, {c.month for c in timeline_samples}, start, end)
@@ -126,7 +131,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             month_counts = R.month_states(timeline, start, end, listed)  # {MONTH_STATES}
             log["not_returned"] = R.unresolved_months(month_counts)  # {MONTHS_NOT_RETURNED} after Step 2
             log["recovered"] = {m: str(n) for m, n in month_counts.items() if isinstance(n, R.AtLeast)}
-            candidates = R.merge_candidates(timeline_samples, sample_photos)
+            candidates = R.merge_candidates(timeline_samples, sample_photos, set(to_sample), timeline)
             candidate_months = {c.month for c in candidates}
             sample_failed = bool(to_sample) and nas.sample_fail
             no_sample_label = R.SAMPLE_FAILED_LABEL if sample_failed else R.NO_SAMPLE_LABEL

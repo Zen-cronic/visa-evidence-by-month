@@ -14,6 +14,7 @@ from rules import (
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
     NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check, AtLeast, merge_candidates,
     UNRESOLVED, month_states, months_to_sample, unresolved_line, unresolved_months, NO_SAMPLE_LABEL,
+    NO_RESULTS, timeline_reply,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -189,6 +190,34 @@ class StepTwoAndFourFailures(unittest.TestCase):
         # March is covered by a paper, so only February and May are listed
         self.assertEqual(unresolved_line(rows), "photos not returned and no linking paper: 2025-02, 2025-05; check by hand")
         self.assertIsNone(unresolved_line(coverage("2025-01", "2025-01", states, [], [])))
+
+    def test_no_results_reply_makes_every_month_zero(self):
+        timeline = timeline_reply(NO_RESULTS, "2025-01", "2025-04")
+        self.assertEqual(timeline, {"2025-01": 0, "2025-02": 0, "2025-03": 0, "2025-04": 0})
+        self.assertEqual(months_to_sample(timeline, set(), "2025-01", "2025-04"), [])  # no sample call
+        states = month_states(timeline, "2025-01", "2025-04", {})
+        self.assertEqual(states, timeline)
+        self.assertEqual(unresolved_months(states), [])
+        self.assertEqual(plan_months(states, 20), [])
+        lease = Paper("lease", COUPLE, "scanned document", "2025-02", "2025-03")
+        rows = coverage("2025-01", "2025-04", states, [], [lease])
+        # Step 6 still runs: months with no paper are gaps, nothing is left to check by hand
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-01", f"{GAP_LABEL}: 2025-04"])
+        self.assertIsNone(unresolved_line(rows))
+        self.assertEqual(timeline_reply({"2025-01": 2}, "2025-01", "2025-04"), {"2025-01": 2})  # a listed reply is kept as is
+
+    def test_candidates_only_from_months_asked_and_never_from_zero_months(self):
+        timeline = {"2025-01": 3, "2025-02": 0, "2025-03": 2}  # April not listed
+        asked = set(months_to_sample(timeline, {"2025-01"}, "2025-01", "2025-04"))
+        self.assertEqual(asked, {"2025-03", "2025-04"})
+        own = [Checked("jan.jpg", "2025-01", "2025-01-02", None), Checked("feb.jpg", "2025-02", "2025-02-02", None)]
+        fresh = [Checked("mar.jpg", "2025-03", "2025-03-04", None), Checked("apr.jpg", "2025-04", "2025-04-04", None),
+                 Checked("jan2.jpg", "2025-01", "2025-01-09", None), Checked("feb2.jpg", "2025-02", "2025-02-09", None)]
+        merged = merge_candidates(own, fresh, months_asked=asked, timeline=timeline)
+        # January was not asked about and February is 0 in the timeline: neither takes the sample call's photos,
+        # and February's timeline sample is ignored too
+        self.assertEqual([c.path for c in merged], ["jan.jpg", "mar.jpg", "apr.jpg"])
+        self.assertEqual(merge_candidates(own, None, months_asked=asked, timeline=timeline), own[:1])
 
     def test_failed_step4_call_is_photo_check_failed_not_none_fit(self):
         plan = ["2025-01", "2025-02"]
@@ -561,7 +590,17 @@ class MarriedCoupleScopeExampleIsConsistent(unittest.TestCase):
 
     def section(self) -> str:
         text = EXAMPLE.read_text()
-        return text[text.index("## A third, shorter example"):text.index("## What this example shows")]
+        start = text.index("## A third, shorter example")
+        return text[start:text.index("\n## ", start)]  # up to the next heading (the fourth note)
+
+    def test_fourth_note_keeps_the_unresolved_line_out_of_the_gap_list(self):
+        text = EXAMPLE.read_text()
+        note = text[text.index("## A fourth note"):text.index("## What this example shows")]
+        self.assertIn('"unresolved" in the library column and "—" in the pack column', note)
+        self.assertIn('"Photos not returned and no linking paper: <month>; check by hand."', note)
+        self.assertIn("never 0 and never a gap", note)
+        # no dated month after the label, so a gap reader never mistakes it for a gap
+        self.assertNotRegex(note, r"no linking paper: (\d{4}-\d{2}|[A-Z][a-z]+ \d{4})")
 
     def test_married_couple_scope_example(self):
         text = self.section()

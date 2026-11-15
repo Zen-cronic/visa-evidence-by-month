@@ -410,6 +410,24 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["gaps"], [])
         self.assertEqual(log["chosen"], 3)
 
+    def test_n2g_no_results_timeline_makes_every_month_zero_and_paperless_months_gaps(self):
+        # the timeline replies "no results" for the whole period; a lease covers February and March only
+        counts = months("2026-01", "2026-04")
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-02", "2026-03")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease], timeline_no_results=True)
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-04", nas, User())
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["no_results_message"],
+                         "Photos face grouping found no photo of all these people in this period")
+        self.assertEqual(nas.calls.count(("photo-agent", "search-picture")), 1)  # only 5b: no sample call
+        self.assertNotIn(("photo-agent", "vision-vlm"), nas.calls)  # Steps 3 and 4 skipped
+        self.assertEqual(log["library"], {m: 0 for m in R.month_range("2026-01", "2026-04")})
+        self.assertEqual(log["not_returned"], [])
+        self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-01", f"{R.GAP_LABEL}: 2026-04"])
+        self.assertIsNone(log["check_by_hand"])
+        self.assertEqual(log["chosen"], 0)
+        self.assertEqual(log["writes_before_approval"], [])
+
     def test_n3_failed_step4_call_is_resent_one_month_per_call(self):
         counts = months("2026-01", "2026-06")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],

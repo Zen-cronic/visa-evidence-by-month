@@ -77,6 +77,17 @@ class AtLeast(int):
         return f"at least {int(self)} (sample search)"
 
 
+NO_RESULTS = "no results"
+
+
+def timeline_reply(reply: dict[str, int] | str, start: str, end: str) -> dict[str, int]:
+    """The timeline call's month counts. A "no results" reply lists every month in the period as 0, so no
+    month is left for the sample call."""
+    if reply == NO_RESULTS:
+        return {m: 0 for m in month_range(start, end)}
+    return dict(reply)
+
+
 def month_states(timeline: dict[str, int], start: str, end: str, sample_listed: dict[str, int] | None = None) -> dict:
     """{MONTH_STATES}: each month in the period ends Step 2 in exactly one state.
     The timeline's count N when the timeline listed it (a counted month the sample call lists as none, leaves
@@ -107,12 +118,20 @@ def months_to_sample(timeline: dict[str, int], timeline_sample_months: set[str],
             if m not in timeline or (timeline[m] > 0 and m not in timeline_sample_months)]
 
 
-def merge_candidates(timeline_samples: list, sample_result: list | None) -> list:
+def merge_candidates(timeline_samples: list, sample_result: list | None, months_asked: set[str] | None = None,
+                     timeline: dict[str, int] | None = None) -> list:
     """{CANDIDATES}: the sample call's photos are added per month after the timeline's samples, never replacing
-    them; a failed sample call (None) adds nothing."""
-    out = list(timeline_samples or [])
+    them; a failed sample call (None) adds nothing. When months_asked ({MONTHS_WITH_PHOTOS}) is given, only the
+    sample call's photos for those months are added; when timeline is given, samples for a month it lists as 0
+    are ignored."""
+    zero = {m for m, n in (timeline or {}).items() if n == 0}
+    out = [c for c in timeline_samples or [] if c.month not in zero]
     seen = {c.path for c in out}
     for c in sample_result or []:
+        if months_asked is not None and c.month not in months_asked:
+            continue
+        if c.month in zero:
+            continue
         if c.path not in seen:
             out.append(c)
             seen.add(c.path)
