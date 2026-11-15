@@ -23,6 +23,8 @@ The Skill sends plain-language instructions; each one maps to actions in the kit
 
 ## Rule checks (MEASURED, 2026-11-15)
 
+One simulated run, as an example of what these checks look like: the timeline reply leaves out March 2026 and the sample call for March fails. Result: March shows "unresolved" in the photo column and "—" in the pack column, it is not a gap, and with no paper covering it the notes list "Photos not returned and no linking paper: March 2026; check by hand."
+
 The steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) were restated as a small reference program (60 rule cases), kept in the project's source repository and not part of the Skill, and run on the synthetic cases below plus the worked example in [example-output.md](example-output.md): all checks passed. This shows the written rules give the expected result on these cases and that the worked example follows them; it does not prove the rules cover every case. It does not show how the Skill behaves on a NAS.
 
 ## Simulated runs (MEASURED, 2026-11-15)
