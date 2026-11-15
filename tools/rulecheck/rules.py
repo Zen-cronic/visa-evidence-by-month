@@ -156,6 +156,9 @@ class Paper:
     asks: str | None = None  # an instruction found inside the paper
 
 
+PHOTO_SOURCE = "from a photo of a document"
+
+
 def _fold(name: str) -> str:
     """Drop accents so "Trần Thị Linh" and "Tran Thi Linh" compare equal (đ has no decomposition)."""
     decomposed = unicodedata.normalize("NFD", name.replace("đ", "d").replace("Đ", "D"))
@@ -182,14 +185,20 @@ def _edits(x: str, y: str) -> int:
     return prev[-1]
 
 
-def name_near(printed: str, given: str) -> bool:
-    """Same number of words and exactly one word spelled slightly differently ("Bau" for "Bao", "Lin" for "Linh").
-    A different name with the same family name ("Rizal Hakim" vs "Kirana Hakim") is not a spelling variant."""
+def name_near(printed: str, given: str, family_names: list[str] | None = None) -> bool:
+    """Same number of words and exactly one word spelled slightly differently ("Bau" for "Bao", "Lin" for "Linh");
+    every other word, the family name included, is identical. A different name with the same family name
+    ("Rizal Hakim" vs "Kirana Hakim") is not a spelling variant. When family_names is given, the word that differs
+    must not be a family name: "Tren Thi Linh" for "Tran Thi Linh" is a different family, not a variant."""
     a, b = _words(printed), _words(given)
     if not (len(a) == len(b) >= 2 and len(set(a) ^ set(b)) == 2):
         return False
     x, = set(a) - set(b)
     y, = set(b) - set(a)
+    if family_names:
+        families = {w for f in family_names for w in _words(f)}
+        if x in families or y in families:
+            return False
     return _edits(x, y) <= max(1, min(len(x), len(y)) // 3)
 
 
@@ -204,9 +213,9 @@ def _enough(named: int, people: list[str]) -> bool:
     return named >= 2
 
 
-def named_in(paper: Paper, people: list[str], near: bool = False) -> list[str]:
-    hit = name_near if near else name_matches
-    return [g for g in people if any(name_matches(n, g) or (near and hit(n, g)) for n in paper.names)]
+def named_in(paper: Paper, people: list[str], near: bool = False, family_names: list[str] | None = None) -> list[str]:
+    return [g for g in people
+            if any(name_matches(n, g) or (near and name_near(n, g, family_names)) for n in paper.names)]
 
 
 def links(paper: Paper, people: list[str]) -> bool:
@@ -223,8 +232,10 @@ def normalise_address(address: str) -> str:
     return " ".join(ABBREVIATIONS.get(w, w) for w in s.split())
 
 
-def join_papers(papers: list[Paper], people: list[str], printed_names: bool = True) -> dict:
-    """Keep linking papers; prefer a scan over a photo of the same paper; note, never fix, mismatches."""
+def join_papers(papers: list[Paper], people: list[str], printed_names: bool = True,
+                family_names: list[str] | None = None) -> dict:
+    """Keep linking papers; prefer a scan over a photo of the same paper; note, never fix, mismatches.
+    Only a scan and photos of it, or several photos, are merged as one paper: two scans always stay separate."""
     unreadable = [p for p in papers if not p.readable]
     readable = [p for p in papers if p.readable]
     asked = [p.asks for p in readable if p.asks]
@@ -238,15 +249,17 @@ def join_papers(papers: list[Paper], people: list[str], printed_names: bool = Tr
                 possible.append(p)  # Photos names can never link a paper on their own
             continue
         if not links(p, people):
-            if _enough(len(named_in(p, people, near=True)), people):
+            if _enough(len(named_in(p, people, near=True, family_names=family_names)), people):
                 possible.append(p)  # shown to the user, never linked on its own
             continue
         # a spelling variant on a paper that links through other names is still listed for that person
-        if set(named_in(p, people, near=True)) - set(named_in(p, people)):
+        if set(named_in(p, people, near=True, family_names=family_names)) - set(named_in(p, people)):
             possible.append(p)
-        # same paper: the same people and the same printed date or period (type labels may differ)
+        # same paper: the same people and the same printed date or period (type labels may differ),
+        # and at least one of the two is a photo of a document (two different scans are never merged)
         twin = next(
-            (q for q in linked if sorted(named_in(q, people)) == sorted(named_in(p, people))
+            (q for q in linked if PHOTO_SOURCE in (q.source, p.source)
+             and sorted(named_in(q, people)) == sorted(named_in(p, people))
              and (q.start, q.end, q.dated) == (p.start, p.end, p.dated)),
             None,
         )

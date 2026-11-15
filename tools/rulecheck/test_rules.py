@@ -347,6 +347,24 @@ class CommonLawExampleIsConsistent(unittest.TestCase):
         self.assertFalse(name_near("Rizal Hakim", "Kirana Hakim"))
         self.assertFalse(name_near("Tran Thi An", "Tran Thi Linh"))
 
+    def test_a_misspelt_family_name_is_not_a_spelling_variant(self):
+        from rules import name_near
+        self.assertFalse(name_near("Tren Thi Linh", "Tran Thi Linh", family_names=["Tran"]))
+        self.assertTrue(name_near("Tran Thi Lin", "Tran Thi Linh", family_names=["Tran"]))
+        self.assertTrue(name_near("Tran Thi Lin", "Tran Thi Linh"))
+        people = ["Tran Thi Linh", "Tran Van Minh"]
+        bill = Paper("electricity bill", ["Tren Thi Linh", "Tran Van Minh"], "scanned document", dated="2025-03-01")
+        out = join_papers([bill], people, family_names=["Tran"])
+        self.assertEqual((out["linked"], out["possible_matches"]), ([], []))
+
+    def test_two_scans_with_the_same_names_and_period_are_both_kept(self):
+        couple = ["Tran Thi Linh", "Tran Van Minh"]
+        lease = Paper("lease", couple, "scanned document", "2025-01", "2025-12")
+        policy = Paper("insurance policy", couple, "scanned document", "2025-01", "2025-12")
+        out = join_papers([lease, policy], couple)
+        self.assertEqual(out["linked"], [lease, policy])
+        self.assertEqual(out["noted_photos"], [])
+
     def test_a_paper_starting_after_a_gap_is_suggested_only_when_new(self):
         people = ["Mei Tan", "Daniel Reyes"]
         counts = {m: 0 for m in month_range("2026-01", "2026-06")}

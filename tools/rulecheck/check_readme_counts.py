@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+SKILL_DIR = next(ROOT.glob("*/SKILL.md")).parent
 
 
 def count(start_dir: str, pattern: str) -> int:
@@ -21,7 +22,7 @@ class ReadmeCountsAreTrue(unittest.TestCase):
         self.assertEqual(runs, count("tools/simrun", "test_simulate.py"))
 
     def test_testing_md_counts_match(self):
-        text = (ROOT / "relationship-evidence-pack/references/testing.md").read_text(encoding="utf-8")
+        text = (SKILL_DIR / "references" / "testing.md").read_text(encoding="utf-8")
         rules = int(re.search(r"\((\d+) rule cases\)", text).group(1))
         runs = int(re.search(r"\((\d+) control-flow scenarios\)", text).group(1))
         self.assertEqual(rules, count("tools/rulecheck", "test_rules.py"))

@@ -10,7 +10,7 @@ folder name. It does not show how Uliya or the expert agents behave on a real NA
 from __future__ import annotations
 
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "rulecheck"))
@@ -127,9 +127,17 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     # Step 7 answers folded in: listed photos left unanswered are removed before Step 6 is redone
     # a photographed print is listed for its real date: given -> re-dated and kept; not given -> held out
+    # the real date sets the month too; a print dated outside the period leaves the pack (Step 6 uses the user's date)
+    period = set(R.month_range(start, end))
+    redated = []
     for c in chosen:
         if c.kind == "print" and c.path in user.print_dates:
-            c.date = user.print_dates[c.path]
+            real = user.print_dates[c.path]
+            c = replace(c, date=real, month=real[:7])  # a copy: the mock NAS samples stay as they were
+            if c.month not in period:
+                continue
+        redated.append(c)
+    chosen = redated
     held = set(user.unanswered_photos) | {c.path for c in chosen if c.kind == "print" and c.path not in user.print_dates}
     waiting = [c.path for c in chosen if c.path in held]
     chosen = [c for c in chosen if c.path not in held]
@@ -212,5 +220,6 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
                written=list(nas.written), chosen_dates=[c.date for c in chosen], reused=reused, reuse_note=reuse_note,
-               same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people)
+               same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people,
+               pack_months=[r["month"] for r in rows if isinstance(r["pack"], int)])
     return log

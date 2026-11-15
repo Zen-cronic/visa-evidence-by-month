@@ -300,8 +300,21 @@ class Scenarios(unittest.TestCase):
         smp = samples(counts); smp[0].kind = "print"
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-02", MockNAS(COUPLE_PHOTOS, counts, smp, papers),
                   User(print_dates={smp[0].path: "2015-08-01"}))
+        # re-dated to 2015-08-01, outside the 2026-01 to 2026-02 period: it leaves the pack and January has no pack photo
+        self.assertEqual(log["waiting_for_answer"], [])
+        self.assertEqual(log["chosen"], 1)
+        self.assertNotIn("2015-08-01", log["chosen_dates"])
+        self.assertEqual(log["pack_months"], ["2026-02"])
+        self.assertEqual(smp[0].date, "2026-01-10")  # the NAS sample itself is not changed
+        self.assertEqual(smp[0].month, "2026-01")
+        # re-dated inside the period: kept under its real date and moved to that month
+        counts = months("2026-01", "2026-03", skip={"2026-02"})
+        smp = samples(counts); smp[0].kind = "print"
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-03", MockNAS(COUPLE_PHOTOS, counts, smp, papers),
+                  User(print_dates={smp[0].path: "2026-02-14"}))
         self.assertEqual(log["chosen"], 2)
-        self.assertIn("2015-08-01", log["chosen_dates"])
+        self.assertIn("2026-02-14", log["chosen_dates"])
+        self.assertEqual(log["pack_months"], ["2026-02", "2026-03"])
 
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
