@@ -1,4 +1,4 @@
-"""The README's claimed check counts must equal the real number of tests (claims ledger)."""
+"""The check counts claimed in the README and in references/testing.md must equal the real number of tests."""
 
 import re
 import unittest
@@ -17,6 +17,13 @@ class ReadmeCountsAreTrue(unittest.TestCase):
         text = (ROOT / "README.md").read_text(encoding="utf-8")
         rules = int(re.search(r"(\d+) rule checks", text).group(1))
         runs = int(re.search(r"(\d+) simulated runs", text).group(1))
+        self.assertEqual(rules, count("tools/rulecheck", "test_rules.py"))
+        self.assertEqual(runs, count("tools/simrun", "test_simulate.py"))
+
+    def test_testing_md_counts_match(self):
+        text = (ROOT / "relationship-evidence-pack/references/testing.md").read_text(encoding="utf-8")
+        rules = int(re.search(r"\((\d+) rule cases\)", text).group(1))
+        runs = int(re.search(r"\((\d+) control-flow scenarios\)", text).group(1))
         self.assertEqual(rules, count("tools/rulecheck", "test_rules.py"))
         self.assertEqual(runs, count("tools/simrun", "test_simulate.py"))
 
