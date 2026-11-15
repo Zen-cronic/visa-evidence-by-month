@@ -165,7 +165,7 @@ For a couple or a family, whatever `{RELATIONSHIP}` is, also apply [references/s
 Label each entry `scanned document` or `from a photo of a document`, with its file path and the people it names. Then:
 
 - Treat a scan and a photo (or several photos) as the same paper when they name the same people and show the same printed date or period; keep one, preferring the scan, use its fields, do not compare the others against it, and note them.
-- Any name on a paper that differs from `{MATCH_NAMES}` only in spelling (a close spelling of the same name, never another listed person's name) goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
+- Any name on a paper that has the same family name as a name in `{MATCH_NAMES}` and a given name spelled slightly differently (a close spelling of the same name, never another listed person's name) goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
 - Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
 - For a photo of a document, suggest uploading a clear scan of the original.
 - For a paper not in English or French, note that it needs an English or French translation submitted with a copy of the original, not done by the applicant, sponsor or a family member (check current IRCC rules).
@@ -229,7 +229,7 @@ Ask them, in one reply:
 - to say whether each possible match is the same person;
 - and, if they wish, who is the sponsor and who is the applicant.
 
-List separately every photo with no capture date ("check this date") and every photo where someone else appears ("someone else is in this photo: keep it, or drop it?"); these need an answer each, not "all ok".
+List separately every photo with no capture date ("check this date"), every photo labelled `print` ("this is a photo of a print; its date is when the print was photographed: give the real date or drop it"), and every photo where someone else appears ("someone else is in this photo: keep it, or drop it?"); these need an answer each, not "all ok".
 
 When someone on the application is not in `{PHOTO_PEOPLE}` (kept for papers only, such as a baby, or not searched because `{PHOTO_SCOPE}` is the couple), first ask once: "In photos <numbers> someone else appears; is that <name or names>? (yes for all, or list the numbers)"; confirmed photos are not listed again, and that name (or those names) is added to their People field, labelled `from you`.
 
@@ -240,7 +240,7 @@ Then wait. Also:
 - A vision description the user did not replace stays `[not confirmed]`.
 - An unanswered possible match stays a possible match and is never linked.
 - When the user fixes or supplies a date, place or name, use it everywhere it appears, including the copy names and the Photo descriptions file, and label it `from you` in the working notes.
-- A photo listed separately (no capture date, or someone else in it) that the user does not answer is removed from `{CHOSEN_PHOTOS}` (redo Step 6 without it), so it is left out of the copies, the album and the Photo descriptions file, and listed in the working notes as "waiting for your answer".
+- A photo listed separately (no capture date, a `print`, or someone else in it) that the user does not answer is removed from `{CHOSEN_PHOTOS}` (redo Step 6 without it), so it is left out of the copies, the album and the Photo descriptions file, and listed in the working notes as "waiting for your answer".
 
 After the answers, in this order:
 
