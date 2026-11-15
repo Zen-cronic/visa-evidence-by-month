@@ -106,28 +106,27 @@ For one person, or when `{PHOTOS_NEEDED}` is no, skip Steps 2 to 4: one person's
 delegate --target photo-agent --instruction 'Use only the local model. Give a read-only timeline summary of photos in which all of these people appear together, using the AND method for people, images only, grouped by month, from the first day of {START_MONTH} to the last day of {END_MONTH}: {PHOTO_PEOPLE}. Leave out any photo whose path includes a folder whose name starts with Visa evidence. For every month return the number of matching photos, and up to 3 sample photos with photo ID, file path and capture date. Include months with zero matches. Say which libraries were searched. If nothing matches in the whole period, say no results.'
 ```
 
-This is the timeline call. Save its month counts as `{MONTH_COUNTS}` and its sample photos, by month, as `{CANDIDATES}`. `{MONTHS_NOT_RETURNED}` is every month in the period the reply does not list. `{MONTHS_WITH_PHOTOS}` is each month the timeline counted photos for but returned no sample photo, plus every month in `{MONTHS_NOT_RETURNED}`; if it is not empty, send this sample call:
+This is the timeline call. A "no results" reply lists every month as 0; do not send the sample call for it. Save its month counts as `{MONTH_COUNTS}` and its sample photos, by month, as `{CANDIDATES}`. `{MONTHS_NOT_RETURNED}` is every month in the period the reply does not list. `{MONTHS_WITH_PHOTOS}` is each month the timeline counted photos for but returned no sample photo, plus every month in `{MONTHS_NOT_RETURNED}`; if it is not empty, send this sample call:
 
 ```
 delegate --target photo-agent --instruction 'Use only the local model. For each of these months, search for images in which all of these people appear together, using the AND method: {PHOTO_PEOPLE}. Leave out any photo whose path includes a folder whose name starts with Visa evidence. Return up to 3 photos per month with photo ID, file path and capture date. List every month given, writing none where no photo matches. Months: {MONTHS_WITH_PHOTOS}. Read only.'
 ```
 
-Add the photos it returns to `{CANDIDATES}` under their month, after any timeline samples; never replace them. Then give each month in the period exactly one final state, saved as `{MONTH_STATES}`:
+Add only photos for months in `{MONTHS_WITH_PHOTOS}` to `{CANDIDATES}` under their month, after any timeline samples; never replace them, and ignore samples for a month the timeline lists as 0. Then give each month in the period exactly one final state, saved as `{MONTH_STATES}`, by what the timeline gave for it:
 
-- N, the timeline's count, for a month the timeline counted photos for; if the sample call lists that month as none, leaves it out or fails, the count stays and the month has no candidates;
-- "at least N (sample search)", for a month the timeline did not list and the sample call returned N photos for;
-- 0, for a month the timeline listed as 0, or one it did not list that the sample call lists as none;
-- "unresolved", for a month the timeline did not list and the sample call left out or failed for.
+- Timeline gave a count: that count (a month it counted that the sample call lists as none, leaves out or fails for keeps the count and has no candidates).
+- Timeline gave 0: 0.
+- Timeline did not list it: sample photos give "at least N (sample search)", sample says none gives 0, otherwise (left out, or the sample call failed) "unresolved".
 
-Every month the sample call lists, with photos or as none, leaves `{MONTHS_NOT_RETURNED}`, which then holds exactly the unresolved months. Steps 3 and 6 use `{MONTH_STATES}`. If no month has a candidate, skip Steps 3 and 4.
+Steps 3 and 6 use `{MONTH_STATES}`. If no month has a candidate, skip Steps 3 and 4.
 
 - If the timeline call failed, report it as failed, skip Steps 3 and 4, and continue with Step 5. A failed call is not an empty result; Step 6 marks the photo column as failed.
 - For a family where `{PHOTO_SCOPE}` is everyone and some months have zero photos of all these people, offer to count photos of the adults (the people in `{PHOTO_PEOPLE}` not in `{CHILDREN}`; ask who they are if `{CHILDREN}` was not given) instead for the whole period (partner-visa photo requests are usually about the couple; children are linked by their birth certificates), and wait. Do not offer it if that would leave fewer than two people or the same people already searched; when `{PHOTO_SCOPE}` is the couple, the adults are the people already searched, so it is never offered. If the user agrees, set `{PHOTO_PEOPLE}` to those adults and send Step 2 again; if they decline, continue with Step 3.
-- If there are no results, report "Photos face grouping found no photo of all these people in this period". For a couple, skip Steps 3 and 4 and continue with Step 5. For a family where `{PHOTO_SCOPE}` is everyone, ask whether to count photos of fewer people instead, such as the two adults (useful when a child was born during the period or is too young for face grouping), unless that would be the same people already searched, and wait; when `{PHOTO_SCOPE}` is the couple there is no smaller group to offer. If the user declines, or there is no smaller group to offer, skip Steps 3 and 4 and continue with Step 5. If the user agrees, set `{PHOTO_PEOPLE}` to those names and send Step 2 again; every later step and label then uses `{PHOTO_PEOPLE}`. Never change the names, other people or dates on your own.
+- If the reply is no results, every month is 0. Report "Photos face grouping found no photo of all these people in this period". For a couple, skip Steps 3 and 4 and continue with Step 5; Step 6 still runs, and every month with no linking paper and no same-address pair is a gap. For a family where `{PHOTO_SCOPE}` is everyone, ask whether to count photos of fewer people instead, such as the two adults (useful when a child was born during the period or is too young for face grouping), unless that would be the same people already searched, and wait; when `{PHOTO_SCOPE}` is the couple there is no smaller group to offer. If the user declines, or there is no smaller group to offer, skip Steps 3 and 4 and continue with Step 5; Step 6 still runs as for a couple. If the user agrees, set `{PHOTO_PEOPLE}` to those names and send Step 2 again; every later step and label then uses `{PHOTO_PEOPLE}`. Never change the names, other people or dates on your own.
 
 ## Step 3. Plan the months (no NAS call)
 
-Using `{MONTH_STATES}` and the rules in [references/evidence-rules.md](references/evidence-rules.md), choose up to `{PHOTO_LIMIT}` months to cover from the months with at least one candidate in `{CANDIDATES}`, spread across the whole period, always including the first and the latest of them. Save as `{PLAN_MONTHS}`. Never plan a month without a candidate. A month with photos but no candidate shows "no sample returned" in the pack column ("sample search failed" if the sample call failed), also when Steps 3 and 4 are skipped.
+Using `{MONTH_STATES}` and the rules in [references/evidence-rules.md](references/evidence-rules.md), choose up to `{PHOTO_LIMIT}` months to cover from the months with at least one candidate in `{CANDIDATES}`, spread across the whole period, always including the first and the latest of them. Save as `{PLAN_MONTHS}`. Never plan a month without a candidate. A month with photos but no candidate shows "no sample returned" in the pack column ("sample search failed" if the sample call failed), also when Steps 3 and 4 are skipped. An unresolved month shows "—" in the pack column.
 
 ## Step 4. Check candidate photos
 
@@ -196,7 +195,7 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 For every month from `{START_MONTH}` to `{END_MONTH}`, show three columns:
 
 - photos of `{PHOTO_PEOPLE}` in the library (the month's state in `{MONTH_STATES}`; empty for one person or when photos are not needed, "search failed" if the timeline call failed);
-- a chosen photo in the pack (from `{CHOSEN_PHOTOS}`);
+- a chosen photo in the pack (from `{CHOSEN_PHOTOS}`; "—" for an unresolved month);
 - and a linking paper dated in or covering that month (from `{LINKED_DOCS}`), or, for a married or other couple or family, a same-address pair (common-law shows pairs in its own column).
 
 A paper with a covered period (a lease, a bill period) covers each month of that period; a certificate or letter counts only for the month it is dated.
