@@ -18,7 +18,7 @@ When `{CHOSEN_PHOTOS}` is empty, there is no Photo descriptions file and no albu
 
 ## Working notes
 
-If any context line the user wrote for the Photo descriptions file is not in English or French, the working notes say that file needs a translation before upload.
+If any context line the user wrote for the Photo descriptions file is not in the language the application accepts (for Canada, English or French), the working notes say that file needs a translation before upload.
 
 `{INDEX_TEXT}` is the working notes for the user, not for upload. It starts with the line "Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file." (or "upload the papers" when no photos were chosen), followed, when some chosen photos have no description yet, by "Photos <numbers> have no description yet; describe or remove them before uploading."
 

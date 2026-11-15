@@ -41,7 +41,19 @@ The Skill prepares evidence only. It does not judge eligibility, does not give l
 
 # Required input
 
-Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`), and, for a family, whose photos to search (`{PHOTO_SCOPE}`). Everything else below has a default or is asked only when it is needed, as each item says:
+Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`), and, for a family, whose photos to search (`{PHOTO_SCOPE}`). Everything else below has a default or is asked only when it is needed, as each item says.
+
+For example, for a family (a couple's message leaves out the photo-scope question):
+
+> Who is on the application, and since when? Where should I save the pack?
+>
+> Are you married, common-law or other, and does your application ask for photos?
+>
+> Search photos of the two of you together, or of everyone on the application? (Partner-visa photo requests are usually about the couple; children are linked by their birth certificates.)
+>
+> Quick check: is everyone in this pack OK with you putting it together (a parent or guardian answers for each child)? And is Uliya set to its on-device model, so your photos and papers stay at home?
+
+The items:
 
 - `{PEOPLE}`: one or more people, each as named in Photos people albums (if more than six are named, ask which six at most to search in photos together; the rest are kept for papers only), in the order they should appear. If the names are not known, Step 1 lists the named people albums first. `{SCOPE}` is one person, a couple or a family, from the number of people. For one person, a Photos name is not needed.
 - `{PAPER_NAMES}`: each person's full name as printed on their papers, such as "Tran Thi Linh" for the Photos name "Linh", and which word is the family name (`{FAMILY_NAMES}`, such as "Tran"). Ask for both once, just before Step 5, if papers are searched. For one person, use the name in `{PEOPLE}` as the printed name unless the user gives another; if that name is one word, ask for the full name as printed on their papers. If the user does not give it, papers can only be possible matches (see Step 5), never linked unless the user confirms each one in Step 7, and the index says so.
@@ -168,7 +180,7 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 - Any name on a paper that has the same family name as a name in `{MATCH_NAMES}` and a given name spelled slightly differently (a close spelling of the same name, never another listed person's name) goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
 - Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
 - For a photo of a document, suggest uploading a clear scan of the original.
-- For a paper not in English or French, note that it needs an English or French translation submitted with a copy of the original, not done by the applicant, sponsor or a family member (check current IRCC rules).
+- For a paper not in the language the application accepts, note that it needs a certified translation submitted with a copy of the original (for Canada: English or French, not done by the applicant, sponsor or a family member; check current IRCC rules).
 - Ask a licensed consultant whether any difference needs an explanation.
 - Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only" rather than a mismatch.
 

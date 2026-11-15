@@ -51,5 +51,5 @@ A worked example with a made-up family is in [example-output.md](example-output.
 - Up to 3 sample photos in each planned month are checked (months beyond the photo limit (20 unless you set another) show "not checked (photo limit)"); a month where all fail is labelled "3 samples checked, none fit to send", and other photos from that month may still be usable.
 - The vision model only suggests what a photo shows; each description in the upload file is in your own words, and a line you do not confirm stays out of it.
 - Up to six people are searched in photos together; with more, you choose which six, and the rest count for papers only.
-- Write photo descriptions in English or French.
+- Write photo descriptions in the language the application accepts (for Canada, English or French).
 - A second run offers to reuse the context lines you confirmed in your latest earlier pack, for the same photos (same date and file name), marked "from your earlier pack" and shown for you to confirm again; everything else is found again from your library and papers.
