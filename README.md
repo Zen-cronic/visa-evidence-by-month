@@ -63,6 +63,8 @@ What is checked on every change (CI):
 - 60 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including all three worked examples.
 - 41 simulated runs against a mock NAS: every scope, failed and cancelled calls, months the timeline leaves out or returns without samples, a "no results" timeline, a failed photo-check batch, declined approvals, drops, second runs and common-law and same-address cases.
 
+When the NAS returns nothing, fails or skips a month, the table says "search failed" or "check by hand" for that month; it never turns a missing answer into a gap or into evidence.
+
 What is not checked yet: it has not run on a UGREEN AI NAS. `relationship-evidence-pack/references/testing.md` lists each behaviour still to confirm there, such as whether the agents read the linked reference files and how many photos one vision call accepts.
 
 ## What's here
