@@ -69,20 +69,40 @@ def confirm_people(named_albums: list[str], people: list[str]) -> dict:
 NOT_RETURNED = "not returned"
 
 
-def fill_returned(timeline: dict[str, int], start: str, end: str, sample_counts: dict[str, int] | None = None) -> dict:
+class AtLeast(int):
+    """A month the timeline did not list but the sample call found photos for: its count is only a floor."""
+
+    def __str__(self) -> str:
+        return f"at least {int(self)} (sample search)"
+
+
+def fill_returned(timeline: dict[str, int], start: str, end: str, sample_listed: dict[str, int] | None = None) -> dict:
     """A month in the period the timeline reply does not list is "not returned", never 0 and never a gap.
-    The sample call is sent for those months: a month it returns photos for counts them; one still
-    missing stays "not returned"."""
-    sample_counts = sample_counts or {}
+    The sample call is sent for those months and lists every month given: a month it lists as none
+    (0) is 0 and can be a gap; a month it returns N photos for is recovered as "at least N (sample
+    search)" and planned like any month with photos; a month neither call lists stays "not returned"."""
+    sample_listed = sample_listed or {}
     out = {}
     for m in month_range(start, end):
         if m in timeline:
             out[m] = timeline[m]
-        elif m in sample_counts:
-            out[m] = sample_counts[m]
+        elif m in sample_listed:
+            n = sample_listed[m]
+            out[m] = AtLeast(n) if n > 0 else 0
         else:
             out[m] = NOT_RETURNED
     return out
+
+
+def step2_candidates(timeline_samples: list | None, sample_result: list | None, sample_sent: bool) -> list | None:
+    """Candidates for Steps 3 and 4. The sample call's photos when it was sent and completed; if it failed
+    (None), the timeline's own samples when it returned any; None means skip Steps 3 and 4
+    ("sample search failed")."""
+    if not sample_sent:
+        return timeline_samples
+    if sample_result is not None:
+        return sample_result
+    return timeline_samples or None
 
 
 def months_not_returned(timeline: dict[str, int], start: str, end: str) -> list[str]:

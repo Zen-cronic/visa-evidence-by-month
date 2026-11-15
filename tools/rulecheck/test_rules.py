@@ -12,7 +12,7 @@ from pathlib import Path
 from rules import (
     FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, carry_over, closers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
-    NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check,
+    NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check, AtLeast, step2_candidates,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -130,6 +130,29 @@ class StepTwoAndFourFailures(unittest.TestCase):
         rows = coverage("2025-01", "2025-04", counts, [], [])
         self.assertEqual(rows[1]["library"], NOT_RETURNED)
         self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-03"])
+
+    def test_month_the_sample_call_lists_as_none_is_zero_and_can_be_a_gap(self):
+        # the timeline omits its empty months; the sample call lists March as none and returns May's photos
+        counts = fill_returned({"2025-01": 2}, "2025-01", "2025-05", {"2025-03": 0, "2025-05": 3})
+        self.assertEqual(counts["2025-03"], 0)
+        self.assertEqual(counts["2025-02"], NOT_RETURNED)  # listed by neither call
+        self.assertEqual(counts["2025-04"], NOT_RETURNED)
+        self.assertIsInstance(counts["2025-05"], AtLeast)
+        self.assertEqual(str(counts["2025-05"]), "at least 3 (sample search)")
+        self.assertEqual(plan_months(counts, 20), ["2025-01", "2025-05"])  # a recovered month is planned
+        rows = coverage("2025-01", "2025-05", counts, [], [], planned=["2025-01"])
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-03"])
+        self.assertFalse(rows[1]["gap"])
+        self.assertFalse(rows[3]["gap"])
+        self.assertEqual(rows[4]["pack"], "not checked (photo limit)")  # a recovered month has a count
+
+    def test_failed_sample_call_keeps_the_timeline_samples(self):
+        timeline = [Checked("a.jpg", "2025-01", "2025-01-02", None)]
+        fresh = [Checked("b.jpg", "2025-01", "2025-01-09", None)]
+        self.assertEqual(step2_candidates(timeline, fresh, True), fresh)
+        self.assertEqual(step2_candidates(timeline, None, True), timeline)  # failed: keep the timeline's own
+        self.assertIsNone(step2_candidates([], None, True))  # failed and none returned: skip Steps 3 and 4
+        self.assertEqual(step2_candidates(timeline, None, False), timeline)  # not sent
 
     def test_failed_step4_call_is_photo_check_failed_not_none_fit(self):
         plan = ["2025-01", "2025-02"]

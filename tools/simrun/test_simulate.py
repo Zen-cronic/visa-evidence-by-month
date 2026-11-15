@@ -330,6 +330,36 @@ class Scenarios(unittest.TestCase):
         self.assertIn("2026-05", log["pack_months"])
         self.assertEqual(log["chosen"], 5)
 
+    def test_n2b_empty_month_left_out_of_the_timeline_becomes_a_gap_when_the_sample_call_lists_none(self):
+        counts = months("2026-01", "2026-06", skip={"2026-03"})
+        # the timeline leaves out its empty months (March) and also May; the sample call lists March as none
+        # and returns May's photos; June's empty month is listed by neither call
+        counts["2026-06"] = 0
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],
+                      timeline_missing=["2026-03", "2026-05", "2026-06"], sample_counts={"2026-03": 0, "2026-05": 2})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User())
+        self.assertEqual(log["library"]["2026-03"], 0)
+        self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-03"])  # March is a gap
+        self.assertEqual(log["not_returned"], ["2026-06"])  # June stays "not returned", not a gap
+        self.assertEqual(log["recovered"], {"2026-05": "at least 2 (sample search)"})
+        self.assertIn("2026-05", log["pack_months"])  # the recovered month is planned and checked
+
+    def test_n2c_failed_sample_call_keeps_the_timeline_samples(self):
+        counts = months("2026-01", "2026-04")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [], timeline_missing=["2026-04"], sample_fail=True)
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-04", nas, User())
+        self.assertEqual(log["not_returned"], ["2026-04"])
+        self.assertIsNone(log["chosen_column"])
+        self.assertEqual(log["pack_months"], ["2026-01", "2026-02", "2026-03"])  # Steps 3-4 ran on the timeline's samples
+        self.assertEqual(log["gaps"], [])
+        # no timeline samples and a failed sample call: Steps 3 and 4 are skipped
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [], sample_fail=True, timeline_samples=False)
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-04", nas, User())
+        self.assertEqual(log["chosen_column"], "sample search failed")
+        self.assertNotIn(("photo-agent", "vision-vlm"), nas.calls)
+        self.assertEqual(log["chosen"], 0)
+        self.assertEqual(log["writes_before_approval"], [])
+
     def test_n3_failed_step4_call_is_resent_one_month_per_call(self):
         counts = months("2026-01", "2026-06")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],
