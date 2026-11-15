@@ -41,13 +41,13 @@ The Skill prepares evidence only. It does not judge eligibility, does not give l
 
 # Required input
 
-Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), the two Step 0 questions and, for a couple or family, the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`), and, for a family, whose photos to search (`{PHOTO_SCOPE}`). Everything else below has a default or is asked only when it is needed, as each item says.
+Ask once, in one short message, for: who is on the application (`{PEOPLE}`), since when (`{START_MONTH}`), where to save (`{SAVE_LOCATION}`), for a couple or family the relationship type (`{RELATIONSHIP}`) and whether photos are needed (`{PHOTOS_NEEDED}`), for a family which two people are the partners (`{PARTNERS}`) and whose photos to search (`{PHOTO_SCOPE}`), and last the two Step 0 questions. If the people are not named yet, ask the couple or family questions in the same reply as the people are picked in Step 1. Everything else below has a default or is asked only when it is needed, as each item says.
 
-For example, for a family (a couple's message leaves out the photo-scope question):
+For example, for a family (a couple's message leaves out the partners and photo-scope questions; one person's also leaves out the relationship-and-photos line):
 
 > Who is on the application, and since when? Where should I save the pack?
 >
-> Are you married, common-law or other, and does your application ask for photos?
+> Are you married, common-law or other, and which two of you are the partners? Does your application ask for photos?
 >
 > Search photos of the two of you together, or of everyone on the application? (Partner-visa photo requests are usually about the couple; children are linked by their birth certificates.)
 >
@@ -180,7 +180,7 @@ Label each entry `scanned document` or `from a photo of a document`, with its fi
 - Any name on a paper that has the same family name as a name in `{MATCH_NAMES}` and a given name spelled slightly differently (a close spelling of the same name, never another listed person's name) goes into `{POSSIBLE_MATCHES}` for that person, labelled "possible match, spelling differs", even if the paper links through other names; that name does not count, and a paper that would link only through it is not linked or copied, until the user says it is the same person in Step 7.
 - Compare names, dates of birth and addresses across all of `{LINKED_DOCS}` and record every mismatch; never correct one.
 - For a photo of a document, suggest uploading a clear scan of the original.
-- For a paper not in the language the application accepts, note that it needs a certified translation submitted with a copy of the original (for Canada: English or French, not done by the applicant, sponsor or a family member; check current IRCC rules).
+- For a paper not in the language the application accepts, note that it needs a certified translation submitted with a copy of the original (for Canada: English or French, not done by the applicant, sponsor or a family member; check current IRCC rules). If the application's language is not known, list the paper's language and say to check whether it needs translating.
 - Ask a licensed consultant whether any difference needs an explanation.
 - Where two addresses differ only in abbreviation or punctuation ("St" and "Street", "Unit 4" and "#4"), note it as "format difference only" rather than a mismatch.
 
