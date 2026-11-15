@@ -393,6 +393,27 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["check_by_hand"], line)
         self.assertIn(line, log["final_summary_lists"])
 
+    def test_n2e2_common_law_unresolved_months_are_gaps_with_no_check_by_hand_line(self):
+        # as (c), but common-law: photos never decide a month, so the unresolved months without a same-address paper are gaps
+        counts = months("2026-01", "2026-06", skip={"2026-03", "2026-04"})
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-02", address="88 Carlow Ave")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease],
+                      timeline_missing=["2026-03", "2026-04", "2026-05"], sample_fail=True)
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User(relationship="common-law"))
+        self.assertEqual(log["gaps"], [f"{R.COMMON_LAW_GAP_LABEL}: 2026-03 to 2026-06"])
+        self.assertIsNone(log["check_by_hand"])
+        self.assertEqual(log["final_summary_lists"], log["gaps"])
+
+    def test_n2e3_common_law_failed_timeline_uses_the_common_law_label_and_dashes_the_pack(self):
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-03", address="88 Carlow Ave")
+        nas = MockNAS(COUPLE_PHOTOS, None, [], [lease])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User(relationship="common-law"))
+        self.assertIsNone(log["stopped"])
+        self.assertEqual(log["gaps"], [f"{R.COMMON_LAW_GAP_LABEL}: 2026-04 to 2026-06"])
+        self.assertNotIn("photo search failed", " ".join(log["gaps"]))
+        self.assertIsNone(log["check_by_hand"])
+        self.assertTrue(all(p is None for p in log["pack"].values()))  # "—" in every month
+
     def test_n2f_counted_month_without_a_sample_is_never_planned(self):
         # (d) the timeline counts every month but returns no samples; the sample call is sent for each counted
         # month, leaves out March and lists April as none: both keep their counts and have no candidates
