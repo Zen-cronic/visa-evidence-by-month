@@ -6,7 +6,7 @@ Read before Step 1. These rules decide which months are planned, which photos ar
 
 Planning applies to a couple or a family. For one person no photo is chosen.
 
-1. Start from the month counts returned by the timeline summary. Never plan a month with zero photos of the people searched together (everyone, unless some are kept for papers only).
+1. Start from the month counts returned by the timeline summary. Never plan a month with zero photos of the people searched together (the people in `{PHOTO_PEOPLE}`).
 2. If the number of months with photos is at or below the photo limit, plan all of them.
 3. Otherwise spread the plan evenly across the whole period: always the first and the latest month with photos, then the months that best fill the longest stretches between planned months.
 
@@ -44,7 +44,7 @@ A gap is a month with no photo of everyone found by face grouping, no linking pa
 
 For a family, a child born during the period, or too young for face grouping, can make months look empty; the Skill then offers to count photos of fewer people, such as the two adults, and every label then names who was counted. Gaps are for the user's own checking. Not every application needs every month covered: for spouses there is no monthly requirement, and photos should be spread across the relationship, including the wedding. For common-law partners, only papers that show both at the same address speak to living together; photos do not show living together, though they can show a couple presenting themselves as a couple.
 
-Each gap gets one line on what could cover it, using only linking papers and single-name papers at the same address: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap. It suggests; it never says such a paper exists.
+Each gap gets one line on what could cover it, using only linking papers and single-name papers at the same address: a series of at least 3 papers of the same type naming the same people, one each month up to the month before the gap, and a paper whose covered period starts the month after the gap and did not appear in the months before it (for single-name papers, see same-address.md). It suggests; it never says such a paper exists.
 
 For every couple or family, married, common-law or other, papers in each partner's name showing the same address for a month (a same-address pair) also fill that month (Canada's spouse checklist, in its list of proof of living together, accepts these "whether the accounts are held jointly or not"; the common-law checklist was not read). Papers that fill a month this way are copied into the pack and listed as "one name, same address"; the rules are in [same-address.md](same-address.md). For married couples and others, photos still count too. For common-law couples and families, the table counts a month only when the partners are shown at the same address: one paper naming both with that address, or a same-address pair; photos do not count ([common-law.md](common-law.md)). For common-law, the table does not show whether the couple meets the 12-month rule, and says so. The Skill never says whether an officer will accept the evidence.
 

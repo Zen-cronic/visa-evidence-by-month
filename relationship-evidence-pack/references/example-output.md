@@ -71,7 +71,8 @@ Failed photos are never shown, copied or added to the album. Months where every 
 Mismatches, noted and not corrected:
 
 - **Date of birth, Tran Thi Linh:** 1986-04-02 on the marriage certificate, 1986-02-04 on Bao's birth certificate. Check the originals.
-- **Address:** "12 Elm St Unit 4" on 7 bills, "12 Elm Street #4" on the December 2025 bill: format difference only.
+
+Address written two ways, "12 Elm St Unit 4" on 7 bills and "12 Elm Street #4" on the December 2025 bill: format difference only, not a mismatch.
 
 From a photo of a document: Bao's birth certificate and the lease. Upload a clean scan or the original if the officer needs one.
 
@@ -113,9 +114,9 @@ Ignored text in papers:
 
 Gaps are for your own checking. Spouses have no monthly requirement.
 
-Chosen photos that still need a description before uploading: 02, 06, 09.
-
 A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
+
+Chosen photos that still need a description before uploading: 02, 06, 09.
 
 Libraries searched: Linh Tran (personal), Tran family (shared).
 
