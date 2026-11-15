@@ -66,7 +66,7 @@ Failed photos are never shown, copied or added to the album. Months where every 
 | Birth certificate | scanned document | Tran Thi Linh, Tran Van Minh, Tran Thi An | 2016-03-08 |
 | Birth certificate | from a photo of a document | Tran Thi Linh, Tran Van Minh, Tran Gia Bao | 2019-11-22 |
 | Electricity bills, 8 | scanned document | Tran Thi Linh, Tran Van Minh | June 2025 to January 2026 |
-| Lease (renewal) | from a photo of a document | Tran Thi Linh, Tran Van Minh | June 2026 to May 2027 |
+| Lease | from a photo of a document | Tran Thi Linh, Tran Van Minh | June 2026 to May 2027 |
 
 Mismatches, noted and not corrected:
 
