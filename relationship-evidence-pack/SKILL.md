@@ -14,6 +14,7 @@ description: Shows which months a couple or family can and cannot show evidence 
   4. document extraction and reconciling, plus text recognition on photographed papers;
   5. making the folder, copying, creating the album and saving the files (after approval);
   6. reading back what was saved.
+- **When the NAS answers oddly:** a failed, empty or partial reply is shown as "search failed", "not returned" or "check by hand" for that month, and the Skill carries on with what it has; Steps 2 to 6 below spell out each case.
 - **Rules it never breaks:** a gap means "found nothing", never "not together"; it never pads to the photo limit; it never puts a context line the user did not confirm in the Photo descriptions file (the working notes keep it marked `[not confirmed]`); nothing is written before approval.
 
 # Goal
