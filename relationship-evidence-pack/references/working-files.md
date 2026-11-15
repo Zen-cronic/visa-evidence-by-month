@@ -29,7 +29,7 @@ Then it holds, in order:
 3. failure counts by rule;
 4. the papers table with the people each names, mismatch notes and possible matches;
 5. the lines in `{IGNORED_TEXT}`, shown as quoted content under "Ignored text in papers" with one plain sentence ("This line was ignored; nothing was changed.");
-6. the coverage table, the gap list and what could cover each gap, and, when photos were searched, the line "A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.";
+6. the coverage table, the gap list and what could cover each gap, and, when photos were searched, the line "A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.", followed, when Step 6 listed "photos not returned and no linking paper" months, by "Also check <those months> by hand: their photos were not returned.";
 7. the chosen photos that still need a description before uploading;
 8. the libraries searched;
 9. whether papers were matched on printed names or Photos names;
