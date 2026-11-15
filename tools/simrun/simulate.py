@@ -30,6 +30,7 @@ class MockNAS:
     list_read: str = "completed"  # the Step 7 folder listing; failed means the user continues with the base name
     timeline_missing: list = field(default_factory=list)  # months the timeline reply leaves out
     sample_counts: dict = field(default_factory=dict)  # months the Step 2 sample call lists: photos found, 0 = listed as none
+    sample_omit: list = field(default_factory=list)  # counted months the Step 2 sample call leaves out of its reply
     sample_fail: bool = False  # the Step 2 sample call fails
     timeline_samples: bool = True  # the timeline reply came back with sample photos
     vision_batch_fail: set = field(default_factory=set)  # planned months whose batched Step 4 call fails
@@ -102,25 +103,34 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     # Steps 2 to 4
     month_counts, chosen, timeline_failed = None, [], False
+    candidate_months, no_sample_label = None, R.NO_SAMPLE_LABEL
     if scope != "one person" and user.photos_needed and len(photo_people) >= 2:
         nas.call("photo-agent", "timeline-summary")
         if nas.month_counts is None:
             timeline_failed = True
         else:
             timeline = {m: n for m, n in nas.month_counts.items() if m not in nas.timeline_missing}
-            missing = R.months_not_returned(timeline, start, end)
-            sample_sent = bool(missing) or not nas.timeline_samples
-            if sample_sent:  # Step 2: the sample call covers the months with photos and the months not returned
+            # the timeline's own samples exist only for the months it counted photos for
+            timeline_samples = [c for c in nas.samples if timeline.get(c.month, 0) > 0] if nas.timeline_samples else []
+            to_sample = R.months_to_sample(timeline, {c.month for c in timeline_samples}, start, end)
+            if to_sample:  # Step 2: the sample call, per month, for every month with no samples
                 nas.call("photo-agent", "search-picture")
-            listed = {} if nas.sample_fail else {m: n for m, n in nas.sample_counts.items() if m in missing}
-            month_counts = R.fill_returned(timeline, start, end, listed)
-            log["not_returned"] = [m for m, n in month_counts.items() if n == R.NOT_RETURNED]
+            listed, sample_photos = {}, None
+            if to_sample and not nas.sample_fail:
+                for m in to_sample:
+                    if m in nas.sample_counts:
+                        listed[m] = nas.sample_counts[m]
+                    elif timeline.get(m, 0) > 0 and m not in nas.sample_omit:
+                        listed[m] = sum(c.month == m for c in nas.samples)  # a counted month: its photos come back
+                sample_photos = [c for c in nas.samples if listed.get(c.month, 0) > 0]
+            month_counts = R.month_states(timeline, start, end, listed)  # {MONTH_STATES}
+            log["not_returned"] = R.unresolved_months(month_counts)  # {MONTHS_NOT_RETURNED} after Step 2
             log["recovered"] = {m: str(n) for m, n in month_counts.items() if isinstance(n, R.AtLeast)}
-            # the timeline's own samples exist only for the months it listed
-            timeline_samples = [c for c in nas.samples if c.month in timeline] if nas.timeline_samples else []
-            sample_result = None if nas.sample_fail else nas.samples
-            candidates = R.step2_candidates(timeline_samples, sample_result, sample_sent)
-            log["chosen_column"] = "sample search failed" if candidates is None else None
+            candidates = R.merge_candidates(timeline_samples, sample_photos)
+            candidate_months = {c.month for c in candidates}
+            sample_failed = bool(to_sample) and nas.sample_fail
+            no_sample_label = R.SAMPLE_FAILED_LABEL if sample_failed else R.NO_SAMPLE_LABEL
+            log["chosen_column"] = R.SAMPLE_FAILED_LABEL if (not candidates and sample_failed) else None
             # Step 2 offer: count the adults only, never the same people again, never fewer than two
             adults = [p for p in photo_people if p not in user.children]
             log["adults_offered"] = 0
@@ -130,9 +140,9 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                 if user.accept_adults:
                     photo_people = adults
                     nas.call("photo-agent", "timeline-summary")
-            if candidates is not None:  # Steps 3 and 4 run on whatever candidates Step 2 kept
-                with_samples = {c.month for c in candidates}
-                plan = [m for m in R.plan_months(month_counts, limit) if m in with_samples or sample_result is not None]
+            if candidates:  # Step 3 plans only months with at least one candidate
+                plan = R.plan_months(month_counts, limit, candidate_months)
+                log["plan"] = plan
                 nas.call("photo-agent", "vision-vlm")
                 batch_failed = [m for m in plan if m in nas.vision_batch_fail]
                 for _ in batch_failed:  # Step 4: a failed call's months are sent again, one month per call
@@ -182,13 +192,16 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                     and not any(p is d for d in user.drop_papers)]
     linked = [p for p in linked if not any(p is d for d in user.drop_papers)]
     rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law,
-                      address_docs=address_docs, partners=partners)
+                      address_docs=address_docs, partners=partners, candidate_months=candidate_months,
+                      no_sample_label=no_sample_label)
     same_address_docs = [p for p in address_docs
                          if any(r["papers"] == ["same address on separate papers"] and R.paper_covers(p, r["month"]) for r in rows)]
     if common_law:
         papers_only = True
     gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law,
                                          who="the couple" if couple_only else None))
+    # Step 6: unresolved months with no paper, listed under the gaps, in the check-by-hand line and the summary
+    check_by_hand = None if common_law else R.unresolved_line(rows)
 
     # Step 7: read the save location, pick a free name
     nas.call("file-agent", "ls")
@@ -252,5 +265,6 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                written=list(nas.written), chosen_dates=[c.date for c in chosen], reused=reused, reuse_note=reuse_note,
                same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people,
                pack_months=[r["month"] for r in rows if isinstance(r["pack"], int)],
-               library={r["month"]: r["library"] for r in rows})
+               library={r["month"]: r["library"] for r in rows}, pack={r["month"]: r["pack"] for r in rows},
+               check_by_hand=check_by_hand, final_summary_lists=gaps + ([check_by_hand] if check_by_hand else []))
     return log

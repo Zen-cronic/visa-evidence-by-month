@@ -66,7 +66,8 @@ def confirm_people(named_albums: list[str], people: list[str]) -> dict:
 
 # Step 2
 
-NOT_RETURNED = "not returned"
+UNRESOLVED = "unresolved"
+NOT_RETURNED = UNRESOLVED  # the state of a month neither Step 2 call answered for
 
 
 class AtLeast(int):
@@ -76,11 +77,13 @@ class AtLeast(int):
         return f"at least {int(self)} (sample search)"
 
 
-def fill_returned(timeline: dict[str, int], start: str, end: str, sample_listed: dict[str, int] | None = None) -> dict:
-    """A month in the period the timeline reply does not list is "not returned", never 0 and never a gap.
-    The sample call is sent for those months and lists every month given: a month it lists as none
-    (0) is 0 and can be a gap; a month it returns N photos for is recovered as "at least N (sample
-    search)" and planned like any month with photos; a month neither call lists stays "not returned"."""
+def month_states(timeline: dict[str, int], start: str, end: str, sample_listed: dict[str, int] | None = None) -> dict:
+    """{MONTH_STATES}: each month in the period ends Step 2 in exactly one state.
+    The timeline's count N when the timeline listed it (a counted month the sample call lists as none, leaves
+    out or fails for keeps its count and has no candidates); "at least N (sample search)" when only the sample
+    call listed it with N photos; 0 when the timeline listed 0 or only the sample call listed it, as none;
+    "unresolved" when the timeline did not list it and the sample call left it out or failed (sample_listed
+    holds only what a completed sample call listed: {} when it failed)."""
     sample_listed = sample_listed or {}
     out = {}
     for m in month_range(start, end):
@@ -90,31 +93,49 @@ def fill_returned(timeline: dict[str, int], start: str, end: str, sample_listed:
             n = sample_listed[m]
             out[m] = AtLeast(n) if n > 0 else 0
         else:
-            out[m] = NOT_RETURNED
+            out[m] = UNRESOLVED
     return out
 
 
-def step2_candidates(timeline_samples: list | None, sample_result: list | None, sample_sent: bool) -> list | None:
-    """Candidates for Steps 3 and 4. The sample call's photos when it was sent and completed; if it failed
-    (None), the timeline's own samples when it returned any; None means skip Steps 3 and 4
-    ("sample search failed")."""
-    if not sample_sent:
-        return timeline_samples
-    if sample_result is not None:
-        return sample_result
-    return timeline_samples or None
+fill_returned = month_states  # older name
+
+
+def months_to_sample(timeline: dict[str, int], timeline_sample_months: set[str], start: str, end: str) -> list[str]:
+    """{MONTHS_WITH_PHOTOS}: the sample call is sent, per month, for each month the timeline counted photos for
+    but returned no sample photo, and for each month the timeline did not list."""
+    return [m for m in month_range(start, end)
+            if m not in timeline or (timeline[m] > 0 and m not in timeline_sample_months)]
+
+
+def merge_candidates(timeline_samples: list, sample_result: list | None) -> list:
+    """{CANDIDATES}: the sample call's photos are added per month after the timeline's samples, never replacing
+    them; a failed sample call (None) adds nothing."""
+    out = list(timeline_samples or [])
+    seen = {c.path for c in out}
+    for c in sample_result or []:
+        if c.path not in seen:
+            out.append(c)
+            seen.add(c.path)
+    return out
 
 
 def months_not_returned(timeline: dict[str, int], start: str, end: str) -> list[str]:
     return [m for m in month_range(start, end) if m not in timeline]
 
 
+def unresolved_months(states: dict) -> list[str]:
+    """{MONTHS_NOT_RETURNED} after Step 2: exactly the unresolved months."""
+    return [m for m, s in states.items() if s == UNRESOLVED]
+
+
 # Step 3
 
-def plan_months(month_counts: dict[str, int], limit: int) -> list[str]:
-    """Spread up to `limit` months across the period; never plan a zero or not-returned month."""
+def plan_months(month_counts: dict[str, int], limit: int, candidate_months: set[str] | None = None) -> list[str]:
+    """Spread up to `limit` months across the period; never plan a zero or unresolved month, and, when
+    candidate_months is given, never a month without at least one candidate."""
     month_counts = {m: n for m, n in month_counts.items() if isinstance(n, int)}
-    with_photos = sorted(m for m, n in month_counts.items() if n > 0)
+    with_photos = sorted(m for m, n in month_counts.items()
+                         if n > 0 and (candidate_months is None or m in candidate_months))
     if len(with_photos) <= limit:
         return with_photos
     order = sorted(month_counts)
@@ -366,11 +387,14 @@ def paper_covers(paper: Paper, month: str) -> bool:
 
 
 NOT_PLANNED_LABEL = "not checked (photo limit)"
+NO_SAMPLE_LABEL = "no sample returned"
+SAMPLE_FAILED_LABEL = "sample search failed"
 
 
 def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: list[Checked], linked: list[Paper],
              common_law: bool = False, address_docs: list[Paper] | None = None, partners: list[str] | None = None,
-             planned: list[str] | None = None) -> list[dict]:
+             planned: list[str] | None = None, candidate_months: set[str] | None = None,
+             no_sample_label: str = NO_SAMPLE_LABEL) -> list[dict]:
     """month_counts is None for one person or when the photo search failed: gaps then use papers only.
     For any couple or family (partners given), separate papers, one naming each partner, showing the same address
     fill a month no single paper covers. For married and other couples photos still count; for common-law couples
@@ -396,10 +420,18 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
         if count == NOT_RETURNED:  # never 0 and never a gap
             rows.append({"month": month, "library": NOT_RETURNED, "pack": numbers.get(month), "papers": papers, "gap": False})
             continue
+        if numbers.get(month):
+            pack = numbers[month]
+        elif candidate_months is not None and count and month not in candidate_months:
+            pack = no_sample_label  # photos counted, but no sample to check
+        elif planned is not None and count and month not in planned:
+            pack = NOT_PLANNED_LABEL
+        else:
+            pack = None
         rows.append({
             "month": month,
             "library": count,
-            "pack": numbers.get(month) or (NOT_PLANNED_LABEL if planned is not None and count and month not in planned else None),
+            "pack": pack,
             "papers": papers,
             "gap": (count in (None, 0)) and not papers,
         })
@@ -432,6 +464,19 @@ def gap_label(papers_only: bool = False, search_failed: bool = False, who: str |
 
 def gap_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
     return [f"{label}: {a} to {b}" if a != b else f"{label}: {a}" for a, b in group_gaps(rows)]
+
+
+UNRESOLVED_LABEL = "photos not returned and no linking paper"
+
+
+def unresolved_line(rows: list[dict]) -> str | None:
+    """Step 6: unresolved months with no linking paper and no same-address pair are never gaps; they are listed
+    under the gap list (consecutive months grouped as for gaps), in the check-by-hand line and in the summary."""
+    flagged = [{"month": r["month"], "gap": r["library"] == UNRESOLVED and not r["papers"]} for r in rows]
+    runs = group_gaps(flagged)
+    if not runs:
+        return None
+    return f"{UNRESOLVED_LABEL}: " + ", ".join(f"{a} to {b}" if a != b else a for a, b in runs) + "; check by hand"
 
 
 # Step 7

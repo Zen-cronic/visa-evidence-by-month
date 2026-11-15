@@ -360,6 +360,56 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["chosen"], 0)
         self.assertEqual(log["writes_before_approval"], [])
 
+    def test_n2d_sample_call_settles_months_the_timeline_left_out(self):
+        # (b) the timeline leaves out two empty months (March, April) and one with photos (May);
+        # the sample call lists the two as none and returns photos for May
+        counts = months("2026-01", "2026-06", skip={"2026-03", "2026-04"})
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],
+                      timeline_missing=["2026-03", "2026-04", "2026-05"],
+                      sample_counts={"2026-03": 0, "2026-04": 0, "2026-05": 2})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User())
+        self.assertEqual(nas.calls.count(("photo-agent", "search-picture")), 2)  # the sample call, then 5b
+        self.assertEqual(log["not_returned"], [])  # every month the sample call answered left the list
+        self.assertEqual((log["library"]["2026-03"], log["library"]["2026-04"]), (0, 0))
+        self.assertEqual(log["recovered"], {"2026-05": "at least 2 (sample search)"})
+        self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-03 to 2026-04"])
+        self.assertEqual(log["pack_months"], ["2026-01", "2026-02", "2026-05", "2026-06"])
+        self.assertIsNone(log["check_by_hand"])
+        self.assertEqual(log["writes_before_approval"], [])
+
+    def test_n2e_failed_sample_call_leaves_the_left_out_months_unresolved(self):
+        # (c) as (b), but the sample call fails: the three months are unresolved, never 0 and never gaps
+        counts = months("2026-01", "2026-06", skip={"2026-03", "2026-04"})
+        lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-05", "2026-05")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease],
+                      timeline_missing=["2026-03", "2026-04", "2026-05"], sample_fail=True)
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User())
+        self.assertEqual(log["not_returned"], ["2026-03", "2026-04", "2026-05"])
+        self.assertTrue(all(log["library"][m] == R.UNRESOLVED for m in log["not_returned"]))
+        self.assertEqual(log["gaps"], [])
+        self.assertEqual(log["pack_months"], ["2026-01", "2026-02", "2026-06"])  # the timeline's samples still checked
+        # May has the lease; March and April have no paper and are listed to check by hand
+        line = "photos not returned and no linking paper: 2026-03 to 2026-04; check by hand"
+        self.assertEqual(log["check_by_hand"], line)
+        self.assertIn(line, log["final_summary_lists"])
+
+    def test_n2f_counted_month_without_a_sample_is_never_planned(self):
+        # (d) the timeline counts every month but returns no samples; the sample call is sent for each counted
+        # month, leaves out March and lists April as none: both keep their counts and have no candidates
+        counts = months("2026-01", "2026-05")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [], timeline_samples=False,
+                      sample_omit=["2026-03"], sample_counts={"2026-04": 0})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-05", nas, User())
+        self.assertEqual(log["library"]["2026-03"], 2)
+        self.assertEqual(log["library"]["2026-04"], 2)
+        self.assertEqual(log["not_returned"], [])
+        self.assertEqual(log["plan"], ["2026-01", "2026-02", "2026-05"])  # no plan slot spent on them
+        self.assertEqual(log["pack"]["2026-03"], R.NO_SAMPLE_LABEL)
+        self.assertEqual(log["pack"]["2026-04"], R.NO_SAMPLE_LABEL)
+        self.assertEqual(log["none_fit"], [])  # never "0 samples checked, none fit to send"
+        self.assertEqual(log["gaps"], [])
+        self.assertEqual(log["chosen"], 3)
+
     def test_n3_failed_step4_call_is_resent_one_month_per_call(self):
         counts = months("2026-01", "2026-06")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],

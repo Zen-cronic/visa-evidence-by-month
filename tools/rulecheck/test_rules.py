@@ -12,7 +12,8 @@ from pathlib import Path
 from rules import (
     FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, carry_over, closers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
-    NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check, AtLeast, step2_candidates,
+    NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check, AtLeast, merge_candidates,
+    UNRESOLVED, month_states, months_to_sample, unresolved_line, unresolved_months, NO_SAMPLE_LABEL,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -149,10 +150,45 @@ class StepTwoAndFourFailures(unittest.TestCase):
     def test_failed_sample_call_keeps_the_timeline_samples(self):
         timeline = [Checked("a.jpg", "2025-01", "2025-01-02", None)]
         fresh = [Checked("b.jpg", "2025-01", "2025-01-09", None)]
-        self.assertEqual(step2_candidates(timeline, fresh, True), fresh)
-        self.assertEqual(step2_candidates(timeline, None, True), timeline)  # failed: keep the timeline's own
-        self.assertIsNone(step2_candidates([], None, True))  # failed and none returned: skip Steps 3 and 4
-        self.assertEqual(step2_candidates(timeline, None, False), timeline)  # not sent
+        self.assertEqual(merge_candidates(timeline, fresh), timeline + fresh)  # merged, timeline first, never replaced
+        self.assertEqual(merge_candidates(timeline, None), timeline)  # failed: keep the timeline's own
+        self.assertEqual(merge_candidates([], None), [])  # failed and none returned: no month can be planned
+        self.assertEqual(merge_candidates(timeline, timeline), timeline)  # the same photo is not added twice
+
+    def test_each_month_ends_step2_in_exactly_one_state(self):
+        timeline = {"2025-01": 4, "2025-02": 0, "2025-03": 2}  # April to July not listed
+        listed = {"2025-03": 0, "2025-04": 0, "2025-05": 2}  # March listed as none keeps its count; June left out
+        states = month_states(timeline, "2025-01", "2025-07", listed)
+        self.assertEqual(states, {"2025-01": 4, "2025-02": 0, "2025-03": 2, "2025-04": 0, "2025-05": 2,
+                                  "2025-06": UNRESOLVED, "2025-07": UNRESOLVED})
+        self.assertEqual(str(states["2025-05"]), "at least 2 (sample search)")
+        self.assertEqual(unresolved_months(states), ["2025-06", "2025-07"])  # answered months left the list
+        failed = month_states(timeline, "2025-01", "2025-07", {})  # the sample call failed
+        self.assertEqual(failed["2025-03"], 2)  # a counted month keeps its count
+        self.assertEqual(unresolved_months(failed), ["2025-04", "2025-05", "2025-06", "2025-07"])
+
+    def test_sample_call_is_sent_per_month_for_months_without_samples(self):
+        timeline = {"2025-01": 4, "2025-02": 0, "2025-03": 2}
+        # January came with samples; March was counted without any; April is not listed
+        self.assertEqual(months_to_sample(timeline, {"2025-01"}, "2025-01", "2025-04"), ["2025-03", "2025-04"])
+        self.assertEqual(months_to_sample(timeline, {"2025-01", "2025-03"}, "2025-01", "2025-03"), [])
+
+    def test_only_months_with_a_candidate_are_planned(self):
+        states = {"2025-01": 4, "2025-02": 3, "2025-03": AtLeast(1), "2025-04": UNRESOLVED}
+        self.assertEqual(plan_months(states, 20, candidate_months={"2025-01", "2025-03"}), ["2025-01", "2025-03"])
+        rows = coverage("2025-01", "2025-04", states, [], [], candidate_months={"2025-01", "2025-03"})
+        self.assertEqual(rows[1]["pack"], NO_SAMPLE_LABEL)  # counted, no sample: not "0 checked, none fit"
+        self.assertFalse(rows[1]["gap"])
+        self.assertEqual(unresolved_line(rows), "photos not returned and no linking paper: 2025-04; check by hand")
+
+    def test_unresolved_months_without_paper_are_listed_to_check_by_hand(self):
+        states = {"2025-01": 2, "2025-02": UNRESOLVED, "2025-03": UNRESOLVED, "2025-04": 0, "2025-05": UNRESOLVED}
+        lease = Paper("lease", COUPLE, "scanned document", "2025-03", "2025-03")
+        rows = coverage("2025-01", "2025-05", states, [], [lease])
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-04"])  # never a gap
+        # March is covered by a paper, so only February and May are listed
+        self.assertEqual(unresolved_line(rows), "photos not returned and no linking paper: 2025-02, 2025-05; check by hand")
+        self.assertIsNone(unresolved_line(coverage("2025-01", "2025-01", states, [], [])))
 
     def test_failed_step4_call_is_photo_check_failed_not_none_fit(self):
         plan = ["2025-01", "2025-02"]
