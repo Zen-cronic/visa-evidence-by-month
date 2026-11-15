@@ -12,6 +12,7 @@ from pathlib import Path
 from rules import (
     FORBIDDEN_GAP_WORDS, GAP_LABEL, PAPER_GAP_LABEL, Checked, apply_answers, carry_over, closers, gap_label, name_matches, save_summary, Paper, choose_photos, confirm_people,
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
+    NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -116,6 +117,35 @@ class EdgeNoPadding(unittest.TestCase):
         self.assertEqual(choice.failures[1], 1)
         self.assertTrue(all(c.failed_rule is None for c in choice.chosen))
 
+
+
+class StepTwoAndFourFailures(unittest.TestCase):
+    """A month the timeline does not list is "not returned", a failed Step 4 call is not a failed rule,
+    and a photo whose named people miss someone fails rule 1."""
+
+    def test_month_not_returned_is_never_zero_or_a_gap(self):
+        counts = fill_returned({"2025-01": 2, "2025-03": 0}, "2025-01", "2025-04", {"2025-04": 1})
+        self.assertEqual(counts, {"2025-01": 2, "2025-02": NOT_RETURNED, "2025-03": 0, "2025-04": 1})
+        self.assertEqual(plan_months(counts, 20), ["2025-01", "2025-04"])
+        rows = coverage("2025-01", "2025-04", counts, [], [])
+        self.assertEqual(rows[1]["library"], NOT_RETURNED)
+        self.assertEqual(gap_lines(rows), [f"{GAP_LABEL}: 2025-03"])
+
+    def test_failed_step4_call_is_photo_check_failed_not_none_fit(self):
+        plan = ["2025-01", "2025-02"]
+        checked = passing("2025-01", 3) + [failing("2025-02", 5)]
+        choice = choose_photos(checked, plan, 20, failed_months=["2025-02"])
+        self.assertEqual(choice.check_failed, ["2025-02"])
+        self.assertEqual(choice.none_fit, [])
+        self.assertEqual(choice.failures[5], 0)
+        self.assertEqual(PHOTO_CHECK_FAILED, "photo check failed")
+
+    def test_named_people_missing_someone_fails_rule_1(self):
+        c = [Checked("a.jpg", "2025-01", "2025-01-02", None, people=["Ana Lima"]),
+             Checked("b.jpg", "2025-01", "2025-01-03", None, people=COUPLE + ["Kim"]),
+             Checked("c.jpg", "2025-01", "2025-01-04", None)]
+        out = people_check(c, COUPLE)
+        self.assertEqual([x.failed_rule for x in out], [1, None, None])
 
 
 class EdgeFaceGroupingMiss(unittest.TestCase):

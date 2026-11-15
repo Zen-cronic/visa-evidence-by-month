@@ -316,6 +316,43 @@ class Scenarios(unittest.TestCase):
         self.assertIn("2026-02-14", log["chosen_dates"])
         self.assertEqual(log["pack_months"], ["2026-02", "2026-03"])
 
+    def test_n2_month_missing_from_the_timeline_is_not_returned_never_a_gap(self):
+        counts = months("2026-01", "2026-06")
+        # March and May are left out of the timeline reply; the sample call finds May's photos, not March's
+        nas = MockNAS(COUPLE_PHOTOS, counts, [c for c in samples(counts) if c.month != "2026-03"], [],
+                      timeline_missing=["2026-03", "2026-05"], sample_counts={"2026-05": 2})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User())
+        self.assertIsNone(log["stopped"])
+        self.assertIn(("photo-agent", "search-picture"), nas.calls[:nas.calls.index(("photo-agent", "vision-vlm"))])
+        self.assertEqual(log["not_returned"], ["2026-03"])
+        self.assertEqual(log["library"]["2026-03"], R.NOT_RETURNED)
+        self.assertEqual(log["gaps"], [])  # no paper at all, yet March is not a gap
+        self.assertIn("2026-05", log["pack_months"])
+        self.assertEqual(log["chosen"], 5)
+
+    def test_n3_failed_step4_call_is_resent_one_month_per_call(self):
+        counts = months("2026-01", "2026-06")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [],
+                      vision_batch_fail={"2026-02", "2026-03", "2026-04"}, vision_retry_fail={"2026-03"})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-06", nas, User())
+        self.assertEqual(nas.calls.count(("photo-agent", "vision-vlm")), 1 + 3)  # one batch, then one call per month
+        self.assertEqual(log["photo_check_failed"], ["2026-03"])
+        self.assertEqual(log["none_fit"], [])  # a failed call is not a failed rule
+        self.assertEqual(sum(log["failures"].values()), 0)
+        self.assertNotIn("2026-03", log["pack_months"])
+        self.assertEqual(log["chosen"], 5)
+
+    def test_n4_photo_whose_named_people_miss_a_partner_fails_rule_1(self):
+        counts = months("2026-01", "2026-02")
+        wrong = R.Checked("2026-01-a.jpg", "2026-01", "2026-01-05", None, people=["Mei Tan"])
+        right = R.Checked("2026-01-b.jpg", "2026-01", "2026-01-09", None, people=COUPLE_PHOTOS + ["Sam Lee"])
+        feb = R.Checked("2026-02-a.jpg", "2026-02", "2026-02-03", None, people=["Daniel Reyes", "Sam Lee"])
+        nas = MockNAS(COUPLE_PHOTOS, counts, [wrong, right, feb], [])
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-02", nas, User())
+        self.assertEqual(log["chosen_dates"], ["2026-01-09"])
+        self.assertEqual(log["failures"][1], 2)
+        self.assertEqual(log["none_fit"], ["2026-02"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

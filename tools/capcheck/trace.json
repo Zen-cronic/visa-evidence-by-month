@@ -42,7 +42,17 @@
    "actions": [
     "meta",
     "vision-vlm"
-   ]
+   ],
+   "params": {
+    "meta": [
+     "path",
+     "raw"
+    ],
+    "vision-vlm": [
+     "path",
+     "prompt"
+    ]
+   }
   },
   {
    "step": "5a",

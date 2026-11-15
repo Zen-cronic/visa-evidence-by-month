@@ -28,6 +28,10 @@ class MockNAS:
     earlier_index: dict | None = None  # (date, file name) -> (line, status); None = no earlier pack
     earlier_read: str = "completed"  # completed / failed / cancelled
     list_read: str = "completed"  # the Step 7 folder listing; failed means the user continues with the base name
+    timeline_missing: list = field(default_factory=list)  # months the timeline reply leaves out
+    sample_counts: dict = field(default_factory=dict)  # months the Step 2 sample call returns photos for
+    vision_batch_fail: set = field(default_factory=set)  # planned months whose batched Step 4 call fails
+    vision_retry_fail: set = field(default_factory=set)  # of those, months whose one-month retry also fails
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
     written: list[str] = field(default_factory=list)
 
@@ -101,7 +105,12 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         if nas.month_counts is None:
             timeline_failed = True
         else:
-            month_counts = nas.month_counts
+            timeline = {m: n for m, n in nas.month_counts.items() if m not in nas.timeline_missing}
+            missing = R.months_not_returned(timeline, start, end)
+            if missing:  # Step 2: the sample call covers the months not returned
+                nas.call("photo-agent", "search-picture")
+            month_counts = R.fill_returned(timeline, start, end, {m: n for m, n in nas.sample_counts.items() if m in missing})
+            log["not_returned"] = [m for m, n in month_counts.items() if n == R.NOT_RETURNED]
             # Step 2 offer: count the adults only, never the same people again, never fewer than two
             adults = [p for p in photo_people if p not in user.children]
             log["adults_offered"] = 0
@@ -113,7 +122,16 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                     nas.call("photo-agent", "timeline-summary")
             plan = R.plan_months(month_counts, limit)
             nas.call("photo-agent", "vision-vlm")
-            chosen = R.choose_photos(nas.samples, plan, limit).chosen
+            batch_failed = [m for m in plan if m in nas.vision_batch_fail]
+            for _ in batch_failed:  # Step 4: a failed call's months are sent again, one month per call
+                nas.call("photo-agent", "vision-vlm")
+            still_failed = [m for m in batch_failed if m in nas.vision_retry_fail]
+            checked = R.people_check(nas.samples, photo_people)
+            choice = R.choose_photos(checked, plan, limit, failed_months=still_failed)
+            chosen = choice.chosen
+            log["photo_check_failed"] = choice.check_failed
+            log["none_fit"] = choice.none_fit
+            log["failures"] = choice.failures
 
     # Step 5
     nas.call("document-agent", "extract")
@@ -221,5 +239,6 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
                written=list(nas.written), chosen_dates=[c.date for c in chosen], reused=reused, reuse_note=reuse_note,
                same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people,
-               pack_months=[r["month"] for r in rows if isinstance(r["pack"], int)])
+               pack_months=[r["month"] for r in rows if isinstance(r["pack"], int)],
+               library={r["month"]: r["library"] for r in rows})
     return log

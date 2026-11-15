@@ -64,10 +64,36 @@ def confirm_people(named_albums: list[str], people: list[str]) -> dict:
     return {"status": "completed", "missing": []}
 
 
+# Step 2
+
+NOT_RETURNED = "not returned"
+
+
+def fill_returned(timeline: dict[str, int], start: str, end: str, sample_counts: dict[str, int] | None = None) -> dict:
+    """A month in the period the timeline reply does not list is "not returned", never 0 and never a gap.
+    The sample call is sent for those months: a month it returns photos for counts them; one still
+    missing stays "not returned"."""
+    sample_counts = sample_counts or {}
+    out = {}
+    for m in month_range(start, end):
+        if m in timeline:
+            out[m] = timeline[m]
+        elif m in sample_counts:
+            out[m] = sample_counts[m]
+        else:
+            out[m] = NOT_RETURNED
+    return out
+
+
+def months_not_returned(timeline: dict[str, int], start: str, end: str) -> list[str]:
+    return [m for m in month_range(start, end) if m not in timeline]
+
+
 # Step 3
 
 def plan_months(month_counts: dict[str, int], limit: int) -> list[str]:
-    """Spread up to `limit` months across the period; never plan a zero month."""
+    """Spread up to `limit` months across the period; never plan a zero or not-returned month."""
+    month_counts = {m: n for m, n in month_counts.items() if isinstance(n, int)}
     with_photos = sorted(m for m, n in month_counts.items() if n > 0)
     if len(with_photos) <= limit:
         return with_photos
@@ -102,12 +128,25 @@ class Checked:
     date: str  # YYYY-MM-DD
     failed_rule: int | None  # None means passed
     kind: str = "photo"  # what the vision check says it is: photo, print, screenshot, ...
+    people: list[str] | None = None  # the named people face grouping found in the photo; None if not returned
+
+
+def people_check(checked: list[Checked], photo_people: list[str]) -> list[Checked]:
+    """Step 4: a photo whose named people from face grouping do not include everyone in {PHOTO_PEOPLE}
+    is dropped as failing rule 1."""
+    out = []
+    for c in checked:
+        if c.failed_rule is None and c.people is not None and not set(photo_people) <= set(c.people):
+            c = Checked(c.path, c.month, c.date, 1, c.kind, c.people)
+        out.append(c)
+    return out
 
 
 @dataclass
 class Choice:
     chosen: list[Checked] = field(default_factory=list)
     none_fit: list[str] = field(default_factory=list)
+    check_failed: list[str] = field(default_factory=list)  # planned months whose Step 4 call failed
     failures: dict[int, int] = field(default_factory=lambda: {r: 0 for r in RULES})
 
 
@@ -123,13 +162,22 @@ def rule3(kind: str) -> tuple[bool, str | None]:
     return True, ("print" if kind == "print" else None)
 
 
-def choose_photos(checked: list[Checked], plan: list[str], limit: int) -> Choice:
-    """First passing photo per planned month, one per month, never padded."""
+PHOTO_CHECK_FAILED = "photo check failed"
+
+
+def choose_photos(checked: list[Checked], plan: list[str], limit: int, failed_months: list[str] | None = None) -> Choice:
+    """First passing photo per planned month, one per month, never padded. A planned month whose
+    Step 4 call failed (after the one-month retry) is "photo check failed", not "none fit to send"."""
     result = Choice()
+    failed_months = set(failed_months or [])
+    checked = [c for c in checked if c.month not in failed_months]
     for c in checked:
         if c.failed_rule is not None:
             result.failures[c.failed_rule] += 1
     for month in plan:
+        if month in failed_months:
+            result.check_failed.append(month)
+            continue
         pick = next((c for c in checked if c.month == month and c.failed_rule is None), None)
         if pick is None:
             if any(c.month == month for c in checked):
@@ -325,6 +373,9 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
             if shared:
                 papers = ["same address on separate papers"]
         count = None if month_counts is None else month_counts.get(month, 0)
+        if count == NOT_RETURNED:  # never 0 and never a gap
+            rows.append({"month": month, "library": NOT_RETURNED, "pack": numbers.get(month), "papers": papers, "gap": False})
+            continue
         rows.append({
             "month": month,
             "library": count,
