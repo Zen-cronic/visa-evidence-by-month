@@ -57,6 +57,7 @@ class User:
     drop_papers: list = field(default_factory=list)  # papers the user drops in Step 7
     children: list = field(default_factory=list)  # Photos names of children, if given
     accept_adults: bool = True  # agrees to count the adults' photos when offered
+    print_dates: dict = field(default_factory=dict)  # path -> real date the user gave for a photographed print
     unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
     photo_scope: str = "everyone"  # for a family: "the couple" or "everyone" (the Skill asks; no default there)
 
@@ -125,8 +126,13 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                                  people=printed, mismatches=mismatches)
 
     # Step 7 answers folded in: listed photos left unanswered are removed before Step 6 is redone
-    waiting = [c.path for c in chosen if c.path in user.unanswered_photos]
-    chosen = [c for c in chosen if c.path not in user.unanswered_photos]
+    # a photographed print is listed for its real date: given -> re-dated and kept; not given -> held out
+    for c in chosen:
+        if c.kind == "print" and c.path in user.print_dates:
+            c.date = user.print_dates[c.path]
+    held = set(user.unanswered_photos) | {c.path for c in chosen if c.kind == "print" and c.path not in user.print_dates}
+    waiting = [c.path for c in chosen if c.path in held]
+    chosen = [c for c in chosen if c.path not in held]
 
     # Step 6 (redone after Step 7's answers, here folded in)
     photo_steps_skipped = scope == "one person" or not user.photos_needed or len(photo_people) < 2
@@ -205,6 +211,6 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
 
     log.update(scope=scope, chosen=len(chosen), linked=len(linked), mismatches=mismatches, gaps=gaps,
                folder_name=name, summary=summary, writes_before_approval=writes_before_approval,
-               written=list(nas.written), reused=reused, reuse_note=reuse_note,
+               written=list(nas.written), chosen_dates=[c.date for c in chosen], reused=reused, reuse_note=reuse_note,
                same_address_docs=len(same_address_docs), waiting_for_answer=waiting, photo_people=photo_people)
     return log

@@ -289,6 +289,20 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["same_address_docs"], 6)  # Jan, Feb and Jun pairs; March's lone bill is not copied
         self.assertEqual(log["writes_before_approval"], [])
 
+    def test_p2_photographed_print_needs_its_real_date(self):
+        counts = months("2026-01", "2026-02")
+        smp = samples(counts)
+        smp[0].kind = "print"  # January's chosen photo is a photo of an old print
+        papers = [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-02")]
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-02", MockNAS(COUPLE_PHOTOS, counts, smp, papers), User())
+        self.assertEqual(log["waiting_for_answer"], [smp[0].path])  # held out until dated
+        self.assertEqual(log["chosen"], 1)
+        smp = samples(counts); smp[0].kind = "print"
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-01", "2026-02", MockNAS(COUPLE_PHOTOS, counts, smp, papers),
+                  User(print_dates={smp[0].path: "2015-08-01"}))
+        self.assertEqual(log["chosen"], 2)
+        self.assertIn("2015-08-01", log["chosen_dates"])
+
     def test_f_unsure_about_consent_stops_before_reading(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(consent="unsure"))

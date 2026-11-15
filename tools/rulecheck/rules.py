@@ -101,6 +101,7 @@ class Checked:
     month: str
     date: str  # YYYY-MM-DD
     failed_rule: int | None  # None means passed
+    kind: str = "photo"  # what the vision check says it is: photo, print, screenshot, ...
 
 
 @dataclass
