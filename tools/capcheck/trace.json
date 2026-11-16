@@ -87,6 +87,37 @@
    }
   },
   {
+   "step": "6a",
+   "agent": "file-agent",
+   "cli": "ug-filesystem",
+   "actions": [
+    "ls"
+   ],
+   "params": {
+    "ls": [
+     "path",
+     "recursive"
+    ]
+   }
+  },
+  {
+   "step": "6a",
+   "agent": "document-agent",
+   "cli": "ug-document",
+   "actions": [
+    "extract",
+    "reconcile"
+   ],
+   "params": {
+    "extract": [
+     "file"
+    ],
+    "reconcile": [
+     "file"
+    ]
+   }
+  },
+  {
    "step": "7",
    "agent": "file-agent",
    "cli": "ug-filesystem",

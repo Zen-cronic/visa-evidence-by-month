@@ -557,6 +557,7 @@ def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | N
         return f"{y - 1:04d}-12" if mo == 1 else f"{y:04d}-{mo - 1:02d}"
 
     for a, b in group_gaps(rows):
+        span = a if a == b else f"{a} to {b}"  # a one-month gap is written as that month alone
         ia, ib = months.index(a), months.index(b)
         before = prev(a)
         after = months[ib + 1] if ib + 1 < len(months) else None
@@ -566,7 +567,7 @@ def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | N
             while m in ms:
                 run, m = run + 1, prev(m)
             if run >= 3:
-                lines.append(f"{kind}s came every month until {before}; {kind}s for {a} to {b} would add evidence for these months, if you have them")
+                lines.append(f"{kind}s came every month until {before}; {kind}s for {span} would add evidence for these months, if you have them")
         if partners and len(partners) == 2 and address_docs:
             lines.extend(_address_series(address_docs, partners, labels or {}, before, a, b, prev))
         for p in linked:
@@ -599,6 +600,7 @@ def _address_series(address_docs: list[Paper], partners: list[str], labels: dict
         return n
 
     first, second = partners
+    span = a if a == b else f"{a} to {b}"
     name = {g: labels.get(g, g) for g in partners}
     lines, paired = [], set()
     for (pa, ka), ma in sorted(by.items()):
@@ -607,13 +609,13 @@ def _address_series(address_docs: list[Paper], partners: list[str], labels: dict
         for (pb, kb), mb in sorted(by.items()):
             if pb == second and run(ma, mb) >= 3:
                 both = f"{ka}s ({name[first]}) and {kb}s ({name[second]})"
-                lines.append(f"{both} came every month until {before}; {both} for {a} to {b} would add evidence for these months, if you have them")
+                lines.append(f"{both} came every month until {before}; {both} for {span} would add evidence for these months, if you have them")
                 paired |= {(pa, ka), (pb, kb)}
     for (who, kind), months in sorted(by.items(), key=lambda kv: (partners.index(kv[0][0]), kv[0][1])):
         if (who, kind) not in paired and run(months) >= 3:
             other = second if who == first else first
             lines.append(f"{kind}s in {name[who]}'s name came every month until {before}; a paper in {name[other]}'s name "
-                         f"at the same address for {a} to {b} would add evidence, if you have one")
+                         f"at the same address for {span} would add evidence, if you have one")
     return lines
 
 
@@ -623,3 +625,35 @@ def carry_over(earlier_lines: dict[tuple[str, str], tuple[str, str]], chosen: li
     return {key: f"{line} (from your earlier pack) [confirm]"
             for key, (line, status) in earlier_lines.items()
             if key in chosen and status in ("confirmed", "edited")}
+
+
+# Step 6a: papers the user adds for the gap months (optional, once)
+
+ADDED_LABEL = "you added"
+STILL_OPEN = "Still open: check by hand."
+
+
+def offer_added_papers(rows: list[dict], rounds_done: int) -> bool:
+    """Step 6a is offered only when the gap list is not empty, and at most once in a run (never again when
+    Step 7 redoes Step 6)."""
+    return rounds_done == 0 and any(r["gap"] for r in rows)
+
+
+def recheck_gaps(rows: list[dict], new_rows: list[dict], added: list[Paper]) -> list[dict]:
+    """Step 6a: `new_rows` is Step 6 redone with the added papers joined by the 5c rules. Only gap months may
+    change: a gap month an added paper now covers shows "covered by <type> you added" and is no longer a gap;
+    a gap month still empty stays a gap. Every other month keeps its row as it was."""
+    new = {r["month"]: r for r in new_rows}
+    out = []
+    for r in rows:
+        n = new[r["month"]]
+        if r["gap"] and not n["gap"]:
+            kinds = list(dict.fromkeys(p.kind for p in added if paper_covers(p, r["month"])))
+            r = dict(r, papers=[f"covered by {' and '.join(kinds)} {ADDED_LABEL}"], gap=False)
+        out.append(r)
+    return out
+
+
+def still_open_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
+    """Step 6a: each gap line still open after the added papers ends with "Still open: check by hand."."""
+    return [f"{line}. {STILL_OPEN}" for line in gap_lines(rows, label)]

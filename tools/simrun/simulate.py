@@ -36,6 +36,7 @@ class MockNAS:
     timeline_no_results: bool = False  # the timeline reply is "no results" for the whole period
     vision_batch_fail: set = field(default_factory=set)  # planned months whose batched Step 4 call fails
     vision_retry_fail: set = field(default_factory=set)  # of those, months whose one-month retry also fails
+    added_papers: list = field(default_factory=list)  # what the user put in the Add here folder (Step 6a)
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
     written: list[str] = field(default_factory=list)
 
@@ -68,6 +69,7 @@ class User:
     print_dates: dict = field(default_factory=dict)  # path -> real date the user gave for a photographed print
     unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
     photo_scope: str = "everyone"  # for a family: "the couple" or "everyone" (the Skill asks; no default there)
+    add_papers: str = "skip"  # Step 6a answer: "skip", or "done" after putting papers in the Add here folder
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -196,15 +198,48 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     address_docs = [p for p in nas.papers if scope != "one person" and p.address and len(R.named_in(p, partners)) == 1
                     and not any(p is d for d in user.drop_papers)]
     linked = [p for p in linked if not any(p is d for d in user.drop_papers)]
-    rows = R.coverage(start, end, None if papers_only else month_counts, chosen, linked, common_law=common_law,
-                      address_docs=address_docs, partners=partners, candidate_months=candidate_months,
-                      no_sample_label=no_sample_label)
+    def step6(linked_docs, address_list):
+        return R.coverage(start, end, None if papers_only else month_counts, chosen, linked_docs, common_law=common_law,
+                          address_docs=address_list, partners=partners, candidate_months=candidate_months,
+                          no_sample_label=no_sample_label)
+    rows = step6(linked, address_docs)
+    # Step 6a: offered once, only with a gap; skip changes nothing; done reads only the added papers, by the 5c
+    # rules, and re-checks only the gap months
+    log["add_offered"], log["added_linked"], log["covered_by_added"], rechecked = 0, 0, [], False
+    added_pair_months = set()
+    if R.offer_added_papers(rows, 0):
+        log["add_offered"] += 1
+        if user.add_papers == "done":
+            nas.call("file-agent", "ls")
+            added = list(nas.added_papers)
+            if added:
+                nas.call("document-agent", "extract")
+                joined2 = R.join_papers(nas.papers + added, printed)
+                added_linked = [p for p in joined2["linked"] if any(p is a for a in added)]
+                # 5c compared again over all the papers; spelling differences already confirmed are kept
+                mismatches = list(joined2["mismatches"]) + [m for m in mismatches if m[0] == "name spelling"]
+                if user.confirm_matches:  # Step 7 answers folded in, as for the Step 5 papers
+                    possible = [p for p in joined2["possible_matches"] if any(p is a for a in added)]
+                    added_linked = R.apply_answers(added_linked, possible, possible, [], people=printed, mismatches=mismatches)
+                added_address = [p for p in added if scope != "one person" and p.address
+                                 and len(R.named_in(p, partners)) == 1]
+                linked = linked + [p for p in added_linked if not any(p is q for q in linked)]
+                address_docs = address_docs + added_address
+                new_rows = step6(linked, address_docs)
+                added_pair_months = {n["month"] for o, n in zip(rows, new_rows)
+                                     if o["gap"] and n["papers"] == ["same address on separate papers"]}
+                rows = R.recheck_gaps(rows, new_rows, added_linked + added_address)
+                rechecked = True
+                log["added_linked"] = len(added_linked)
+                log["covered_by_added"] = [r["month"] for r in rows if any(R.ADDED_LABEL in x for x in r["papers"])]
     same_address_docs = [p for p in address_docs
-                         if any(r["papers"] == ["same address on separate papers"] and R.paper_covers(p, r["month"]) for r in rows)]
+                         if any((r["papers"] == ["same address on separate papers"] or r["month"] in added_pair_months)
+                                and R.paper_covers(p, r["month"]) for r in rows)]
     if common_law:
         papers_only = True
-    gaps = R.gap_lines(rows, R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law,
-                                         who="the couple" if couple_only else None))
+    label = R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law,
+                        who="the couple" if couple_only else None)
+    gaps = (R.still_open_lines if rechecked else R.gap_lines)(rows, label)
     # Step 6: unresolved months with no paper, listed under the gaps, in the check-by-hand line and the summary
     check_by_hand = None if common_law else R.unresolved_line(rows)
 

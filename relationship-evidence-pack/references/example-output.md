@@ -192,6 +192,26 @@ Single-name papers that filled no month (listed, not copied): phone bill (Rizal)
 
 If neither photo call answers for a month (the timeline leaves it out and the sample search leaves it out or fails), its row shows "unresolved" in the library column and "—" in the pack column. It is never 0 and never a gap (not for common-law, where photos never decide a month and a month with no paper showing you both at the same address is a gap). If no linking paper or same-address pair covers it (not for common-law), one line goes under the gap list, before the "Gaps are for your own checking" note: "Photos not returned and no linking paper: <month>; check by hand." The final summary lists the same months to check by hand.
 
+## A fifth example: papers added for the gap months
+
+The family in the first example, at Step 6a. After the gap list, the Skill asked once: "If you have papers for these months, add them to a folder named `Add here` inside /Family/Visa (or tell me another folder), then say done. Or say skip." Linh found four electricity bills, February to May 2026, put them in `/Family/Visa/Add here` and said done. The Skill listed only that folder, read the four bills with the same checks as the other papers, and re-checked only February to May 2026. The February to April bills name Tran Thi Linh and Tran Van Minh; the May bill prints "Tran Thi Lin", so it is a possible match and not linked yet.
+
+| Month | Photos of all four in the library | In the pack | Linking paper |
+|---|---|---|---|
+| 2026-01 | 1 | 1 sample checked, none fit to send | electricity bill |
+| 2026-02 | 0 | — | covered by electricity bill you added |
+| 2026-03 | 0 | — | covered by electricity bill you added |
+| 2026-04 | 0 | — | covered by electricity bill you added |
+| **2026-05** | **0** | — | **—** |
+| 2026-06 | 5 | #6 | lease |
+
+- **No photo of everyone found by face grouping and no linking paper: May 2026.** Still open: check by hand.
+  What could cover it: electricity bills came every month until April 2026; electricity bills for May 2026 would add evidence for these months, if you have them; the lease starts in June 2026.
+
+Possible matches, spelling differs: "Tran Thi Lin" on the May 2026 electricity bill you added (for Tran Thi Linh). Step 7 asks whether it is the same person. If Linh says yes, the bill is "linked, confirmed by you", the spelling difference joins the mismatches (noted, not corrected), and May also shows "covered by electricity bill you added". The added bills that link are copied, never moved, into `02 Papers` like the other papers; the files in `Add here` stay where they are.
+
+The Skill does not offer this again in the run. Had Linh said skip, the table and gap list would stay as in the first example.
+
 ## What this example shows
 
 - **The gap list names only what is missing**, as "no photo of everyone found by face grouping and no linking paper". It never says the family was apart.

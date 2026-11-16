@@ -9,6 +9,7 @@ It works from the photos and papers already on the NAS:
 - finds photos where everyone on the application appears together, month by month, and checks each one is fit to send;
 - finds the papers that link the people (leases, bills, marriage and birth certificates, scanned or photographed) and notes every name, birth date and address mismatch without changing it;
 - lists the months where nothing was found yet, and which of your regular papers would add evidence for each one;
+- lets you drop papers for those months into an `Add here` folder once, then checks only those months again;
 - saves an evidence folder to build your upload from, only after you approve it.
 
 Evidence-binder apps sort what you collect and tag yourself. This finds what is already at home: face grouping across the whole photo library, papers matched on the names printed on them, photographed papers read, and the months that still need a paper.
@@ -60,8 +61,8 @@ What is checked on every change (CI):
 
 - UGREEN's static checker: `static-pass`, 0 errors, 0 warnings.
 - A capability trace: every action the Skill asks for exists in capability catalog 2.2.0, Steps 1 to 7 only read, and every write is in Step 8 behind approval.
-- 60 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including all three worked examples.
-- 41 simulated runs against a mock NAS: every scope, failed and cancelled calls, months the timeline leaves out or returns without samples, a "no results" timeline, a failed photo-check batch, declined approvals, drops, second runs and common-law and same-address cases.
+- 67 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including the worked examples and papers added for the gap months.
+- 45 simulated runs against a mock NAS: every scope, failed and cancelled calls, months the timeline leaves out or returns without samples, a "no results" timeline, a failed photo-check batch, declined approvals, drops, second runs, papers added for the gap months (or skipped) and common-law and same-address cases.
 
 When the NAS returns nothing, fails or skips a month, the table says "search failed" or "check by hand" for that month; it never turns a missing answer into a gap or into evidence.
 
