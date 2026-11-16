@@ -1,6 +1,6 @@
 # Sources
 
-The official wording this Skill's rules rest on, quoted exactly. Rules differ by country and change; the user checks their own current checklist and tells the Skill what it asks. Canada is the worked example (pages fetched on 2026-11-12); Australia, the UK and the US follow (pages fetched on 2026-11-15).
+The official wording this Skill's rules rest on, quoted exactly. Rules differ by country and change; the user checks their own current checklist and tells the Skill what it asks. Canada is the worked example (pages fetched on 2026-11-12); New Zealand, Australia, the UK and the US follow (pages fetched on 2026-11-15).
 
 ## Photos: IMM 5533, Document Checklist: Spouse
 
@@ -71,6 +71,25 @@ The page's evidence list does not name photos of the couple.
 **Not read, to check:** the 801 and 100 (permanent) pages; Form 888 itself.
 
 **How the Skill uses these:** joint papers naming both cover "in both names" and "addressed to you both"; same-address papers are a planning aid for "documents that prove your living arrangements"; the month table can help plan the de facto "at least 12 months", without saying whether the relationship counts as de facto; photos only if the user's checklist asks for them.
+
+## New Zealand: Partner of a New Zealander visas
+
+- **Pages:** https://www.immigration.govt.nz/process-to-apply/once-you-have-a-visa/bringing-family-to-new-zealand/partnership-and-how-to-prove-it/ and https://www.immigration.govt.nz/visas/partner-of-a-new-zealander-resident-visa/ (Immigration New Zealand; no "last updated" date shown). Fetched on 2026-11-15.
+
+- Resident Visa: "be living with your partner in a genuine and stable relationship for at least 12 months after you both turned 18 when you apply"
+- "Living together means sharing the same home as your partner."
+- "Evidence showing you are living together can include:" / "joint ownership of, or home loan for, residential property" / "a joint rental agreement or rental receipts" / "joint utility accounts, like power or phone bills" / "joint or individual mail sent to your shared address."
+- "evidence of living together must cover a period of 12 months prior to the application being submitted."
+- "You can provide us with items showing your shared address, dated every few months, to cover the full duration."
+- "These items can be addressed to you both jointly — or individually — as long as we can see that you have both been at the same address for the same period of time."
+- Genuine and stable relationship: "joint bank accounts being used frequently" / "social media posts or photos of you together" / "letters of support that recognise your partnership."
+- Resident Visa: "you spend time together, for example, photos together, and emails and social media conversations between you"
+
+The pages set no number of photos.
+
+**Not read, to check:** the Partnership timeline and evidence checklist (PDF 11975); the Partner of a New Zealander Work Visa page.
+
+**How the Skill uses these:** joint papers and same-address papers match "addressed to you both jointly — or individually"; the month table can help plan 12 months of "items showing your shared address, dated every few months", without saying whether the rule is met; photos of the two of you by month match "photos of you together", and the Skill's default of 20 photos is not from these pages.
 
 ## United Kingdom: Family visa as a partner or spouse
 
