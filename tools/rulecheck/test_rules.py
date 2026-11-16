@@ -15,7 +15,7 @@ from rules import (
     coverage, gap_lines, join_papers, month_range, plan_months, scope_of, photo_people_for,
     NOT_RETURNED, PHOTO_CHECK_FAILED, fill_returned, people_check, AtLeast, merge_candidates,
     UNRESOLVED, month_states, months_to_sample, unresolved_line, unresolved_months, NO_SAMPLE_LABEL,
-    NO_RESULTS, timeline_reply, offer_added_papers, recheck_gaps, still_open_lines, STILL_OPEN,
+    NO_RESULTS, timeline_reply, offer_added_papers, still_open_lines, STILL_OPEN, split_added, paper_cell,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -749,47 +749,54 @@ class ExampleOutputIsConsistent(unittest.TestCase):
 
 
 class AddedPapersForGaps(unittest.TestCase):
-    """Step 6a: papers the user adds for the gap months, read once with the 5c rules; only gap months change."""
+    """Step 6a: papers the user adds for the gap months, read once with the 5c rules. An added paper is marked
+    on the paper itself and counts only in a month no other paper covers, so every redo of Step 6 keeps it."""
 
     PEOPLE = ["Tran Thi Linh", "Tran Van Minh", "Tran Thi An", "Tran Gia Bao"]
     PRINTED = dict(zip(FAMILY, PEOPLE))
     ADDRESS = "12 Elm St Unit 4"
+    GAP = ("2026-02", "2026-03", "2026-04", "2026-05")
 
-    def bill(self, month: str, names: list[str] | None = None, address: str | None = None) -> Paper:
+    def bill(self, month: str, names: list[str] | None = None, address: str | None = None, **kw) -> Paper:
         return Paper("electricity bill", names or self.PEOPLE[:2], "scanned document", dated=f"{month}-03",
-                     address=address or self.ADDRESS)
+                     address=address or self.ADDRESS, added=True, **kw)
 
-    def step6a(self, added: list[Paper]):
-        """The first example's rows before Step 6a, and after it with `added` (the user said done)."""
+    def base(self):
         ex = ExampleOutputIsConsistent()
         papers = [replace(p, names=[self.PRINTED[n] for n in p.names], dob={self.PRINTED[k]: v for k, v in p.dob.items()})
                   for p in ex.papers()]
         chosen = choose_photos(ex.checked(), plan_months(ex.COUNTS, 20), 20).chosen
-        rows = coverage("2025-06", "2026-11", ex.COUNTS, chosen, join_papers(papers, self.PEOPLE)["linked"])
+        return ex.COUNTS, chosen, papers
+
+    def step6a(self, added: list[Paper], counts: dict | None = None):
+        """The first example's rows before Step 6a, and Step 6 redone after it with `added` (the user said done)."""
+        ex_counts, chosen, papers = self.base()
+        counts = counts or ex_counts
+        rows = coverage("2025-06", "2026-11", counts, chosen, join_papers(papers, self.PEOPLE)["linked"])
         joined = join_papers(papers + added, self.PEOPLE)  # 5c, unchanged, over the old and the added papers
-        new_rows = coverage("2025-06", "2026-11", ex.COUNTS, chosen, joined["linked"])
-        added_linked = [p for p in joined["linked"] if any(p is a for a in added)]
-        return rows, recheck_gaps(rows, new_rows, added_linked), joined
+        return rows, coverage("2025-06", "2026-11", counts, chosen, joined["linked"]), joined
 
     def test_skip_or_an_empty_folder_changes_nothing(self):
         rows, after, _ = self.step6a([])
-        self.assertTrue(offer_added_papers(rows, 0))  # the first example has a gap, so the offer is made
+        self.assertTrue(offer_added_papers(rows))  # the first example has a gap, so the offer is made
         self.assertEqual(after, rows)
         self.assertEqual(gap_lines(after), [f"{GAP_LABEL}: 2026-02 to 2026-05"])
 
     def test_done_with_bills_for_every_gap_month_closes_the_gap(self):
-        rows, after, joined = self.step6a([self.bill(m) for m in ("2026-02", "2026-03", "2026-04", "2026-05")])
+        rows, after, joined = self.step6a([self.bill(m) for m in self.GAP])
         self.assertEqual(gap_lines(after), [])
         for r in after:
-            if r["month"] in ("2026-02", "2026-03", "2026-04", "2026-05"):
-                self.assertEqual(r["papers"], ["covered by electricity bill you added"], r["month"])
+            if r["month"] in self.GAP:
+                self.assertTrue(r["added"], r["month"])  # stored on the row, the papers kept as they are
+                self.assertEqual(r["papers"], ["electricity bill"], r["month"])
+                self.assertEqual(paper_cell(r), "covered by electricity bill you added", r["month"])
         self.assertEqual(len(joined["linked"]), 16)  # the four bills are copied in 8c like the other 12 papers
+        self.assertFalse(offer_added_papers(after))  # no gap, no offer
 
     def test_done_with_a_month_still_empty_keeps_it_open(self):
-        added = [self.bill(m) for m in ("2026-02", "2026-03", "2026-04")]
-        added.append(self.bill("2026-05", ["Tran Thi Lin", "Tran Van Minh"]))  # a spelling variant: possible match only
+        added = [self.bill(m) for m in self.GAP[:3]] + [self.bill("2026-05", ["Tran Thi Lin", "Tran Van Minh"])]
         rows, after, joined = self.step6a(added)
-        self.assertIn(added[3], joined["possible_matches"])
+        self.assertIn(added[3], joined["possible_matches"])  # a spelling variant: possible match only
         self.assertNotIn(added[3], joined["linked"])
         lines = still_open_lines(after)
         self.assertEqual(lines, [f"{GAP_LABEL}: 2026-05. {STILL_OPEN}"])
@@ -799,39 +806,75 @@ class AddedPapersForGaps(unittest.TestCase):
         self.assertEqual(hint, "electricity bills came every month until 2026-04; electricity bills for 2026-05 would add "
                                "evidence for these months, if you have them; the lease starts in 2026-06")
 
+    def test_a_step7_redo_keeps_the_added_labels(self):
+        added = [self.bill(m) for m in self.GAP[:3]] + [self.bill("2026-05", ["Tran Thi Lin", "Tran Van Minh"])]
+        counts, chosen, papers = self.base()
+        rows, after, joined = self.step6a(added)
+        # Step 7: the user says "Tran Thi Lin" is the same person and drops the marriage certificate; Step 6 is redone
+        mismatches = list(joined["mismatches"])
+        linked = apply_answers(joined["linked"], joined["possible_matches"], [added[3]], [joined["linked"][0]],
+                               people=self.PEOPLE, mismatches=mismatches)
+        redo = coverage("2025-06", "2026-11", counts, chosen, linked)
+        self.assertEqual([r["month"] for r in redo if r["added"]], list(self.GAP))
+        self.assertEqual({paper_cell(r) for r in redo if r["added"]}, {"covered by electricity bill you added"})
+        self.assertEqual(gap_lines(redo), [])
+        self.assertIn("name spelling", [m[0] for m in mismatches])
+        self.assertEqual([r for r in redo if r["month"] not in self.GAP], [r for r in after if r["month"] not in self.GAP])
+
+    def test_an_unresolved_month_an_added_paper_covers_is_no_longer_to_check_by_hand(self):
+        counts = dict(self.base()[0], **{"2026-03": UNRESOLVED})
+        rows, after, _ = self.step6a([self.bill("2026-03")], counts)
+        self.assertEqual(unresolved_line(rows), "photos not returned and no linking paper: 2026-03; check by hand")
+        march = next(r for r in after if r["month"] == "2026-03")
+        self.assertTrue(march["added"])
+        self.assertIsNone(unresolved_line(after))
+
     def test_a_mismatch_on_an_added_paper_is_noted_not_corrected(self):
         odd = self.bill("2026-02", address="21 Elm St Unit 4")
         rows, after, joined = self.step6a([odd])
-        self.assertIn("address", [m[0] for m in joined["mismatches"]])
         self.assertIn("21 Elm St Unit 4", next(m[2] for m in joined["mismatches"] if m[0] == "address"))
         self.assertEqual(odd.address, "21 Elm St Unit 4")  # never corrected
-        self.assertEqual(next(r for r in after if r["month"] == "2026-02")["papers"], ["covered by electricity bill you added"])
+        self.assertEqual(paper_cell(next(r for r in after if r["month"] == "2026-02")), "covered by electricity bill you added")
 
-    def test_only_gap_months_change(self):
-        lease = Paper("lease", self.PEOPLE[:2], "scanned document", "2026-01", "2026-05", address=self.ADDRESS)
+    def test_only_months_no_other_paper_covers_change(self):
+        lease = Paper("lease", self.PEOPLE[:2], "scanned document", "2026-01", "2026-05", address=self.ADDRESS, added=True)
         rows, after, _ = self.step6a([lease])
         for before, now in zip(rows, after):
             if not before["gap"]:
                 self.assertEqual(before, now, before["month"])  # January keeps its electricity bill alone
-        self.assertEqual(next(r for r in after if r["month"] == "2026-01")["papers"], ["electricity bill"])
         self.assertEqual(gap_lines(after), [])
 
-    def test_offered_at_most_once_and_only_with_a_gap(self):
-        rows, after, _ = self.step6a([self.bill("2026-02")])
-        self.assertTrue(any(r["gap"] for r in after))  # March to May are still open
-        self.assertFalse(offer_added_papers(after, 1))  # never a second round, also when Step 7 redoes Step 6
-        _, closed, _ = self.step6a([self.bill(m) for m in ("2026-02", "2026-03", "2026-04", "2026-05")])
-        self.assertFalse(offer_added_papers(closed, 0))  # no gap, no offer
+    def test_the_label_names_only_papers_that_count(self):
+        partners = ["Mei Tan", "Daniel Reyes"]
+        letter = Paper("letter", partners, "scanned document", dated="2026-02-10", added=True)  # no address
+        lease = Paper("lease", partners, "scanned document", "2026-02", "2026-02", address="88 Carlow Avenue", added=True)
+        rows = coverage("2026-01", "2026-02", {"2026-01": 1, "2026-02": 1}, [], [letter, lease],
+                        common_law=True, partners=partners)
+        self.assertEqual(paper_cell(rows[1]), "covered by lease you added")  # the letter does not count for common-law
+        only_letter = coverage("2026-01", "2026-02", None, [], [letter], common_law=True, partners=partners)
+        self.assertTrue(only_letter[1]["gap"])
+        self.assertFalse(only_letter[1]["added"])
+
+    def test_files_already_read_in_visa_evidence_folders_or_over_the_limit_are_left_out(self):
+        listed = [Paper("bill", [], "scanned document", path=p, added=True) for p in
+                  ("/Family/Papers/bill-01.pdf", "/Family/Visa/Add here/bill-02.pdf", "/Family/Visa/Add here/bill-03.JPG",
+                   "/Family/Visa/Visa evidence Linh Tran/02 Papers/P01 bill.pdf")]
+        docs, images, cut = split_added(listed, {"/Family/Papers/bill-01.pdf"})  # 5a already read bill-01
+        self.assertEqual([p.path for p in docs], ["/Family/Visa/Add here/bill-02.pdf"])
+        self.assertEqual([p.path for p in images], ["/Family/Visa/Add here/bill-03.JPG"])  # read as a photo of a paper
+        self.assertEqual(cut, 0)
+        many = [Paper("bill", [], "scanned document", path=f"/a/{i}.pdf") for i in range(65)]
+        docs, _, cut = split_added(many, set())
+        self.assertEqual((len(docs), cut), (60, 5))
 
     def test_fifth_example_matches_the_rules(self):
         text = EXAMPLE.read_text()
         text = text[text.index("## A fifth example"):text.index("## What this example shows")]
-        added = [self.bill(m) for m in ("2026-02", "2026-03", "2026-04")]
-        added.append(self.bill("2026-05", ["Tran Thi Lin", "Tran Van Minh"]))
+        added = [self.bill(m) for m in self.GAP[:3]] + [self.bill("2026-05", ["Tran Thi Lin", "Tran Van Minh"])]
         rows, after, joined = self.step6a(added)
         for r in after:
-            if r["month"] in ("2026-02", "2026-03", "2026-04"):
-                self.assertIn(f"| {r['month']} | 0 | — | {r['papers'][0]} |", text)
+            if r["month"] in self.GAP[:3]:
+                self.assertIn(f"| {r['month']} | 0 | — | {paper_cell(r)} |", text)
         self.assertIn("| **2026-05** | **0** | — | **—** |", text)
         line = human(gap_lines(after)[0])
         self.assertIn(f"**{line[0].upper() + line[1:]}.** {STILL_OPEN}", text)

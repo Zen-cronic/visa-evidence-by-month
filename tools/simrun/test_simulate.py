@@ -488,17 +488,18 @@ class Scenarios(unittest.TestCase):
 class AddedPapersForGaps(unittest.TestCase):
     """Step 6a: after the gap list, the user may add papers to an Add here folder once, or skip."""
 
-    def family(self, added=(), answer="done", **user):
+    def family(self, added=(), answer="done", extra_papers=(), **user):
         counts = months("2025-06", "2026-11", skip={"2026-02", "2026-03", "2026-04", "2026-05"})
         papers = ([R.Paper("birth certificate", FAMILY_PRINTED[:2] + ["Tran Gia Bao"], "from a photo of a document", dated="2025-08-20")]
                   + [R.Paper("electricity bill", FAMILY_PRINTED[:2], "scanned document", dated=f"{m}-01", address="12 Elm St Unit 4")
-                     for m in R.month_range("2025-06", "2026-01")])
+                     for m in R.month_range("2025-06", "2026-01")] + list(extra_papers))
         nas = MockNAS(FAMILY[:3], counts, samples(counts), papers, added_papers=list(added))
         return nas, run(FAMILY, FAMILY_PRINTED, "2025-06", "2026-11", nas,
                         User(papers_only=["Bao Tran"], add_papers=answer, **user))
 
-    def bills(self, months_, names=FAMILY_PRINTED[:2], address="12 Elm St Unit 4"):
-        return [R.Paper("electricity bill", list(names), "scanned document", dated=f"{m}-03", address=address) for m in months_]
+    def bills(self, months_, names=FAMILY_PRINTED[:2], address="12 Elm St Unit 4", ext="pdf", tag="", **kw):
+        return [R.Paper("electricity bill", list(names), "scanned document", dated=f"{m}-03", address=address,
+                        path=f"/Family/Visa/Add here/bill {m}{tag}.{ext}", **kw) for m in months_]
 
     def listings_before_step7_names(self, nas):
         """Folder listings sent before the Step 7 album read: Step 7's own, plus one when 6a lists Add here."""
@@ -541,6 +542,51 @@ class AddedPapersForGaps(unittest.TestCase):
         self.assertEqual(self.listings_before_step7_names(nas2), 2)
         self.assertEqual(nas2.calls.count(("document-agent", "extract")), 1)  # nothing listed, nothing read
         self.assertEqual(empty["gaps"], [f"{R.GAP_LABEL}: 2026-02 to 2026-05"])
+
+
+    def test_ae_a_possible_match_on_an_added_bill_confirmed_in_step7_closes_the_month(self):
+        variant = self.bills(["2026-05"], names=["Tran Thi Lin", "Tran Van Minh"])
+        nas, log = self.family(self.bills(["2026-02", "2026-03", "2026-04"]) + variant)
+        self.assertEqual(log["gaps"], [])  # Step 7's redo keeps the added papers and their label
+        self.assertEqual(log["covered_by_added"], ["2026-02", "2026-03", "2026-04", "2026-05"])
+        self.assertIn("name spelling", [m[0] for m in log["mismatches"]])
+        nas2, open_ = self.family(self.bills(["2026-02", "2026-03", "2026-04"]) + variant, confirm_matches=False)
+        self.assertEqual(open_["gaps"], [f"{R.GAP_LABEL}: 2026-05. {R.STILL_OPEN}"])
+        self.assertEqual(open_["add_offered"], 1)
+
+    def test_af_dropped_or_unreadable_added_papers_count_for_nothing(self):
+        dropped = self.bills(["2026-02"])
+        unreadable = self.bills(["2026-03"], names=["Tran Thi Linh"], readable=False)
+        other_half = self.bills(["2026-03"], names=["Tran Van Minh"], tag=" Minh")
+        nas, log = self.family(dropped + unreadable + other_half, drop_papers=dropped)
+        self.assertEqual(log["covered_by_added"], [])  # no pair from an unreadable bill, and the dropped bill is gone
+        self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-02 to 2026-05. {R.STILL_OPEN}"])
+        self.assertEqual(log["linked"], 9)
+
+    def test_ag_an_added_scan_of_a_photographed_paper_is_kept_once(self):
+        scan = [R.Paper("birth certificate", FAMILY_PRINTED[:2] + ["Tran Gia Bao"], "scanned document", dated="2025-08-20",
+                        path="/Family/Visa/Add here/birth Bao.pdf")]
+        nas, log = self.family(scan + self.bills(["2026-02"]))
+        self.assertEqual(log["linked"], 10)  # the scan replaces the photo of the same certificate, plus the bill
+        self.assertEqual(log["added_linked"], 2)
+
+    def test_ah_files_already_read_in_step5_are_skipped(self):
+        again = R.Paper("electricity bill", FAMILY_PRINTED[:2], "scanned document", dated="2026-03-03", path="/Family/Papers/mar.pdf")
+        # the user named the papers folder itself: Step 5a has read this file already
+        nas, log = self.family([again], extra_papers=[again])
+        self.assertEqual(nas.calls.count(("document-agent", "extract")), 1)  # nothing new to read
+        self.assertEqual(log["linked"], 10)  # counted once, not twice
+        self.assertEqual(log["covered_by_added"], [])
+        self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-02", f"{R.GAP_LABEL}: 2026-04 to 2026-05"])
+
+    def test_ai_photos_of_papers_go_to_text_recognition_and_long_folders_are_cut_off(self):
+        nas, log = self.family(self.bills(["2026-02"], ext="jpg") + self.bills(["2026-03"]))
+        self.assertEqual(nas.calls.count(("photo-agent", "vision-ocr")), 1)
+        self.assertEqual(nas.calls.count(("document-agent", "extract")), 2)
+        self.assertEqual(log["covered_by_added"], ["2026-02", "2026-03"])
+        many = [R.Paper("letter", [], "scanned document", path=f"/Family/Visa/Add here/{i}.pdf") for i in range(63)]
+        _, cut = self.family(many)
+        self.assertEqual(cut["added_cut_off"], 3)
 
 
 if __name__ == "__main__":

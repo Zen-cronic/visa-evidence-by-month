@@ -61,8 +61,8 @@ What is checked on every change (CI):
 
 - UGREEN's static checker: `static-pass`, 0 errors, 0 warnings.
 - A capability trace: every action the Skill asks for exists in capability catalog 2.2.0, Steps 1 to 7 only read, and every write is in Step 8 behind approval.
-- 67 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including the worked examples and papers added for the gap months.
-- 45 simulated runs against a mock NAS: every scope, failed and cancelled calls, months the timeline leaves out or returns without samples, a "no results" timeline, a failed photo-check batch, declined approvals, drops, second runs, papers added for the gap months (or skipped) and common-law and same-address cases.
+- 70 rule checks: the Skill's month planning, photo choice, paper matching, coverage and gap rules, restated as a small program and run on synthetic cases, including the worked examples and papers added for the gap months.
+- 50 simulated runs against a mock NAS: every scope, failed and cancelled calls, months the timeline leaves out or returns without samples, a "no results" timeline, a failed photo-check batch, declined approvals, drops, second runs, papers added for the gap months (or skipped) and common-law and same-address cases.
 
 When the NAS returns nothing, fails or skips a month, the table says "search failed" or "check by hand" for that month; it never turns a missing answer into a gap or into evidence.
 

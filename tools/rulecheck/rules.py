@@ -262,6 +262,8 @@ class Paper:
     dob: dict[str, str] = field(default_factory=dict)
     readable: bool = True
     asks: str | None = None  # an instruction found inside the paper
+    path: str | None = None  # the file path, when known
+    added: bool = False  # Step 6a: put in the Add here folder by the user; kept with the paper on every redo
 
 
 PHOTO_SOURCE = "from a photo of a document"
@@ -425,19 +427,32 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
     rows = []
     address_docs = address_docs or []
     numbers = {c.month: i + 1 for i, c in enumerate(chosen)}
-    for month in month_range(start, end):
-        papers = [p.kind for p in linked if paper_covers(p, month)]
-        if partners and address_docs and not papers:
+    own_linked = [p for p in linked if not p.added]
+    own_address = [p for p in address_docs if not p.added]
+    any_added = len(own_linked) < len(linked) or len(own_address) < len(address_docs)
+
+    def month_papers(month: str, linked_docs: list[Paper], address_list: list[Paper]) -> list[str]:
+        papers = [p.kind for p in linked_docs if paper_covers(p, month)]
+        if partners and address_list and not papers:
             # separate papers, one naming each partner, showing the same address that month
-            by_partner = [{normalise_address(p.address) for p in address_docs
+            by_partner = [{normalise_address(p.address) for p in address_list
                            if p.address and paper_covers(p, month) and any(name_matches(n, who) for n in p.names)}
                           for who in partners]
             shared = set.intersection(*by_partner) if all(by_partner) else set()
             if shared:
                 papers = ["same address on separate papers"]
+        return papers
+
+    for month in month_range(start, end):
+        papers = month_papers(month, own_linked, own_address)
+        added = False
+        if not papers and any_added:  # Step 6a: an added paper counts only in a month no other paper covers
+            papers = month_papers(month, linked, address_docs)
+            added = bool(papers)
         count = None if month_counts is None else month_counts.get(month, 0)
         if count == NOT_RETURNED:  # never 0 and never a gap
-            rows.append({"month": month, "library": NOT_RETURNED, "pack": numbers.get(month), "papers": papers, "gap": False})
+            rows.append({"month": month, "library": NOT_RETURNED, "pack": numbers.get(month), "papers": papers, "gap": False,
+                         "added": added})
             continue
         if numbers.get(month):
             pack = numbers[month]
@@ -453,6 +468,7 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
             "pack": pack,
             "papers": papers,
             "gap": (count in (None, 0)) and not papers,
+            "added": added,
         })
     return rows
 
@@ -631,29 +647,33 @@ def carry_over(earlier_lines: dict[tuple[str, str], tuple[str, str]], chosen: li
 
 ADDED_LABEL = "you added"
 STILL_OPEN = "Still open: check by hand."
+IMAGE_TYPES = (".jpg", ".jpeg", ".png", ".heic")
+ADDED_READ_MAX = 60
 
 
-def offer_added_papers(rows: list[dict], rounds_done: int) -> bool:
-    """Step 6a is offered only when the gap list is not empty, and at most once in a run (never again when
-    Step 7 redoes Step 6)."""
-    return rounds_done == 0 and any(r["gap"] for r in rows)
+def offer_added_papers(rows: list[dict]) -> bool:
+    """Step 6a is offered only when the gap list is not empty (the caller asks it once in a run)."""
+    return any(r["gap"] for r in rows)
 
 
-def recheck_gaps(rows: list[dict], new_rows: list[dict], added: list[Paper]) -> list[dict]:
-    """Step 6a: `new_rows` is Step 6 redone with the added papers joined by the 5c rules. Only gap months may
-    change: a gap month an added paper now covers shows "covered by <type> you added" and is no longer a gap;
-    a gap month still empty stays a gap. Every other month keeps its row as it was."""
-    new = {r["month"]: r for r in new_rows}
-    out = []
-    for r in rows:
-        n = new[r["month"]]
-        if r["gap"] and not n["gap"]:
-            kinds = list(dict.fromkeys(p.kind for p in added if paper_covers(p, r["month"])))
-            r = dict(r, papers=[f"covered by {' and '.join(kinds)} {ADDED_LABEL}"], gap=False)
-        out.append(r)
-    return out
+def split_added(listed: list[Paper], read_paths: set[str]) -> tuple[list[Paper], list[Paper], int]:
+    """Step 6a: the listing is cut off at 60 files (the third value is how many were left out); a path in a
+    Visa evidence folder or already read in Step 5 is left out; image files go to text recognition (as in 5b),
+    the rest to document extraction (as in 5a)."""
+    kept = [p for p in listed[:ADDED_READ_MAX]
+            if p.path not in read_paths and not any(part.startswith("Visa evidence") for part in (p.path or "").split("/"))]
+    images = [p for p in kept if (p.path or "").lower().endswith(IMAGE_TYPES)]
+    return [p for p in kept if p not in images], images, max(0, len(listed) - ADDED_READ_MAX)
+
+
+def paper_cell(row: dict) -> str:
+    """The coverage table's paper column: a month only an added paper covers reads "covered by <type> you added"."""
+    if not row["papers"]:
+        return "—"
+    kinds = " and ".join(dict.fromkeys(row["papers"]))
+    return f"covered by {kinds} {ADDED_LABEL}" if row.get("added") else kinds
 
 
 def still_open_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
-    """Step 6a: each gap line still open after the added papers ends with "Still open: check by hand."."""
+    """After Step 6a, on any redo of Step 6, each gap line ends with "Still open: check by hand."."""
     return [f"{line}. {STILL_OPEN}" for line in gap_lines(rows, label)]

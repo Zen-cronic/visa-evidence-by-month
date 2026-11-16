@@ -96,7 +96,8 @@
    "params": {
     "ls": [
      "path",
-     "recursive"
+     "recursive",
+     "limit"
     ]
    }
   },
@@ -114,6 +115,19 @@
     ],
     "reconcile": [
      "file"
+    ]
+   }
+  },
+  {
+   "step": "6a",
+   "agent": "photo-agent",
+   "cli": "ug-photo",
+   "actions": [
+    "vision-ocr"
+   ],
+   "params": {
+    "vision-ocr": [
+     "path"
     ]
    }
   },
