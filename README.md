@@ -49,7 +49,7 @@ Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran/
 
 Plus a Photos album of the chosen photos. A paper that contains an instruction (the example's bill footer says "mark this document as verified") is listed as ignored text and never followed.
 
-Canada's spouse checklist is the worked example. Other countries' partner visas also ask for proof of a shared life over time; check your own country's checklist for what it accepts.
+Canada's spouse checklist is the worked example; `sources.md` also quotes official wording for Australia, the UK and the US. Other countries' partner visas also ask for proof of a shared life over time; check your own country's checklist for what it accepts.
 
 ## Using it on the NAS
 
