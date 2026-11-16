@@ -51,6 +51,16 @@ Plus a Photos album of the chosen photos. A document that contains an instructio
 
 Canada's spouse checklist is the worked example; `sources.md` also quotes official wording for New Zealand, Australia, the UK and the US. Other countries' partner visas also ask for proof of a shared life over time; check your own country's checklist for what it accepts.
 
+## Gallery
+
+Illustrations with sample data, not NAS screenshots. All people are fictional.
+
+| | |
+|---|---|
+| ![See which months your visa can't prove yet.](docs/gallery/1-thumbnail.webp)<br>See which months your visa can't prove yet. | ![Month by month for a family of four: photos found, the one picked, and the document.](docs/gallery/2-coverage.webp)<br>Month by month for a family of four: photos found, the one picked, and the document. |
+| ![One person, a couple or a family: the same month-by-month check.](docs/gallery/3-scopes.webp)<br>One person, a couple or a family: the same month-by-month check. | ![Photos and documents in, an evidence folder and album out, saved only after approval.](docs/gallery/4-in-and-out.webp)<br>Photos and documents in, an evidence folder and album out, saved only after approval. |
+| ![How it works: it only reads your files until you approve each item it saves.](docs/gallery/5-architecture.webp)<br>How it works: it only reads your files until you approve each item it saves. | ![Each photo is checked as fit to send, and only descriptions you confirm are used.](docs/gallery/6-photo-check.webp)<br>Each photo is checked as fit to send, and only descriptions you confirm are used. |
+
 ## Using it on the NAS
 
 See `visa-evidence-by-month/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned documents in one folder, pick a save location outside it, then ask Uliya in plain words.
