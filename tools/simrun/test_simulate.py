@@ -478,6 +478,18 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["stopped"], "step 0")
         self.assertEqual(nas.calls, [])
 
+    def test_s1_a_save_that_waits_for_the_user_is_answered_in_the_same_call_and_never_sent_again(self):
+        counts = months("2025-12", "2026-11")
+        nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts),
+                      [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-11")],
+                      write_results={"folder": "waiting_user"})
+        log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User())
+        self.assertEqual(log["answered_in_call"], ["folder"])
+        self.assertEqual(nas.calls.count(("file-agent", "mkdir")), 1)  # 8a sent once
+        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "folder", "index", "paper copies", "photo copies"])
+        # why: a resent 8a finds the folder it made, reports failed, and 8b, 8c, 8e and 8f would be skipped
+        self.assertEqual(nas.call("file-agent", "mkdir", write=True, item="folder"), "failed")
+
     def test_g_unsure_about_the_model_continues_only_on_yes(self):
         nas = MockNAS(COUPLE_PHOTOS, {}, [], [])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User(local_model="unsure", continue_if_unsure=False))
@@ -488,12 +500,12 @@ class Scenarios(unittest.TestCase):
 class AddedPapersForGaps(unittest.TestCase):
     """Step 6a: after the gap list, the user may add papers to an Add here folder once, or skip."""
 
-    def family(self, added=(), answer="done", extra_papers=(), **user):
+    def family(self, added=(), answer="done", extra_papers=(), add_status="completed", **user):
         counts = months("2025-06", "2026-11", skip={"2026-02", "2026-03", "2026-04", "2026-05"})
         papers = ([R.Paper("birth certificate", FAMILY_PRINTED[:2] + ["Tran Gia Bao"], "from a photo of a document", dated="2025-08-20")]
                   + [R.Paper("electricity bill", FAMILY_PRINTED[:2], "scanned document", dated=f"{m}-01", address="12 Elm St Unit 4")
                      for m in R.month_range("2025-06", "2026-01")] + list(extra_papers))
-        nas = MockNAS(FAMILY[:3], counts, samples(counts), papers, added_papers=list(added))
+        nas = MockNAS(FAMILY[:3], counts, samples(counts), papers, added_papers=list(added), add_status=add_status)
         return nas, run(FAMILY, FAMILY_PRINTED, "2025-06", "2026-11", nas,
                         User(papers_only=["Bao Tran"], add_papers=answer, **user))
 
@@ -587,6 +599,16 @@ class AddedPapersForGaps(unittest.TestCase):
         many = [R.Paper("letter", [], "scanned document", path=f"/Family/Visa/Add here/{i}.pdf") for i in range(63)]
         _, cut = self.family(many)
         self.assertEqual(cut["added_cut_off"], 3)
+
+    def test_aj_a_cancelled_or_failed_add_papers_call_goes_on_to_step7_with_the_gaps_as_they_were(self):
+        for status in ("cancelled", "failed"):
+            nas, log = self.family(self.bills(["2026-02", "2026-03"]), add_status=status)
+            self.assertIsNone(log["stopped"])
+            self.assertEqual(log["add_note"], f"Step 6a listing {status}; went on to Step 7")
+            self.assertEqual(nas.calls.count(("document-agent", "extract")), 1)  # nothing in Add here is read
+            self.assertEqual(log["covered_by_added"], [])
+            self.assertEqual(log["gaps"], [f"{R.GAP_LABEL}: 2026-02 to 2026-05"])
+            self.assertIn("folder", log["summary"]["saved"])  # the run still reaches Step 8
 
 
 if __name__ == "__main__":

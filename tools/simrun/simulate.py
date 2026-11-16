@@ -37,16 +37,27 @@ class MockNAS:
     vision_batch_fail: set = field(default_factory=set)  # planned months whose batched Step 4 call fails
     vision_retry_fail: set = field(default_factory=set)  # of those, months whose one-month retry also fails
     added_papers: list = field(default_factory=list)  # files the user put in the Add here folder (Step 6a), with paths
+    add_status: str = "completed"  # the Step 6a listing call: completed / cancelled / failed
     calls: list[tuple[str, str]] = field(default_factory=list)  # (agent, action) in order
     written: list[str] = field(default_factory=list)
+    sent: list[str] = field(default_factory=list)  # writes already sent
 
     def call(self, agent: str, action: str, write: bool = False, item: str | None = None) -> str:
         self.calls.append((agent, action))
         if write:
-            status = self.write_results.get(item or action, "completed")
+            key = item or action
+            if key in self.sent:  # a resent write: 8a finds its own folder and reports failed
+                return "failed"
+            self.sent.append(key)
+            status = self.write_results.get(key, "completed")  # completed / failed / waiting_user
             if status == "completed":
-                self.written.append(item or action)
+                self.written.append(key)
             return status
+        return "completed"
+
+    def answer(self, item: str) -> str:
+        """The user's answer to a write's waiting_user, given in the same call: the expert continues it."""
+        self.written.append(item)
         return "completed"
 
 
@@ -212,6 +223,10 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         log["add_offered"] += 1
         if user.add_papers == "done":
             nas.call("file-agent", "ls")
+        if user.add_papers == "done" and nas.add_status != "completed":
+            # a cancelled or failed 6a call: say so and go on to Step 7 with the gaps as they were
+            log["add_note"] = f"Step 6a listing {nas.add_status}; went on to Step 7"
+        elif user.add_papers == "done":
             read_paths = {p.path for p in nas.papers if p.path}  # read in Step 5 already
             docs, images, log["added_cut_off"] = R.split_added(nas.added_papers, read_paths)
             if docs:
@@ -269,22 +284,30 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     if not chosen:
         approved.pop("album")
         approved.pop("descriptions")
-    results = {}
+    results, log["answered_in_call"] = {}, []
+
+    def write(agent, action, item):
+        status = nas.call(agent, action, write=True, item=item)
+        if status == "waiting_user":  # the answer goes into the same call; a write is never sent again
+            log["answered_in_call"].append(item)
+            status = nas.answer(item)
+        return status
+
     if approved.get("folder"):
         if name in nas.existing:  # 8a never writes into an existing folder: it reports failed
             nas.write_results["folder"] = "failed"
-        results["folder"] = nas.call("file-agent", "mkdir", write=True, item="folder")
+        results["folder"] = write("file-agent", "mkdir", "folder")
     folder_ok = results.get("folder") == "completed"
     if approved.get("folder") and chosen and folder_ok:
-        results["photo copies"] = nas.call("file-agent", "cpmv", write=True, item="photo copies")
+        results["photo copies"] = write("file-agent", "cpmv", "photo copies")
     if approved.get("folder") and (linked or same_address_docs) and folder_ok:
-        results["paper copies"] = nas.call("file-agent", "cpmv", write=True, item="paper copies")
+        results["paper copies"] = write("file-agent", "cpmv", "paper copies")
     if approved.get("album"):
-        results["album"] = nas.call("photo-agent", "create-album", write=True, item="album")
+        results["album"] = write("photo-agent", "create-album", "album")
     if approved.get("index") and folder_ok:
-        results["index"] = nas.call("knowledge-agent", "save-text", write=True, item="index")
+        results["index"] = write("knowledge-agent", "save-text", "index")
     if approved.get("descriptions") and folder_ok:  # independent of the index save
-        results["descriptions"] = nas.call("knowledge-agent", "save-text", write=True, item="descriptions")
+        results["descriptions"] = write("knowledge-agent", "save-text", "descriptions")
     items = dict(approved)
     if approved.get("folder"):
         if chosen:

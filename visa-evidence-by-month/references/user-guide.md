@@ -4,12 +4,18 @@ See which months your photos and papers show evidence of your life together, fin
 
 It answers one question: **which months can we not prove yet?** For each month it shows the photos of everyone together, the paper that covers that month (a lease, a bill, a certificate), and, for any month with neither, what could close the gap. See [example-output.md](example-output.md).
 
+## Install, remove and version
+
+- **Install:** upload `visa-evidence-by-month.zip` to UGREEN's SkillHub, then install it in Uliya.
+- **Remove:** uninstall the Skill in Uliya. The Skill never deletes anything, so the packs it saved stay. To remove a pack, delete its "Visa evidence <names>" folder and its Photos album yourself.
+- **Version:** 1.0, 2026-11-15.
+
 ## Before you start
 
 1. **Name the people in Photos.** Open Photos, find each person's people album and give it a name. Face grouping finds photos only of named people. A baby without a face group yet can still be on the application for papers only. If someone is missing, you can name them in Photos during the run and say done; the Skill checks that name again without starting over.
 2. **Know each person's name as printed on their papers**, such as "Tran Thi Linh", and which word is the family name ("Tran"). Papers are matched on these names, not on Photos nicknames; case, commas, word order and accents do not matter ("TRẦN, Thị Linh" matches).
 3. **Put scanned papers in one folder**, if you have any: leases, bills, bank statements, marriage and birth certificates, letters. Photos of papers taken with your phone are found in the photo library; you do not need to move them.
-4. **Pick where to save the pack.** Any folder outside the papers folder.
+4. **Pick where to save the pack.** Any private folder outside the papers folder, not a shared folder others on the NAS can open. The Skill asks about this before it saves.
 5. **Check Uliya's model setting** if you can, so your photos and papers stay on the NAS. The Skill asks about it first; if you are not sure, it explains and asks whether to continue.
 6. **Know your relationship type and whether photos are needed.** The Skill asks whether you are married, common-law or other, and whether your application asks for photos. For a family, it also asks which two people are the partners, and whether to search photos of the two of you together or of everyone on the application; partner-visa photo requests are usually about the couple, and children are linked by their birth certificates. Some checklists need no extra proof in some cases: on Canada's spouse checklist, for one, if you answer yes to all four of its questions, no additional proof of relationship is needed at this time; the Skill tells you so and asks whether to build a pack anyway.
 
