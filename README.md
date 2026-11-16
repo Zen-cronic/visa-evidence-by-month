@@ -61,6 +61,25 @@ Illustrations with sample data, not NAS screenshots. All people are fictional.
 | ![One person, a couple or a family: the same month-by-month check.](docs/gallery/3-scopes.webp)<br>One person, a couple or a family: the same month-by-month check. | ![Photos and documents in, an evidence folder and album out, saved only after approval.](docs/gallery/4-in-and-out.webp)<br>Photos and documents in, an evidence folder and album out, saved only after approval. |
 | ![How it works: it only reads your files until you approve each item it saves.](docs/gallery/5-architecture.webp)<br>How it works: it only reads your files until you approve each item it saves. | ![Each photo is checked as fit to send, and only descriptions you confirm are used.](docs/gallery/6-photo-check.webp)<br>Each photo is checked as fit to send, and only descriptions you confirm are used. |
 
+## How it uses the NAS
+
+Each step is handed to one of UGREEN's built-in expert agents. Every call asks for the on-device model, steps 1 to 7 only read, and nothing is saved until you approve it.
+
+| Step | What it does | NAS feature | Agent and actions |
+|---|---|---|---|
+| 1 | Find each person on the application | Photos people albums (face grouping) | photo-agent: `figure-albums` |
+| 2 | Count photos of everyone together, month by month | Photos timeline, with all the people in one photo | photo-agent: `timeline-summary`, `search-picture` |
+| 3 | Plan up to 20 months | None, worked out from step 2 | None |
+| 4 | Check each photo is fit to send | Photo details and the on-device vision model | photo-agent: `meta`, `vision-vlm` |
+| 5 | Find documents that link the people, and flag mismatches | Documents extraction and reconciling, plus text recognition on photos of documents | document-agent: `extract`, `reconcile`; photo-agent: `search-screen`, `vision-ocr` |
+| 6 | Build the coverage table and gap list | None, worked out from steps 2 to 5 | None |
+| 6a | Optional: check documents you add for the gap months | Files folder listing, Documents and text recognition | file-agent: `ls`; document-agent: `extract`, `reconcile`; photo-agent: `vision-ocr` |
+| 7 | Show the draft and check names already in use | Files and Photos albums | file-agent: `ls`, `cat`; photo-agent: `albums` |
+| 8 | After approval, save the folder, copies, album and notes | Files, Photos album, Knowledge | file-agent: `mkdir`, `cpmv`; photo-agent: `create-album`; knowledge-agent: `save-text` |
+| 9 | Read back what was saved | Files and Photos albums | file-agent: `ls`, `cat`; photo-agent: `album-detail` |
+
+The full list, checked against UGREEN's capability catalog 2.2.0, is in [`SKILL.md`](visa-evidence-by-month/SKILL.md) ("Generation-time capability evidence").
+
 ## Using it on the NAS
 
 See `visa-evidence-by-month/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned documents in one folder, pick a save location outside it, then ask Uliya in plain words.
