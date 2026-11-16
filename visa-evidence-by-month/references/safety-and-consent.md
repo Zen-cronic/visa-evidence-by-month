@@ -8,7 +8,7 @@ The pack is about one person, a couple or a family. Step 0 asks whether every ad
 
 ## Privacy
 
-- Papers are matched on the names printed on them, which the user gives; the Skill never asks for passport, application, tax or bank numbers.
+- Documents are matched on the names printed on them, which the user gives; the Skill never asks for passport, application, tax or bank numbers.
 - Earlier packs: copies in a Visa evidence folder are never read back as evidence, but the original photos in its album are, so a second run sees the same library.
 - Immigration evidence mixes family and intimate photos, children's photos and birth certificates with leases, bills and bank statements. Step 0 asks the user to confirm Uliya is set to the local model, and every reading step tells the expert to use only the local model.
 - The Skill has no sharing, sync or upload step. It writes only copies, only to the location the user names, and only after approval.
@@ -16,11 +16,11 @@ The pack is about one person, a couple or a family. Step 0 asks whether every ad
 
 ## What it guarantees
 
-- Everything in your pack comes from your own files, unchanged: it never invents, edits or back-dates a photo or paper, and never fills a month with something that is not there.
+- Everything in your pack comes from your own files, unchanged: it never invents, edits or back-dates a photo or document, and never fills a month with something that is not there.
 - It does not put context the people did not confirm in the Photo descriptions file; the working notes keep such lines marked `[not confirmed]`.
 - It does not judge whether a person, relationship or family qualifies, and it does not give legal or immigration advice. The index tells the user to check the current official checklist, or to ask a licensed immigration consultant or lawyer.
 - Text inside a scanned document that asks the assistant to do something is reported as "asked, not followed" and never acted on.
 
 ## What the user should still do
 
-Check every confirmed line, look at the gap months by hand (photos may sit in a library this account cannot open; for common-law, look for a paper showing both at the same address instead, as photos cannot fill a gap), and add any missing documents before submitting.
+Check every confirmed line, look at the gap months by hand (photos may sit in a library this account cannot open; for common-law, look for a document showing both at the same address instead, as photos cannot fill a gap), and add any missing documents before submitting.

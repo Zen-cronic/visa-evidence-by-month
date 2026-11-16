@@ -52,7 +52,7 @@ This list is from the spouse checklist. Common-law partners use IMM 5589 (https:
 | Photos spread across months and places | "taken at different times and places" |
 | A line for each photo, confirmed by the couple | "a brief description of context of each photo provided, label your photos accordingly" |
 | Joint documents naming both partners | IMM 5533 cohabitation list ("at least two (2)") |
-| Married couples and common-law partners: joint papers, and papers in each partner's name showing the same address | IMM 5533: "whether the accounts are held jointly or not"; the common-law checklist (IMM 5589) was not read |
+| Married couples and common-law partners: joint documents, and documents in each partner's name showing the same address | IMM 5533: "whether the accounts are held jointly or not"; the common-law checklist (IMM 5589) was not read |
 | Month-by-month coverage (a planning aid) | 12 consecutive months for common-law partners; for spouses there is no monthly requirement, only photos "taken at different times and places" |
 
 ## Australia: Partner visa (subclasses 820/801 and 309/100)
@@ -70,7 +70,7 @@ The page's evidence list does not name photos of the couple.
 
 **Not read, to check:** the 801 and 100 (permanent) pages; Form 888 itself.
 
-**How the Skill uses these:** joint papers naming both cover "in both names" and "addressed to you both"; same-address papers are a planning aid for "documents that prove your living arrangements"; the month table can help plan the de facto "at least 12 months", without saying whether the relationship counts as de facto; photos only if the user's checklist asks for them.
+**How the Skill uses these:** joint documents naming both cover "in both names" and "addressed to you both"; same-address documents are a planning aid for "documents that prove your living arrangements"; the month table can help plan the de facto "at least 12 months", without saying whether the relationship counts as de facto; photos only if the user's checklist asks for them.
 
 ## New Zealand: Partner of a New Zealander visas
 
@@ -89,7 +89,7 @@ The pages set no number of photos.
 
 **Not read, to check:** the Partnership timeline and evidence checklist (PDF 11975); the Partner of a New Zealander Work Visa page.
 
-**How the Skill uses these:** joint papers and same-address papers match "addressed to you both jointly — or individually"; the month table can help plan 12 months of "items showing your shared address, dated every few months", without saying whether the rule is met; photos of the two of you by month match "photos of you together", and the Skill's default of 20 photos is not from these pages.
+**How the Skill uses these:** joint documents and same-address documents match "addressed to you both jointly — or individually"; the month table can help plan 12 months of "items showing your shared address, dated every few months", without saying whether the rule is met; photos of the two of you by month match "photos of you together", and the Skill's default of 20 photos is not from these pages.
 
 ## United Kingdom: Family visa as a partner or spouse
 
@@ -106,7 +106,7 @@ The page does not name photos.
 
 **Not read, to check:** Appendix FM-SE and Appendix FM of the Immigration Rules, for the exact evidence and definitions behind this guidance.
 
-**How the Skill uses these:** joint papers and same-address papers match "confirming that you live at the same address"; the month table can help plan "at least 2 years" of living together, without saying whether it is met; the Skill does not check the "less than 4 years old" limit, so check each paper's date yourself; photos only if the user's checklist asks for them.
+**How the Skill uses these:** joint documents and same-address documents match "confirming that you live at the same address"; the month table can help plan "at least 2 years" of living together, without saying whether it is met; the Skill does not check the "less than 4 years old" limit, so check each document's date yourself; photos only if the user's checklist asks for them.
 
 ## United States: I-130 for a spouse, and the K-1 fiancé(e) visa
 
@@ -127,4 +127,4 @@ K-1: "You and your fiancé(e) met each other in person at least once within the 
 
 **Not read, to check:** the Form I-129F instructions (what proof of the in-person meeting they accept); the travel.state.gov K-1 page.
 
-**How the Skill uses these:** joint papers naming both cover items (1) to (3); birth certificates are the linking papers for children, as in item (4); photos of the two of you by month can help find when you met in person, without saying whether it meets the K-1 rule; photos only if the user's checklist asks for them.
+**How the Skill uses these:** joint documents naming both cover items (1) to (3); birth certificates are the linking documents for children, as in item (4); photos of the two of you by month can help find when you met in person, without saying whether it meets the K-1 rule; photos only if the user's checklist asks for them.

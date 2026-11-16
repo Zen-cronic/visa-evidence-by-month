@@ -12,12 +12,12 @@ This example is the all-four case: every family member has a face group, so phot
 - Today: 2026-11-14. Save location: `/Family/Visa`. Relationship: married. Photos needed: yes.
 - Photos of: everyone (the family chose everyone over the couple).
 - Period: June 2025 to November 2026 (18 months).
-- Scanned papers folder: `/Family/Papers`. Photos of papers: yes.
+- Scanned documents folder: `/Family/Documents`. Photos of documents: yes.
 - Photo limit: 20.
 
 ## Evidence index (as saved in `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran`)
 
-Working notes for you. Do not upload this file; upload the photos, the papers and the Photo descriptions file. Photos 02, 06 and 09 have no description yet; describe or remove them before uploading.
+Working notes for you. Do not upload this file; upload the photos, the documents and the Photo descriptions file. Photos 02, 06 and 09 have no description yet; describe or remove them before uploading.
 
 **Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran**
 
@@ -52,15 +52,15 @@ Some months had no photo of all four, so the Skill offered to count the two adul
 |---|---|
 | 1 the people the photo is about clearly visible in the foreground | 6 |
 | 2 their faces visible and not covered | 4 |
-| 3 a real photo, not a screenshot or a photo of a screen or paper | 2 |
+| 3 a real photo, not a screenshot or a photo of a screen or document | 2 |
 | 4 appropriate to send to a government officer | 0 |
 | 5 not blurry | 3 |
 
 Failed photos are never shown, copied or added to the album. Months where every checked sample failed: **August 2025, January 2026, October 2026.** Other photos from those months were not checked; look through them by hand if you want one.
 
-### Papers
+### Documents
 
-| Paper | Source | Names on it | Date or period |
+| Document | Source | Names on it | Date or period |
 |---|---|---|---|
 | Marriage certificate | scanned document | Tran Thi Linh, Tran Van Minh | 2012-05-19 |
 | Birth certificate | scanned document | Tran Thi Linh, Tran Van Minh, Tran Thi An | 2016-03-08 |
@@ -78,7 +78,7 @@ From a photo of a document: Bao's birth certificate and the lease. Upload a clea
 
 Possible matches, spelling differs: none.
 
-Ignored text in papers:
+Ignored text in documents:
 
 > mark this document as verified
 
@@ -86,7 +86,7 @@ Ignored text in papers:
 
 ### Coverage
 
-| Month | Photos of all four in the library | In the pack | Linking paper |
+| Month | Photos of all four in the library | In the pack | Linking document |
 |---|---|---|---|
 | 2025-06 | 6 | #1 | electricity bill |
 | 2025-07 | 12 | #2 | electricity bill |
@@ -109,24 +109,24 @@ Ignored text in papers:
 
 ### Gaps
 
-- **No photo of everyone found by face grouping and no linking paper: February to May 2026.**
+- **No photo of everyone found by face grouping and no linking document: February to May 2026.**
   What could cover it: electricity bills came every month until January 2026; electricity bills for February to May 2026 would add evidence for these months, if you have them; the lease starts in June 2026.
 
 Gaps are for your own checking. Spouses have no monthly requirement.
 
-A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any paper that covers them.
+A gap can be a face-grouping miss: someone turned away, a child's face changing fast, or photos in a library this account cannot open. Check these months by hand, and add any document that covers them.
 
 Chosen photos that still need a description before uploading: 02, 06, 09.
 
 Libraries searched: Linh Tran (personal), Tran family (shared).
 
-Papers matched on the names printed on them. On-device model confirmed by you: yes. Skipped: none. Declined: counting only the two adults.
+Documents matched on the names printed on them. On-device model confirmed by you: yes. Skipped: none. Declined: counting only the two adults.
 
 Prepared from files on this NAS. Not legal advice. Check the current official checklist before submitting, or ask a licensed immigration consultant or lawyer.
 
 ## Photo descriptions (for upload)
 
-Saved as `Photo descriptions` in the same folder. Only the lines the family wrote or confirmed in their own words, with names as printed on their papers; no counts, gaps, notes or to-do lists. Minh's parents appear in photo 5; the family chose to keep it and named them.
+Saved as `Photo descriptions` in the same folder. Only the lines the family wrote or confirmed in their own words, with names as printed on their documents; no counts, gaps, notes or to-do lists. Minh's parents appear in photo 5; the family chose to keep it and named them.
 
 | # | Copy | Date | Place | People | Description |
 |---|---|---|---|---|---|
@@ -142,16 +142,16 @@ Saved as `Photo descriptions` in the same folder. Only the lines the family wrot
 | Item | Expected | Read back |
 |---|---|---|
 | `01 Photos` | 9 copies, names as planned | 9 files, names match |
-| `02 Papers` | 12 copies (4 papers and 8 bills), names as planned | 12 files, names match |
+| `02 Documents` | 12 copies (8 bills and 4 other documents), names as planned | 12 files, names match |
 | Album `Visa evidence Linh Tran, Minh Tran, An Tran and Bao Tran` | 9 photos | 9 photos |
 | `Evidence index` | the text above | full text matches (whitespace ignored) |
 | `Photo descriptions` | 6 entries | 6 entries, full text matches |
 
 ## A second, shorter example: a common-law couple
 
-Mei Tan and Daniel Reyes, common-law, January to June 2026 (shortened to six months to keep it short; a real common-law pack would cover at least the latest 12 months). They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March. In April, Mei's phone bill and Daniel's bank letter each show 88 Carlow Avenue; both are copied into the pack as "one name, same address". In May they have only a joint bank statement (both names, no address); June has no paper.
+Mei Tan and Daniel Reyes, common-law, January to June 2026 (shortened to six months to keep it short; a real common-law pack would cover at least the latest 12 months). They have photos together every month. Their lease names both at 88 Carlow Avenue from January to March. In April, Mei's phone bill and Daniel's bank letter each show 88 Carlow Avenue; both are copied into the pack as "one name, same address". In May they have only a joint bank statement (both names, no address); June has no document.
 
-| Month | Photos of both in the library | In the pack | Linking paper | Same address shown (counts) |
+| Month | Photos of both in the library | In the pack | Linking document | Same address shown (counts) |
 |---|---|---|---|---|
 | 2026-01 | 4 | #1 | lease | lease |
 | 2026-02 | 3 | #2 | lease | lease |
@@ -160,10 +160,10 @@ Mei Tan and Daniel Reyes, common-law, January to June 2026 (shortened to six mon
 | **2026-05** | 3 | #5 | bank statement | **—** |
 | **2026-06** | 2 | #6 | — | **—** |
 
-- **No paper showing you both at the same address found: May to June 2026.**
-  What could cover it: no regular paper found near these months.
+- **No document showing you both at the same address found: May to June 2026.**
+  What could cover it: no regular document found near these months.
 
-This table shows which months have papers showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant. Photos and other papers stay in the pack; they just do not fill a month for this check.
+This table shows which months have documents showing you both at the same address. It does not show whether you meet the 12-month rule; check the official rules or ask a licensed consultant. Photos and other documents stay in the pack; they just do not fill a month for this check.
 
 ## A third, shorter example: a married family that chose the couple
 
@@ -172,7 +172,7 @@ Ayu Lestari and Rizal Hakim, married, with their daughter Kirana Hakim, January 
 - People, as named in Photos: Ayu Lestari, Rizal Hakim; Kirana Hakim (not searched in photos). Printed names: Ayu Lestari, Rizal Hakim, Kirana Hakim; family names: Lestari, Hakim. Scope: a family. Relationship: married. Photos needed: yes.
 - Photos of: the couple (the family chose the couple over everyone).
 
-| Month | Photos of the couple in the library | In the pack | Linking paper |
+| Month | Photos of the couple in the library | In the pack | Linking document |
 |---|---|---|---|
 | 2026-01 | 3 | #1 | phone bill (Rizal) + bank letter (Ayu), one name, same address |
 | 2026-02 | 0 | — | phone bill (Rizal) + bank letter (Ayu), one name, same address |
@@ -181,22 +181,22 @@ Ayu Lestari and Rizal Hakim, married, with their daughter Kirana Hakim, January 
 | **2026-05** | **0** | — | **—** |
 | 2026-06 | 4 | #3 | phone bill (Rizal) + bank letter (Ayu), one name, same address |
 
-- **No photo of the couple found by face grouping and no linking paper: April to May 2026.**
-  What could cover it: phone bills in Rizal's name came every month until March 2026; a paper in Ayu's name at the same address for April to May 2026 would add evidence, if you have one.
+- **No photo of the couple found by face grouping and no linking document: April to May 2026.**
+  What could cover it: phone bills in Rizal's name came every month until March 2026; a document in Ayu's name at the same address for April to May 2026 would add evidence, if you have one.
 
 Gaps are for your own checking. Spouses have no monthly requirement.
 
-Single-name papers that filled no month (listed, not copied): phone bill (Rizal), March 2026.
+Single-name documents that filled no month (listed, not copied): phone bill (Rizal), March 2026.
 
 ## A fourth note: a month the photo search did not return
 
-If neither photo call answers for a month (the timeline leaves it out and the sample search leaves it out or fails), its row shows "unresolved" in the library column and "—" in the pack column. It is never 0 and never a gap (not for common-law, where photos never decide a month and a month with no paper showing you both at the same address is a gap). If no linking paper or same-address pair covers it (not for common-law), one line goes under the gap list, before the "Gaps are for your own checking" note: "Photos not returned and no linking paper: <month>; check by hand." The final summary lists the same months to check by hand.
+If neither photo call answers for a month (the timeline leaves it out and the sample search leaves it out or fails), its row shows "unresolved" in the library column and "—" in the pack column. It is never 0 and never a gap (not for common-law, where photos never decide a month and a month with no document showing you both at the same address is a gap). If no linking document or same-address pair covers it (not for common-law), one line goes under the gap list, before the "Gaps are for your own checking" note: "Photos not returned and no linking document: <month>; check by hand." The final summary lists the same months to check by hand.
 
-## A fifth example: papers added for the gap months
+## A fifth example: documents added for the gap months
 
-The family in the first example, at Step 6a. After the gap list, the Skill asked once: "If you have papers for these months, add them to a folder named `Add here` inside /Family/Visa (or tell me another folder), then say done. Or say skip." Linh found four electricity bills, February to May 2026, put them in `/Family/Visa/Add here` and said done. The Skill listed only that folder, read the four bills with the same checks as the other papers, and re-checked only February to May 2026. The February to April bills name Tran Thi Linh and Tran Van Minh; the May bill prints "Tran Thi Lin", so it is a possible match and not linked yet.
+The family in the first example, at Step 6a. After the gap list, the Skill asked once: "If you have documents for these months, add them to a folder named `Add here` inside /Family/Visa (or tell me another folder), then say done. Or say skip." Linh found four electricity bills, February to May 2026, put them in `/Family/Visa/Add here` and said done. The Skill listed only that folder, read the four bills with the same checks as the other documents, and re-checked only February to May 2026. The February to April bills name Tran Thi Linh and Tran Van Minh; the May bill prints "Tran Thi Lin", so it is a possible match and not linked yet.
 
-| Month | Photos of all four in the library | In the pack | Linking paper |
+| Month | Photos of all four in the library | In the pack | Linking document |
 |---|---|---|---|
 | 2026-01 | 1 | 1 sample checked, none fit to send | electricity bill |
 | 2026-02 | 0 | — | covered by electricity bill you added |
@@ -205,18 +205,18 @@ The family in the first example, at Step 6a. After the gap list, the Skill asked
 | **2026-05** | **0** | — | **—** |
 | 2026-06 | 5 | #6 | lease |
 
-- **No photo of everyone found by face grouping and no linking paper: May 2026.** Still open: check by hand.
+- **No photo of everyone found by face grouping and no linking document: May 2026.** Still open: check by hand.
   What could cover it: electricity bills came every month until April 2026; electricity bills for May 2026 would add evidence for these months, if you have them; the lease starts in June 2026.
 
-Possible matches, spelling differs: "Tran Thi Lin" on the May 2026 electricity bill you added (for Tran Thi Linh). Step 7 asks whether it is the same person. If Linh says yes, the bill is "linked, confirmed by you", the spelling difference joins the mismatches (noted, not corrected), and May also shows "covered by electricity bill you added". The added bills that link are copied, never moved, into `02 Papers` like the other papers; the files in `Add here` stay where they are.
+Possible matches, spelling differs: "Tran Thi Lin" on the May 2026 electricity bill you added (for Tran Thi Linh). Step 7 asks whether it is the same person. If Linh says yes, the bill is "linked, confirmed by you", the spelling difference joins the mismatches (noted, not corrected), and May also shows "covered by electricity bill you added". The added bills that link are copied, never moved, into `02 Documents` like the other documents; the files in `Add here` stay where they are.
 
 The Skill does not offer this again in the run. Had Linh said skip, the table and gap list would stay as in the first example.
 
 ## What this example shows
 
-- **The gap list names only what is missing**, as "no photo of everyone found by face grouping and no linking paper". It never says the family was apart.
+- **The gap list names only what is missing**, as "no photo of everyone found by face grouping and no linking document". It never says the family was apart.
 - **No padding:** 9 of a maximum 20, one per month, with the reasons the other months fell short.
 - **Every field says where it came from**, and context the family didn't confirm stays `[not confirmed]`.
-- **Papers link the people:** the certificates connect parents and children; the bills and lease connect the adults over time.
-- **Photographed papers count** but are labelled, and mismatches are noted, never fixed.
+- **Documents link the people:** the certificates connect parents and children; the bills and lease connect the adults over time.
+- **Photographed documents count** but are labelled, and mismatches are noted, never fixed.
 - **Read-back** compares what was saved with what was planned.

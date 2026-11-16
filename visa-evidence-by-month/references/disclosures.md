@@ -11,7 +11,7 @@ All of it, written for the UGREEN Hackathon 2026 on AI NAS:
 - a scope that follows the people named: one person, a couple or a family;
 - counting photos of everyone named per month and choosing up to 20, spread across the period and checked as fit to send;
 - the labelled per-photo line (date, place, people, confirmed context);
-- finding and reconciling the papers that link the people, scanned or photographed;
+- finding and reconciling the documents that link the people, scanned or photographed;
 - the month-by-month coverage table and gap list;
 - writing the evidence folder, album and index back to the NAS.
 

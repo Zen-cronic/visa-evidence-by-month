@@ -2,7 +2,7 @@
 
 The Skill itself is Markdown that Uliya's assistant follows on the NAS. This module
 restates the rules it gives for the steps that need no NAS call (planning months,
-choosing photos, joining papers, coverage and gaps) so they can be checked on
+choosing photos, joining documents, coverage and gaps) so they can be checked on
 synthetic cases. It does not call the NAS and does not prove runtime behaviour.
 """
 
@@ -12,14 +12,14 @@ import re
 import unicodedata
 from dataclasses import dataclass, field
 
-GAP_LABEL = "no photo of everyone found by face grouping and no linking paper"
-PAPER_GAP_LABEL = "no linking paper found"
+GAP_LABEL = "no photo of everyone found by face grouping and no linking document"
+PAPER_GAP_LABEL = "no linking document found"
 FORBIDDEN_GAP_WORDS = ("no relationship", "not together", "not in the country", "apart")
 
 RULES = {
     1: "the people the photo is about clearly visible in the foreground",
     2: "their faces visible and not covered",
-    3: "a real photo, not a screenshot or a photo of a screen or paper (a photographed print of a photo passes)",
+    3: "a real photo, not a screenshot or a photo of a screen or document (a photographed print of a photo passes)",
     4: "appropriate to send to a government officer",
     5: "not blurry",
 }
@@ -48,7 +48,7 @@ PHOTO_SEARCH_MAX = 6  # more people than this: the user picks who is searched in
 
 
 def photo_people_for(people: list[str], picked: list[str] | None = None) -> list[str]:
-    """Over six people, only the ones the user picked are searched in photos; the rest are papers-only."""
+    """Over six people, only the ones the user picked are searched in photos; the rest are documents-only."""
     if len(people) <= PHOTO_SEARCH_MAX:
         return list(people)
     if not picked or len(picked) > PHOTO_SEARCH_MAX:
@@ -210,13 +210,13 @@ class Choice:
     failures: dict[int, int] = field(default_factory=lambda: {r: 0 for r in RULES})
 
 
-RULE3_FAILS = {"screenshot", "photo of a screen", "photo of paper"}
+RULE3_FAILS = {"screenshot", "photo of a screen", "photo of a document"}
 
 
 def rule3(kind: str) -> tuple[bool, str | None]:
     """Step 4 rule 3: what the vision check says the image is -> (passes, label for the photo line).
     A photographed print of a photo passes and is labelled "print"; a screenshot, a photo of a screen
-    or a photo of paper fails."""
+    or a photo of a document fails."""
     if kind in RULE3_FAILS:
         return False, None
     return True, ("print" if kind == "print" else None)
@@ -257,13 +257,13 @@ class Paper:
     source: str  # "scanned document" or "from a photo of a document"
     start: str | None = None  # YYYY-MM covered from
     end: str | None = None  # YYYY-MM covered to
-    dated: str | None = None  # YYYY-MM-DD for one-off papers
+    dated: str | None = None  # YYYY-MM-DD for one-off documents
     address: str | None = None
     dob: dict[str, str] = field(default_factory=dict)
     readable: bool = True
-    asks: str | None = None  # an instruction found inside the paper
+    asks: str | None = None  # an instruction found inside the document
     path: str | None = None  # the file path, when known
-    added: bool = False  # Step 6a: put in the Add here folder by the user; kept with the paper on every redo
+    added: bool = False  # Step 6a: put in the Add here folder by the user; kept with the document on every redo
 
 
 PHOTO_SOURCE = "from a photo of a document"
@@ -344,8 +344,8 @@ def normalise_address(address: str) -> str:
 
 def join_papers(papers: list[Paper], people: list[str], printed_names: bool = True,
                 family_names: list[str] | None = None) -> dict:
-    """Keep linking papers; prefer a scan over a photo of the same paper; note, never fix, mismatches.
-    Only a scan and photos of it, or several photos, are merged as one paper: two scans always stay separate."""
+    """Keep linking documents; prefer a scan over a photo of the same document; note, never fix, mismatches.
+    Only a scan and photos of it, or several photos, are merged as one document: two scans always stay separate."""
     unreadable = [p for p in papers if not p.readable]
     readable = [p for p in papers if p.readable]
     asked = [p.asks for p in readable if p.asks]
@@ -356,16 +356,16 @@ def join_papers(papers: list[Paper], people: list[str], printed_names: bool = Tr
         if not printed_names:
             hits = [g for g in people if any(name_contains(n, g) for n in p.names)]
             if _enough(len(hits), people):
-                possible.append(p)  # Photos names can never link a paper on their own
+                possible.append(p)  # Photos names can never link a document on their own
             continue
         if not links(p, people):
             if _enough(len(named_in(p, people, near=True, family_names=family_names)), people):
                 possible.append(p)  # shown to the user, never linked on its own
             continue
-        # a spelling variant on a paper that links through other names is still listed for that person
+        # a spelling variant on a document that links through other names is still listed for that person
         if set(named_in(p, people, near=True, family_names=family_names)) - set(named_in(p, people)):
             possible.append(p)
-        # same paper: the same people and the same printed date or period (type labels may differ),
+        # same document: the same people and the same printed date or period (type labels may differ),
         # and at least one of the two is a photo of a document (two different scans are never merged)
         twin = next(
             (q for q in linked if PHOTO_SOURCE in (q.source, p.source)
@@ -416,12 +416,12 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
              common_law: bool = False, address_docs: list[Paper] | None = None, partners: list[str] | None = None,
              planned: list[str] | None = None, candidate_months: set[str] | None = None,
              no_sample_label: str = NO_SAMPLE_LABEL) -> list[dict]:
-    """month_counts is None for one person or when the photo search failed: gaps then use papers only.
-    For any couple or family (partners given), separate papers, one naming each partner, showing the same address
-    fill a month no single paper covers. For married and other couples photos still count; for common-law couples
-    a month counts only by a paper showing both at the same address, and photos do not count."""
+    """month_counts is None for one person or when the photo search failed: gaps then use documents only.
+    For any couple or family (partners given), separate documents, one naming each partner, showing the same address
+    fill a month no single document covers. For married and other couples photos still count; for common-law couples
+    a month counts only by a document showing both at the same address, and photos do not count."""
     if common_law:
-        # alone, a paper counts only when it names both partners and shows an address
+        # alone, a document counts only when it names both partners and shows an address
         linked = [p for p in linked if p.address and (not partners or len(named_in(p, partners)) == len(partners))]
         month_counts = None
     rows = []
@@ -434,19 +434,19 @@ def coverage(start: str, end: str, month_counts: dict[str, int] | None, chosen: 
     def month_papers(month: str, linked_docs: list[Paper], address_list: list[Paper]) -> list[str]:
         papers = [p.kind for p in linked_docs if paper_covers(p, month)]
         if partners and address_list and not papers:
-            # separate papers, one naming each partner, showing the same address that month
+            # separate documents, one naming each partner, showing the same address that month
             by_partner = [{normalise_address(p.address) for p in address_list
                            if p.address and paper_covers(p, month) and any(name_matches(n, who) for n in p.names)}
                           for who in partners]
             shared = set.intersection(*by_partner) if all(by_partner) else set()
             if shared:
-                papers = ["same address on separate papers"]
+                papers = ["same address on separate documents"]
         return papers
 
     for month in month_range(start, end):
         papers = month_papers(month, own_linked, own_address)
         added = False
-        if not papers and any_added:  # Step 6a: an added paper counts only in a month no other paper covers
+        if not papers and any_added:  # Step 6a: an added document counts only in a month no other document covers
             papers = month_papers(month, linked, address_docs)
             added = bool(papers)
         count = None if month_counts is None else month_counts.get(month, 0)
@@ -486,7 +486,7 @@ def group_gaps(rows: list[dict]) -> list[tuple[str, str]]:
     return runs
 
 
-COMMON_LAW_GAP_LABEL = "no paper showing you both at the same address found"
+COMMON_LAW_GAP_LABEL = "no document showing you both at the same address found"
 
 
 def gap_label(papers_only: bool = False, search_failed: bool = False, who: str | None = None, common_law: bool = False) -> str:
@@ -501,11 +501,11 @@ def gap_lines(rows: list[dict], label: str = GAP_LABEL) -> list[str]:
     return [f"{label}: {a} to {b}" if a != b else f"{label}: {a}" for a, b in group_gaps(rows)]
 
 
-UNRESOLVED_LABEL = "photos not returned and no linking paper"
+UNRESOLVED_LABEL = "photos not returned and no linking document"
 
 
 def unresolved_line(rows: list[dict]) -> str | None:
-    """Step 6: unresolved months with no linking paper and no same-address pair are never gaps; they are listed
+    """Step 6: unresolved months with no linking document and no same-address pair are never gaps; they are listed
     under the gap list (consecutive months grouped as for gaps), in the check-by-hand line and in the summary."""
     flagged = [{"month": r["month"], "gap": r["library"] == UNRESOLVED and not r["papers"]} for r in rows]
     runs = group_gaps(flagged)
@@ -518,7 +518,7 @@ def unresolved_line(rows: list[dict]) -> str | None:
 
 def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Paper], dropped: list[Paper],
                   people: list[str] | None = None, mismatches: list | None = None) -> list[Paper]:
-    """Add the possible matches the user confirmed, remove dropped papers; Step 6 is then redone.
+    """Add the possible matches the user confirmed, remove dropped documents; Step 6 is then redone.
 
     When `people` and `mismatches` are given, each confirmed match adds its spelling difference to
     `mismatches` (the user linked it knowingly, and may need to explain it)."""
@@ -529,7 +529,7 @@ def apply_answers(linked: list[Paper], possible: list[Paper], confirmed: list[Pa
                 for printed in c.names:
                     if name_near(printed, given):
                         mismatches.append(("name spelling", given, sorted([printed, given])))
-    new = [c for c in added if not any(c is q for q in linked)]  # a confirmed variant on an already-linked paper is not added twice
+    new = [c for c in added if not any(c is q for q in linked)]  # a confirmed variant on an already-linked document is not added twice
     return [p for p in linked + new if not any(p is d for d in dropped)]
 
 
@@ -537,7 +537,7 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
     """Step 8: each item has its own approval. Copies and the index need the folder; the album does not.
     A declined item is the user's choice, a failed one is a failure, and an item whose folder was not
     created is not applicable; all three are reported apart."""
-    needs_folder = {"photo copies", "paper copies", "index", "descriptions"}
+    needs_folder = {"photo copies", "document copies", "index", "descriptions"}
     folder_ok = approved.get("folder", False) and results.get("folder") == "completed"
     out = {"saved": [], "declined": [], "failed": [], "not applicable": []}
     for item, ok in approved.items():
@@ -554,12 +554,12 @@ def save_summary(approved: dict[str, bool], results: dict[str, str]) -> dict[str
 
 def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | None = None,
             partners: list[str] | None = None, labels: dict[str, str] | None = None) -> dict[tuple[str, str], str]:
-    """Step 6: for each gap, from linking papers only: a series of at least 3 papers of the same type naming
-    the same people, one each month up to the month before the gap; and a covering paper that starts the
-    month after it. Suggests only; never claims the paper exists.
+    """Step 6: for each gap, from linking documents only: a series of at least 3 documents of the same type naming
+    the same people, one each month up to the month before the gap; and a covering document that starts the
+    month after it. Suggests only; never claims the document exists.
 
     same-address.md: with partners and single-name address_docs, a series of same-address pairs (one type per
-    partner, the same address each month) names both types; when only one partner's papers form a series,
+    partner, the same address each month) names both types; when only one partner's documents form a series,
     the line names the missing half. `labels` gives the short name shown for each partner (default: as given)."""
     out = {}
     months = [r["month"] for r in rows]
@@ -588,19 +588,19 @@ def closers(rows: list[dict], linked: list[Paper], address_docs: list[Paper] | N
             lines.extend(_address_series(address_docs, partners, labels or {}, before, a, b, prev))
         for p in linked:
             if p.start and after and p.start == after:
-                # only a paper that is new after the gap, not a regular one of the same kind resuming
+                # only a document that is new after the gap, not a regular one of the same kind resuming
                 seen_before = any(q is not p and q.kind == p.kind and sorted(q.names) == sorted(p.names)
                                   and ((q.dated and q.dated[:7] < a) or (q.end and q.end < a)) for q in linked)
                 if not seen_before:
                     lines.append(f"the {p.kind} starts in {after}")
-        out[(a, b)] = "; ".join(lines) if lines else "no regular paper found near these months"
+        out[(a, b)] = "; ".join(lines) if lines else "no regular document found near these months"
     return out
 
 
 def _address_series(address_docs: list[Paper], partners: list[str], labels: dict[str, str], before: str,
                     a: str, b: str, prev) -> list[str]:
-    """same-address.md, what could cover each gap: runs of single-name papers ending the month before the gap."""
-    # per partner and type: month -> normalised addresses on that partner's papers of that type
+    """same-address.md, what could cover each gap: runs of single-name documents ending the month before the gap."""
+    # per partner and type: month -> normalised addresses on that partner's documents of that type
     by: dict[tuple[str, str], dict[str, set[str]]] = {}
     for p in address_docs:
         if not (p.dated and p.address):
@@ -630,7 +630,7 @@ def _address_series(address_docs: list[Paper], partners: list[str], labels: dict
     for (who, kind), months in sorted(by.items(), key=lambda kv: (partners.index(kv[0][0]), kv[0][1])):
         if (who, kind) not in paired and run(months) >= 3:
             other = second if who == first else first
-            lines.append(f"{kind}s in {name[who]}'s name came every month until {before}; a paper in {name[other]}'s name "
+            lines.append(f"{kind}s in {name[who]}'s name came every month until {before}; a document in {name[other]}'s name "
                          f"at the same address for {span} would add evidence, if you have one")
     return lines
 
@@ -643,7 +643,7 @@ def carry_over(earlier_lines: dict[tuple[str, str], tuple[str, str]], chosen: li
             if key in chosen and status in ("confirmed", "edited")}
 
 
-# Step 6a: papers the user adds for the gap months (optional, once)
+# Step 6a: documents the user adds for the gap months (optional, once)
 
 ADDED_LABEL = "you added"
 STILL_OPEN = "Still open: check by hand."
@@ -667,7 +667,7 @@ def split_added(listed: list[Paper], read_paths: set[str]) -> tuple[list[Paper],
 
 
 def paper_cell(row: dict) -> str:
-    """The coverage table's paper column: a month only an added paper covers reads "covered by <type> you added"."""
+    """The coverage table's document column: a month only an added document covers reads "covered by <type> you added"."""
     if not row["papers"]:
         return "—"
     kinds = " and ".join(dict.fromkeys(row["papers"]))

@@ -31,7 +31,7 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(log["writes_before_approval"], [])
         self.assertEqual(log["chosen"], 11)
         self.assertEqual(log["gaps"], [])  # the lease covers March
-        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "folder", "index", "paper copies", "photo copies"])
+        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "document copies", "folder", "index", "photo copies"])
 
     def test_b_family_with_a_papers_only_baby(self):
         counts = months("2025-06", "2026-11", skip={"2026-02", "2026-03", "2026-04", "2026-05"})
@@ -72,7 +72,7 @@ class Scenarios(unittest.TestCase):
         self.assertTrue(all("photo search failed" in g for g in log["gaps"]))
         self.assertNotIn("face grouping", " ".join(log["gaps"]))
         self.assertNotIn("album", nas.written)
-        self.assertEqual(sorted(log["summary"]["saved"]), ["folder", "index", "paper copies"])
+        self.assertEqual(sorted(log["summary"]["saved"]), ["document copies", "folder", "index"])
 
     def test_e_declined_folder_keeps_the_album(self):
         counts = months("2025-12", "2026-11")
@@ -121,7 +121,7 @@ class Scenarios(unittest.TestCase):
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [variant])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-02", nas, User(confirm_matches=False))
         self.assertEqual(log["linked"], 0)
-        self.assertNotIn("paper copies", log["summary"]["saved"])
+        self.assertNotIn("document copies", log["summary"]["saved"])
 
     def test_l_photos_not_needed_skips_photo_steps_and_files(self):
         nas = MockNAS([], months("2025-12", "2026-02"), [], [R.Paper("lease", COUPLE_PRINTED, "scanned document", "2025-12", "2026-01")])
@@ -171,7 +171,7 @@ class Scenarios(unittest.TestCase):
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-04", "2026-04", nas, User(relationship="common-law"))
         self.assertEqual(log["gaps"], [])
         self.assertEqual(log["same_address_docs"], 2)
-        self.assertIn("paper copies", log["summary"]["saved"])
+        self.assertIn("document copies", log["summary"]["saved"])
 
     def test_r_dropped_same_address_paper_is_not_copied_and_month_reopens(self):
         counts = months("2026-04", "2026-04")
@@ -181,7 +181,7 @@ class Scenarios(unittest.TestCase):
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-04", "2026-04", nas, User(relationship="common-law", drop_papers=[letter]))
         self.assertEqual(log["same_address_docs"], 0)
         self.assertEqual(log["gaps"], [f"{R.COMMON_LAW_GAP_LABEL}: 2026-04"])
-        self.assertNotIn("paper copies", log["summary"]["saved"])
+        self.assertNotIn("document copies", log["summary"]["saved"])
 
     def test_s_joint_lease_is_not_also_a_single_name_paper(self):
         counts = months("2026-01", "2026-01")
@@ -208,10 +208,10 @@ class Scenarios(unittest.TestCase):
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [phone, bill])
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2026-03", "2026-04", nas, User(relationship="married"))
         self.assertIsNone(log["stopped"])
-        self.assertEqual(log["linked"], 0)  # neither paper names both
+        self.assertEqual(log["linked"], 0)  # neither document names both
         self.assertEqual(log["gaps"], [])  # March by its photo, April by the same-address pair
         self.assertEqual(log["same_address_docs"], 2)
-        self.assertIn("paper copies", log["summary"]["saved"])
+        self.assertIn("document copies", log["summary"]["saved"])
         self.assertEqual(log["writes_before_approval"], [])
 
     def test_u_unanswered_listed_photo_is_held_out_of_the_pack(self):
@@ -326,7 +326,7 @@ class Scenarios(unittest.TestCase):
         self.assertIn(("photo-agent", "search-picture"), nas.calls[:nas.calls.index(("photo-agent", "vision-vlm"))])
         self.assertEqual(log["not_returned"], ["2026-03"])
         self.assertEqual(log["library"]["2026-03"], R.NOT_RETURNED)
-        self.assertEqual(log["gaps"], [])  # no paper at all, yet March is not a gap
+        self.assertEqual(log["gaps"], [])  # no document at all, yet March is not a gap
         self.assertIn("2026-05", log["pack_months"])
         self.assertEqual(log["chosen"], 5)
 
@@ -388,13 +388,13 @@ class Scenarios(unittest.TestCase):
         self.assertTrue(all(log["library"][m] == R.UNRESOLVED for m in log["not_returned"]))
         self.assertEqual(log["gaps"], [])
         self.assertEqual(log["pack_months"], ["2026-01", "2026-02", "2026-06"])  # the timeline's samples still checked
-        # May has the lease; March and April have no paper and are listed to check by hand
-        line = "photos not returned and no linking paper: 2026-03 to 2026-04; check by hand"
+        # May has the lease; March and April have no document and are listed to check by hand
+        line = "photos not returned and no linking document: 2026-03 to 2026-04; check by hand"
         self.assertEqual(log["check_by_hand"], line)
         self.assertIn(line, log["final_summary_lists"])
 
     def test_n2e2_common_law_unresolved_months_are_gaps_with_no_check_by_hand_line(self):
-        # as (c), but common-law: photos never decide a month, so the unresolved months without a same-address paper are gaps
+        # as (c), but common-law: photos never decide a month, so the unresolved months without a same-address document are gaps
         counts = months("2026-01", "2026-06", skip={"2026-03", "2026-04"})
         lease = R.Paper("lease", COUPLE_PRINTED, "scanned document", "2026-01", "2026-02", address="88 Carlow Ave")
         nas = MockNAS(COUPLE_PHOTOS, counts, samples(counts), [lease],
@@ -486,7 +486,7 @@ class Scenarios(unittest.TestCase):
         log = run(COUPLE_PHOTOS, COUPLE_PRINTED, "2025-12", "2026-11", nas, User())
         self.assertEqual(log["answered_in_call"], ["folder"])
         self.assertEqual(nas.calls.count(("file-agent", "mkdir")), 1)  # 8a sent once
-        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "folder", "index", "paper copies", "photo copies"])
+        self.assertEqual(sorted(log["summary"]["saved"]), ["album", "descriptions", "document copies", "folder", "index", "photo copies"])
         # why: a resent 8a finds the folder it made, reports failed, and 8b, 8c, 8e and 8f would be skipped
         self.assertEqual(nas.call("file-agent", "mkdir", write=True, item="folder"), "failed")
 
@@ -498,7 +498,7 @@ class Scenarios(unittest.TestCase):
 
 
 class AddedPapersForGaps(unittest.TestCase):
-    """Step 6a: after the gap list, the user may add papers to an Add here folder once, or skip."""
+    """Step 6a: after the gap list, the user may add documents to an Add here folder once, or skip."""
 
     def family(self, added=(), answer="done", extra_papers=(), add_status="completed", **user):
         counts = months("2025-06", "2026-11", skip={"2026-02", "2026-03", "2026-04", "2026-05"})
@@ -536,7 +536,7 @@ class AddedPapersForGaps(unittest.TestCase):
         self.assertEqual(log["linked"], 13)
         self.assertEqual(self.listings_before_step7_names(nas), 2)  # 6a lists Add here, read only
         self.assertEqual(log["writes_before_approval"], [])
-        self.assertIn("paper copies", log["summary"]["saved"])  # copied in 8c like the other papers
+        self.assertIn("document copies", log["summary"]["saved"])  # copied in 8c like the other documents
 
     def test_ac_a_month_still_empty_stays_open_and_is_not_offered_again(self):
         nas, log = self.family(self.bills(["2026-02", "2026-03", "2026-04"]))
@@ -559,7 +559,7 @@ class AddedPapersForGaps(unittest.TestCase):
     def test_ae_a_possible_match_on_an_added_bill_confirmed_in_step7_closes_the_month(self):
         variant = self.bills(["2026-05"], names=["Tran Thi Lin", "Tran Van Minh"])
         nas, log = self.family(self.bills(["2026-02", "2026-03", "2026-04"]) + variant)
-        self.assertEqual(log["gaps"], [])  # Step 7's redo keeps the added papers and their label
+        self.assertEqual(log["gaps"], [])  # Step 7's redo keeps the added documents and their label
         self.assertEqual(log["covered_by_added"], ["2026-02", "2026-03", "2026-04", "2026-05"])
         self.assertIn("name spelling", [m[0] for m in log["mismatches"]])
         nas2, open_ = self.family(self.bills(["2026-02", "2026-03", "2026-04"]) + variant, confirm_matches=False)
@@ -583,8 +583,8 @@ class AddedPapersForGaps(unittest.TestCase):
         self.assertEqual(log["added_linked"], 2)
 
     def test_ah_files_already_read_in_step5_are_skipped(self):
-        again = R.Paper("electricity bill", FAMILY_PRINTED[:2], "scanned document", dated="2026-03-03", path="/Family/Papers/mar.pdf")
-        # the user named the papers folder itself: Step 5a has read this file already
+        again = R.Paper("electricity bill", FAMILY_PRINTED[:2], "scanned document", dated="2026-03-03", path="/Family/Documents/mar.pdf")
+        # the user named the documents folder itself: Step 5a has read this file already
         nas, log = self.family([again], extra_papers=[again])
         self.assertEqual(nas.calls.count(("document-agent", "extract")), 1)  # nothing new to read
         self.assertEqual(log["linked"], 10)  # counted once, not twice

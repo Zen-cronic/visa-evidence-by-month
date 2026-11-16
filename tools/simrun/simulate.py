@@ -3,7 +3,7 @@
 The mock agents return canned results for four synthetic scenarios. The orchestration below restates
 SKILL.md's control flow (which step runs, what it may send, what is skipped, what is reported) so the
 safety properties can be checked as code: nothing is written before its approval, a declined item is
-reported as declined, a failed photo search switches to papers-only gaps, and a repeat run gets a new
+reported as declined, a failed photo search switches to documents-only gaps, and a repeat run gets a new
 folder name. It does not show how Uliya or the expert agents behave on a real NAS.
 """
 
@@ -74,13 +74,13 @@ class User:
     relationship: str = "married"  # married / common-law / other
     four_yes: bool = False  # answered yes to all four spouse-checklist questions
     continue_if_not_needed: bool = True
-    drop_papers: list = field(default_factory=list)  # papers the user drops in Step 7
+    drop_papers: list = field(default_factory=list)  # documents the user drops in Step 7
     children: list = field(default_factory=list)  # Photos names of children, if given
     accept_adults: bool = True  # agrees to count the adults' photos when offered
     print_dates: dict = field(default_factory=dict)  # path -> real date the user gave for a photographed print
     unanswered_photos: list = field(default_factory=list)  # paths of listed photos the user does not answer about
     photo_scope: str = "everyone"  # for a family: "the couple" or "everyone" (the Skill asks; no default there)
-    add_papers: str = "skip"  # Step 6a answer: "skip", or "done" after putting papers in the Add here folder
+    add_papers: str = "skip"  # Step 6a answer: "skip", or "done" after putting documents in the Add here folder
 
 
 def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNAS, user: User,
@@ -103,7 +103,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             return log
         user.photos_needed = False
     couple_only = scope == "a family" and user.photo_scope == "the couple"
-    # the couple: the two partners (listed first); everyone: all but papers-only people
+    # the couple: the two partners (listed first); everyone: all but documents-only people
     photo_people = people[:2] if couple_only else [p for p in people if p not in user.papers_only]
 
     # Step 1 (skipped for one person)
@@ -205,7 +205,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     papers_only = photo_steps_skipped or timeline_failed
     common_law = user.relationship == "common-law"
     partners = printed[:2]
-    # any couple or family: exactly one partner named (a child named too does not matter); joint papers are never here
+    # any couple or family: exactly one partner named (a child named too does not matter); joint documents are never here
     def single_name(papers):
         return [p for p in papers if scope != "one person" and p.readable and p.address and len(R.named_in(p, partners)) == 1
                 and not any(p is d for d in user.drop_papers)]
@@ -216,7 +216,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                           address_docs=address_list, partners=partners, candidate_months=candidate_months,
                           no_sample_label=no_sample_label)
     rows = step6(linked, address_docs)
-    # Step 6a: offered once in the run, only with a gap; skip changes nothing; done reads only the added papers
+    # Step 6a: offered once in the run, only with a gap; skip changes nothing; done reads only the added documents
     # (images by text recognition, the rest by document extraction), joins them by the 5c rules and redoes Step 6
     log["add_offered"], log["added_linked"], log["added_cut_off"], rechecked = 0, 0, 0, False
     if R.offer_added_papers(rows):
@@ -236,10 +236,10 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
             added = [replace(p, added=True) for p in docs + images if not any(p is d for d in user.drop_papers)]
             if added:
                 rechecked = True
-                joined2 = R.join_papers(nas.papers + added, printed)  # 5c over everything: one copy of each paper
+                joined2 = R.join_papers(nas.papers + added, printed)  # 5c over everything: one copy of each document
                 mismatches = list(joined2["mismatches"])
                 linked = joined2["linked"]
-                if user.confirm_matches:  # Step 7 answers folded in, as for the Step 5 papers
+                if user.confirm_matches:  # Step 7 answers folded in, as for the Step 5 documents
                     possible = joined2["possible_matches"]
                     linked = R.apply_answers(linked, possible, possible, [], people=printed, mismatches=mismatches)
                 linked = [p for p in linked if not any(p is d for d in user.drop_papers)]
@@ -248,13 +248,13 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
                 log["added_linked"] = sum(p.added for p in linked)
     log["covered_by_added"] = [r["month"] for r in rows if r["added"]]
     same_address_docs = [p for p in address_docs
-                         if any(r["papers"] == ["same address on separate papers"] and R.paper_covers(p, r["month"]) for r in rows)]
+                         if any(r["papers"] == ["same address on separate documents"] and R.paper_covers(p, r["month"]) for r in rows)]
     if common_law:
         papers_only = True
     label = R.gap_label(papers_only=photo_steps_skipped, search_failed=timeline_failed, common_law=common_law,
                         who="the couple" if couple_only else None)
     gaps = (R.still_open_lines if rechecked else R.gap_lines)(rows, label)
-    # Step 6: unresolved months with no paper, listed under the gaps, in the check-by-hand line and the summary
+    # Step 6: unresolved months with no document, listed under the gaps, in the check-by-hand line and the summary
     check_by_hand = None if common_law else R.unresolved_line(rows)
 
     # Step 7: read the save location, pick a free name
@@ -301,7 +301,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
     if approved.get("folder") and chosen and folder_ok:
         results["photo copies"] = write("file-agent", "cpmv", "photo copies")
     if approved.get("folder") and (linked or same_address_docs) and folder_ok:
-        results["paper copies"] = write("file-agent", "cpmv", "paper copies")
+        results["document copies"] = write("file-agent", "cpmv", "document copies")
     if approved.get("album"):
         results["album"] = write("photo-agent", "create-album", "album")
     if approved.get("index") and folder_ok:
@@ -313,7 +313,7 @@ def run(people: list[str], printed: list[str], start: str, end: str, nas: MockNA
         if chosen:
             items["photo copies"] = True
         if linked or same_address_docs:
-            items["paper copies"] = True
+            items["document copies"] = True
     summary = R.save_summary(items, results)
 
     # Step 9: read back only what can exist
