@@ -1,5 +1,5 @@
 ---
-name: relationship-evidence-pack
+name: visa-evidence-by-month
 description: Shows which months a couple or family can and cannot show evidence for, from the photos and papers already on the NAS, for a partner or spouse sponsorship or visa application (with their children), and what papers would cover each gap; then saves the photos, papers and a photo-description file organised by upload order, plus working notes for the user (the Evidence index), after approval. Use when someone says "build our relationship evidence for the sponsorship application", "get my family's papers ready for our visa" or "which months can we not prove yet".
 ---
 

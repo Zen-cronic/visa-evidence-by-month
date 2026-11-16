@@ -1,6 +1,6 @@
-# Relationship evidence for visa applications, from your NAS
+# Visa Evidence by Month
 
-A Skill for UGREEN AI NAS that answers one question for a couple or family preparing a partner or spouse visa application, including their children: **"Which months can we not prove yet?"**
+Relationship evidence for visa applications, from your NAS. A Skill for UGREEN AI NAS that answers one question for a couple or family preparing a partner or spouse visa application, including their children: **"Which months can we not prove yet?"**
 
 Before: scrolling years of photos and papers month by month, by hand. After: "No photo of everyone found by face grouping and no linking paper: February to May 2026. Electricity bills for those months would add evidence", plus a folder to build your upload from, saved only after you approve it.
 
@@ -20,7 +20,7 @@ It prepares evidence only. It does not judge eligibility, give legal advice or s
 
 ## What you get
 
-An excerpt from the worked example (a synthetic family of four; the full run is in [`references/example-output.md`](relationship-evidence-pack/references/example-output.md)):
+An excerpt from the worked example (a synthetic family of four; the full run is in [`references/example-output.md`](visa-evidence-by-month/references/example-output.md)):
 
 | Month | Photos of all four in the library | In the pack | Linking paper |
 |---|---|---|---|
@@ -53,7 +53,7 @@ Canada's spouse checklist is the worked example; `sources.md` also quotes offici
 
 ## Using it on the NAS
 
-See `relationship-evidence-pack/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned papers in one folder, pick a save location outside it, then ask Uliya in plain words.
+See `visa-evidence-by-month/references/user-guide.md`: name the people in Photos, have each person's printed name ready, put scanned papers in one folder, pick a save location outside it, then ask Uliya in plain words.
 
 ## Status
 
@@ -66,13 +66,13 @@ What is checked on every change (CI):
 
 When the NAS returns nothing, fails or skips a month, the table says "search failed" or "check by hand" for that month; it never turns a missing answer into a gap or into evidence.
 
-What is not checked yet: it has not run on a UGREEN AI NAS. `relationship-evidence-pack/references/testing.md` lists each behaviour still to confirm there, such as whether the agents read the linked reference files and how many photos one vision call accepts.
+What is not checked yet: it has not run on a UGREEN AI NAS. `visa-evidence-by-month/references/testing.md` lists each behaviour still to confirm there, such as whether the agents read the linked reference files and how many photos one vision call accepts.
 
 ## What's here
 
 | Path | What it is |
 |---|---|
-| `relationship-evidence-pack/` | The Skill: `SKILL.md` plus `references/` (rules, same-address rules, common-law rules, saving, working files, completion, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
+| `visa-evidence-by-month/` | The Skill: `SKILL.md` plus `references/` (rules, same-address rules, common-law rules, saving, working files, completion, user guide, worked example, sources, safety, testing, disclosures). This folder is the upload package. |
 | `tools/rulecheck/` | A small reference program that restates the Skill's steps that need no NAS call (planning months, choosing photos, joining papers, coverage and gaps) and checks them on synthetic cases, including the worked example. |
 | `tools/capcheck/` | Checks every action the Skill relies on against the UGREEN capability catalog: it exists, takes the inputs used, Steps 1 to 7 only read, and every write is behind approval. |
 | `scripts/build-package.sh` | Runs the checks and builds the upload ZIP. |
